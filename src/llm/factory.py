@@ -31,6 +31,8 @@ def get_model(task_name: str, style: str = "essay"):
         "temperature": cfg.temperature,
         "keep_alive": _keep_alive(),                    # Model stays loaded in Ollama
         "num_predict": _token_limit(cfg.max_tokens),    # Token limit for the model
+        # ToDo: Move to Python config per model
+        "num_ctx": 4096,                                # Context window size for the model
     }
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
