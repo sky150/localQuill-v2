@@ -5,7 +5,6 @@ from src.config import TASKS
 from src.tasks import get_task  # your dict: name -> task instance
 
 MAX_TURNS = 3  # last 3 messages, keeps local 4b models inside their context
-# Run in terminal:
 # $env:PYTHONPATH="."; uv run chainlit run src/frontend/app2.py
 
 @cl.on_chat_start

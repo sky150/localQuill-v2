@@ -24,16 +24,15 @@ class TaskConfig:
 
 # Defaults per task
 TASKS: dict[str, TaskConfig] = {
-    "test": TaskConfig(model="gemma4:e2b", ),   # Test purposes
-    "grammar": TaskConfig(model="gemma4:e2b", collection="style"),
-    "feedback": TaskConfig(model="gemma4:e2b", collection="style"),
-    "qa": TaskConfig(model="gemma4:e2b", collection="user_docs", top_k=5),
+    "test": TaskConfig(model="gemma4:e2b", temperature=0.1),   # Test purposes
+    "grammar": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.1),
+    "qa": TaskConfig(model="qwen3.5:4b", collection="user_docs", top_k=5, temperature=0.3),
+    "feedback": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.3),
     "autocomplete": TaskConfig(model="gemma4:e2b", temperature=0.5, max_tokens=20),
 }
 
 # Which Chroma collection holds the guides for each style
 STYLE_COLLECTIONS = {"formal": "formal", "fiction": "fiction"}
-
 
 def get_config(task: str, style: str = DEFAULT_STYLE) -> TaskConfig:
     """Return the config for a task, with style overrides and env fallbacks applied."""
@@ -43,6 +42,10 @@ def get_config(task: str, style: str = DEFAULT_STYLE) -> TaskConfig:
     if config.collection == "style":
         config = replace(config, collection=STYLE_COLLECTIONS.get(style, DEFAULT_STYLE))
 
+    # Checks for models like (GRAMMAR_MODEL) to override the model for the grammar task
     if env_model := os.getenv(f"{task.upper()}_MODEL"):
         config = replace(config, model=env_model)
+    if env_temperature := os.getenv(f"{task.upper()}_TEMPERATURE"):
+        config = replace(config, temperature=float(env_temperature))
+        
     return config
