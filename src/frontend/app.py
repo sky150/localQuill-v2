@@ -15,12 +15,15 @@ async def chat_profile():
         cl.ChatProfile(
             name="Fiction", markdown_description="Creative fiction writing feedback"
         ),
+        cl.ChatProfile(
+            name="Test", markdown_description="Test one single model"
+        ),
     ]
 
 
 @cl.on_chat_start
 async def on_start():
-    profile = cl.user_session.get("chat_profile")  # "Essay", "Fiction", or "Formal"
+    profile = cl.user_session.get("chat_profile")  # "Essay", "Fiction", or "Test"
     style = profile.lower() if profile else "essay"
     cl.user_session.set("style", style)
     await cl.Message(
