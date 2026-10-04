@@ -34,6 +34,16 @@ TASKS: dict[str, TaskConfig] = {
 # Which Chroma collection holds the guides for each style
 STYLE_COLLECTIONS = {"formal": "formal", "fiction": "fiction"}
 
+# DEV Settings
+def _env_bool(name: str) -> bool:
+    return os.getenv(name, "false").strip().lower() == "true"
+
+VERBOSE = _env_bool("VERBOSE")
+KEEP_ALIVE = os.getenv("KEEP_ALIVE", "").strip()
+LIMIT_TOKEN_NUMBER = int(os.getenv("LIMIT_TOKEN_NUMBER") or 0) or None  # None = no cap
+
+
+
 def get_config(task: str, style: str = DEFAULT_STYLE) -> TaskConfig:
     """Return the config for a task, with style overrides and env fallbacks applied."""
     config = TASKS[task]

@@ -1,3 +1,8 @@
+import logging
+import time
+
+logger = logging.getLogger(__name__)
+
 class Task:
     """Base class for all tasks."""
     name: str
@@ -12,5 +17,10 @@ class Task:
 
     def run(self, text, **opts) -> str:
         """Run the task by building the prompt and invoking the model."""
+        start_time = time.time()
         response = self.model.invoke(self.build_prompt(text, **opts))
-        return getattr(response, "content", response)  # Ollama: str, OpenAI: .content
+        end_time = time.time()
+        logger.debug(f"Task {self.name} ran in {end_time - start_time:.2f} seconds")
+        # Ollama: str, OpenAI: .content
+        return getattr(response, "content", response) + f" (ran in {end_time - start_time:.2f} seconds)"  
+        
