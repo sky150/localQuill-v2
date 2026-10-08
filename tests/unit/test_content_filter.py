@@ -94,11 +94,11 @@ class TestContentFilterMiddleware:
         assert self.cf.check_text(allowed), "Incorrectly blocked legitimate text"
 
     def test_allow_essay_text(self):
-        """Should allow typical essay text."""
+        """Should allow typical formal text."""
         allowed = """The industrial revolution fundamentally transformed society.
         It introduced new technologies and changed labor patterns.
         This period saw rapid urbanization and economic growth."""
-        assert self.cf.check_text(allowed), "Incorrectly blocked essay text"
+        assert self.cf.check_text(allowed), "Incorrectly blocked formal text"
 
     def test_allow_fiction_text(self):
         """Should allow fiction narrative text."""

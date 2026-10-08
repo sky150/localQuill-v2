@@ -4,7 +4,7 @@ from src.model_query import query_rag
 from eval_config import EVAL_CONFIG, get_eval_results, save_eval_record
 
 
-def run_full_evaluation(user_prompt, provider="ollama", style="essay", llm_model: str = None):
+def run_full_evaluation(user_prompt, provider="ollama", style="formal", llm_model: str = None):
     """Run the full evaluation process for grammar, style, and clarity."""
     feedback = query_rag(
         user_prompt,
@@ -45,7 +45,7 @@ def run_full_evaluation(user_prompt, provider="ollama", style="essay", llm_model
     record = get_eval_results("generation", duration, average_score, results_log)
     save_eval_record(record)
 
-def run_full_evaluation_with_config(user_prompt, provider="ollama", style="essay",
+def run_full_evaluation_with_config(user_prompt, provider="ollama", style="formal",
     llm_model: str = None, result_file_name: str = None, file_name: str = None,
     temperature: float = None, top_k: int = None, chunk_size: int = None, chunk_overlap: int = None):
     """Run evaluation with optional config overrides before executing."""
@@ -74,7 +74,7 @@ def update_eval_config(llm_model: str = None,result_file_name: str = None,
 
 if __name__ == "__main__":
 
-    style="essay" # "essay" or "fiction"
+    style="formal" # "formal" or "fiction"
 
     test_user_prompt = """It cannot be denied that tourism is an economic force \n
 and that over the past decades it has gone from strength

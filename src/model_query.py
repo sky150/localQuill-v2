@@ -17,7 +17,7 @@ logger.setLevel(logging.DEBUG)
 load_dotenv()
 
 STYLE_PROMPTS = {
-    "essay": """You are a strict academic writing editor.
+    "formal": """You are a strict academic writing editor.
 Your ONLY job is to give bullet-point feedback on the text below.
 Do NOT rewrite the text. Do NOT give general writing advice.
 Standards: formal tone, clear thesis, structured argumentation.""",
@@ -25,6 +25,7 @@ Standards: formal tone, clear thesis, structured argumentation.""",
 Your ONLY job is to give bullet-point feedback on the text below.
 Do NOT rewrite the text. Do NOT explain general writing theory.
 Standards: narrative voice, pacing, worldbuilding consistency, character clarity.""",
+    "test": """Test prompt. Do as the instructions specify.""",
 }
 
 # Prompt optimierung
@@ -52,6 +53,7 @@ Example:
 Limit: maximum 5 issues. Ignore grammar. Ignore style.""",
 }
 
+TEST_PROMPT_TEMPLATE = """{user_text}"""
 
 PROMPT_TEMPLATE = """ROLE: {style_context}
 
@@ -272,13 +274,16 @@ def format_feedback(sections: dict) -> str:
     )
 
 
-def query_rag(user_text: str, style: str = "essay", return_dict: bool = False, provider: str = "ollama", model_name: str = None) -> str:
+def query_rag(user_text: str, style: str = "formal", return_dict: bool = False, provider: str = "ollama", model_name: str = None) -> str:
     """Main function to handle the RAG process for writing feedback."""
     # Variables
-    collection_name = style if style in STYLE_PROMPTS else "essay"
-    style_context = STYLE_PROMPTS.get(collection_name, STYLE_PROMPTS["essay"])
+    collection_name = style if style in STYLE_PROMPTS else "formal"
+    style_context = STYLE_PROMPTS.get(collection_name, STYLE_PROMPTS["formal"])
     top_k = int(os.getenv("TOP_K", "3"))
-    all_feedback = {"grammar": [], "style": [], "clarity": []}
+    if style != "test":
+        all_feedback = {"grammar": [], "style": [], "clarity": []}
+    else:
+        return test_prompt_without_Rag(user_text, return_dict=return_dict, provider=provider, model_name=model_name)
 
     user_text = text_normalization(user_text)
     logger.debug(f"1. Normalized user text.")
@@ -330,3 +335,18 @@ def query_rag(user_text: str, style: str = "essay", return_dict: bool = False, p
     if return_dict:
         return all_feedback
     return format_feedback(all_feedback)
+
+def test_prompt_without_Rag(user_text: str, return_dict: bool = False, provider: str = "ollama", model_name: str = None) -> str:
+    
+    # Required for text normalization
+    user_text = text_normalization(user_text)
+    logger.debug(f"1. Normalized user text.")
+    
+    model = get_model(provider, model_name)
+    prompt_template = ChatPromptTemplate.from_template(TEST_PROMPT_TEMPLATE)
+    prompt = prompt_template.format(
+                    user_text=user_text)
+    
+    response = model.invoke(prompt)
+    
+    return response
