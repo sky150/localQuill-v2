@@ -2,6 +2,9 @@
 chroma/
 test/chroma_eval/
 
+# Personal files
+data/styles/outline/
+data/styles/userdocs/
 
 # Basic Gitignore template
 

@@ -1,5 +1,6 @@
 from .base import Task
 from src.rag.retriever import retrieve_from
+from .utility import clip
 
 
 class QATask(Task):
@@ -13,37 +14,35 @@ class QATask(Task):
 
     template = """ROLE: {style_context}
 
-USER DOCUMENTS:
-{documents}
-
-WRITING GUIDES:
-{guides}
-
 CONVERSATION SO FAR:
 {history}
+
+USER OUTLINE:
+{outline}
+
+USER DOCUMENTS:
+{userdocs}
 
 QUESTION:
 {text}
 
 RULES:
 - Write in en-GB
-- Answer from the documents first. If they do not contain the answer, say so
+- Answer from USER DOCUMENTS and USER OUTLINE. If they do not contain the answer, say so
 - Do not invent facts about the documents
 """
 
     def build_prompt(self, text, history=None, **opts) -> str:
         """Override with multiple RAG collections for Question answering."""
         
-        # ToDo: Uncomment once we have user documents
-        # documents = retrieve_from(self, "user_docs", text, top_k=5)
-        documents = ""
-        guides = retrieve_from(self, self.style, text, top_k=2)  # collection name = style
-
+        outline = clip(retrieve_from(self, "outline", text, top_k=1), 800)
+        # Results are bad when files are short and fewer than three. Since duplication will happen.
+        userdocs = clip(retrieve_from(self, "userdocs", text, top_k=3), 3000)
         
         return self.template.format(
             style_context=self.style_context.get(self.style, ""),
-            documents=documents or "none found",
-            guides=guides or "none found",
+            outline=outline or "none found",
+            userdocs=userdocs or "none found",
             history=self._format_history(history),
             text=text,
         )
