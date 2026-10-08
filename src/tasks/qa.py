@@ -7,7 +7,7 @@ class QATask(Task):
     max_words = None
 
     style_context = {
-        "essay": "You answer questions about the user's documents and academic writing.",
+        "formal": "You answer questions about the user's documents and academic writing.",
         "fiction": "You answer questions about the user's documents and fiction writing.",
     }
 

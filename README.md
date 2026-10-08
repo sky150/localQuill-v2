@@ -85,7 +85,7 @@ Initialize the vector database with writing guides:
 
 **Mac / Linux**
 ```sh
-COLLECTION_NAME=essay DATA_PATH=./data/styles/essay uv run -m src.vector_db.generate_chroma
+COLLECTION_NAME=formal DATA_PATH=./data/styles/formal uv run -m src.vector_db.generate_chroma
 COLLECTION_NAME=fiction DATA_PATH=./data/styles/fiction uv run -m src.vector_db.generate_chroma
 ```
 
@@ -114,7 +114,7 @@ Open your browser to `http://localhost:8000` and start writing!
 ### Initialize Vector Database
 
 ```sh
-# Generate essay database (default)
+# Generate formal database (default)
 uv run -m src.vector_db.generate_chroma
 
 # Generate fiction database
@@ -177,7 +177,7 @@ Local Quill uses **G-Eval**, an LLM-as-judge framework, to measure feedback qual
 
 ```sh
 # Generate separate evaluation database
-COLLECTION_NAME=essay DATA_PATH=./data/styles/essay CHROMA_PATH=./tests/chroma_eval \
+COLLECTION_NAME=formal DATA_PATH=./data/styles/formal CHROMA_PATH=./tests/chroma_eval \
   uv run -m src.vector_db.generate_chroma
 
 # Run retrieval evaluation (test embedding models)

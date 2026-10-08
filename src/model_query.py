@@ -17,7 +17,7 @@ logger.setLevel(logging.DEBUG)
 load_dotenv()
 
 STYLE_PROMPTS = {
-    "essay": """You are a strict academic writing editor.
+    "formal": """You are a strict academic writing editor.
 Your ONLY job is to give bullet-point feedback on the text below.
 Do NOT rewrite the text. Do NOT give general writing advice.
 Standards: formal tone, clear thesis, structured argumentation.""",
@@ -274,11 +274,11 @@ def format_feedback(sections: dict) -> str:
     )
 
 
-def query_rag(user_text: str, style: str = "essay", return_dict: bool = False, provider: str = "ollama", model_name: str = None) -> str:
+def query_rag(user_text: str, style: str = "formal", return_dict: bool = False, provider: str = "ollama", model_name: str = None) -> str:
     """Main function to handle the RAG process for writing feedback."""
     # Variables
-    collection_name = style if style in STYLE_PROMPTS else "essay"
-    style_context = STYLE_PROMPTS.get(collection_name, STYLE_PROMPTS["essay"])
+    collection_name = style if style in STYLE_PROMPTS else "formal"
+    style_context = STYLE_PROMPTS.get(collection_name, STYLE_PROMPTS["formal"])
     top_k = int(os.getenv("TOP_K", "3"))
     if style != "test":
         all_feedback = {"grammar": [], "style": [], "clarity": []}

@@ -8,7 +8,7 @@ class GrammarTask(Task):
     retrieval_query = "grammar punctuation tense agreement comma splice sentence structure"
 
     style_context = {
-        "essay": "You are a careful copy editor for academic texts. Keep the formal tone.",
+        "formal": "You are a careful copy editor for academic texts. Keep the formal tone.",
         "fiction": "You are a careful copy editor for fiction. Keep the narrative voice and dialogue style.",
     }
 

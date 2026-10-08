@@ -16,7 +16,7 @@ EVAL_CONFIG = {
     "judge_model": os.getenv("JUDGE_MODEL", "llama3.1:8b"),
     "temperature": float(os.getenv("TEMPERATURE", 0.1)),
     "eval_db_path": os.getenv("CHROMA_EVAL_PATH", "./tests/chroma_eval"),
-    "collection_name": os.getenv("COLLECTION_NAME", "essay"),
+    "collection_name": os.getenv("COLLECTION_NAME", "formal"),
     "results_path": "reports",
     "result_file_name": "eval_retrieval_results.jsonl",
     "file_name": "All-Essay-Docs",

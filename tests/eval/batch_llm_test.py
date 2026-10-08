@@ -2,7 +2,7 @@ import os
 from run_generation_eval import run_full_evaluation_with_config
 
 
-def test_run_full_evaluation(test_models: list, test_text_dict: dict, provider="ollama", style="essay", 
+def test_run_full_evaluation(test_models: list, test_text_dict: dict, provider="ollama", style="formal",
                              result_file_name="eval_generation_essay_results.jsonl"):
     """Test the full evaluation process for grammar, style, and clarity."""
     
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     ] 
     essays = get_essay_dict()
     result_file_name = "eval_generation_essay_results.jsonl"
-    test_run_full_evaluation(test_models, essays, style="essay", result_file_name=result_file_name)
+    test_run_full_evaluation(test_models, essays, style="formal", result_file_name=result_file_name)
     
 
     test_models = [
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     
     # OpenAI Comparison
     # test_models = ["gpt-5-nano"]    # Model overrides what stands in the .env file
-    # test_run_full_evaluation(test_models, essays, provider="openai", style="essay", result_file_name=result_file_name)
+    # test_run_full_evaluation(test_models, essays, provider="openai", style="formal", result_file_name=result_file_name)
     # test_run_full_evaluation(test_models, fiction, provider="openai", style="fiction", result_file_name=result_file_name)
     
     

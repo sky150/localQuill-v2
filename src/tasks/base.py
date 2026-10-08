@@ -13,7 +13,7 @@ class Task:
     retrieval_query: str = ""               # empty = no retrieval
     max_words: int | None = None            # None = no truncation
 
-    def __init__(self, model, config: TaskConfig, style: str = "essay"):
+    def __init__(self, model, config: TaskConfig, style: str = "formal"):
         self.model = model
         self.config = config
         self.style = style

@@ -21,7 +21,7 @@ def _token_limit(config_limit: int | None) -> int | None:
     return min(limits) if limits else None
 
 
-def get_model(task_name: str, style: str = "essay"):
+def get_model(task_name: str, style: str = "formal"):
     """Return a model instance based on the task name and style."""
     cfg = get_config(task_name, style)
 

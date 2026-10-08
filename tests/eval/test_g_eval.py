@@ -4,7 +4,7 @@ from src.model_query import query_rag
 from eval_config import EVAL_CONFIG, get_eval_results, save_eval_record
 
 
-def run_full_evaluation(user_prompt, style="essay"):
+def run_full_evaluation(user_prompt, style="formal"):
     """Run the full evaluation process for grammar, style, and clarity."""
 <<<<<<<< HEAD:tests/eval/test_g_eval.py
     feedback = query_rag(
@@ -22,7 +22,7 @@ def run_full_evaluation(user_prompt, style="essay"):
     run_start = time.time()
     results_log = []
 
-    feedback = query_rag(user_prompt, style="essay", return_dict=True)  # fantasy
+    feedback = query_rag(user_prompt, style="formal", return_dict=True)  # fantasy
 
     grammar_feedback = "\n".join(feedback["grammar"])
     style_feedback = "\n".join(feedback["style"])
@@ -58,7 +58,7 @@ def run_full_evaluation(user_prompt, style="essay"):
 
 if __name__ == "__main__":
 
-    style="essay" # "essay" or "fiction"
+    style="formal" # "formal" or "fiction"
 
     test_user_prompt = """It cannot be denied that tourism is an economic force \n
 and that over the past decades it has gone from strength

@@ -57,9 +57,9 @@ def add_to_chroma(chunks: list[Document], chroma_path="./chroma", collection_nam
 def main():
     # Hyperparameters are loaded from .env file
     load_dotenv()
-    data_path = os.getenv("DATA_PATH", "./data/styles/essay")
+    data_path = os.getenv("DATA_PATH", "./data/styles/formal")
     chroma_path = os.getenv("CHROMA_PATH", "./chroma")
-    collection_name = os.getenv("COLLECTION_NAME", "essay")
+    collection_name = os.getenv("COLLECTION_NAME", "formal")
 
     # Check if the database should be cleared (using the --reset flag).
     parser = argparse.ArgumentParser()
