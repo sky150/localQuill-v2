@@ -101,12 +101,12 @@ $env:COLLECTION_NAME="userdocs"; $env:DATA_PATH="./data/styles/userdocs"; uv run
 
 **Mac / Linux**
 ```sh
-uv run chainlit run src/frontend/app.py
+uv run chainlit run src/chainlit/app.py
 ```
 
 **Windows**
 ```sh
-uv run chainlit run src/frontend/app.py
+uv run chainlit run src/chainlit/app.py
 ```
 
 Open your browser to `http://localhost:8000` and start writing!

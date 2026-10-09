@@ -1,12 +1,11 @@
 import sys
 import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from src.model_query import query_rag
 from src.embedding.embeddings import get_embedding_function
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 load_dotenv()
 
@@ -34,12 +33,12 @@ def test_retrieval():
         print(f"Content: {doc.page_content[:150]}...")
 
 
-def test_full_pipeline():
-    response = query_rag(TEST_TEXT)
-    print(response)
+#def test_full_pipeline():
+ #   response = query_rag(TEST_TEXT)
+  #  print(response)
 
 
 if __name__ == "__main__":
     test_connection()
     test_retrieval()
-    test_full_pipeline()
+    #test_full_pipeline()

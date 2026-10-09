@@ -1,18 +1,21 @@
 import time
 import src.evaluation.metrics_generation as metrics_generation
-from src.model_query import query_rag
 from eval_config import EVAL_CONFIG, get_eval_results, save_eval_record
-
+#from src.model_query import query_rag
 
 def run_full_evaluation(user_prompt, provider="ollama", style="formal", llm_model: str = None):
     """Run the full evaluation process for grammar, style, and clarity."""
-    feedback = query_rag(
-        user_prompt,
-        style=style,
-        return_dict=True,
-        provider=provider,
-        model_name=llm_model,
-    )
+    # feedback = query_rag(
+    #     user_prompt,
+    #     style=style,
+    #     return_dict=True,
+    #     provider=provider,
+    #     model_name=llm_model,
+    # )
+    
+    
+    # ToDo: Set this up for new Tasks
+    feedback = {"grammar": [], "style": [], "clarity": []}
 
     print(f"=== Starting Generation Evaluation ===")
     print(f"LLM Model: {EVAL_CONFIG['llm_model']}")

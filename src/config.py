@@ -1,4 +1,4 @@
-# per-task model, temperature, prompt (replaces base_models.json)
+# per-task model, temperature, prompt (replaces base_models_dispro1.json)
 
 import os
 from dataclasses import dataclass, replace
