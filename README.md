@@ -101,12 +101,12 @@ $env:COLLECTION_NAME="userdocs"; $env:DATA_PATH="./data/styles/userdocs"; uv run
 
 **Mac / Linux**
 ```sh
-PYTHONPATH=. uv run chainlit run src/frontend/app.py
+uv run chainlit run src/frontend/app.py
 ```
 
 **Windows**
 ```sh
-$env:PYTHONPATH="."; uv run chainlit run src/frontend/app.py
+uv run chainlit run src/frontend/app.py
 ```
 
 Open your browser to `http://localhost:8000` and start writing!
@@ -134,14 +134,14 @@ uv run -m src.vector_db.generate_chroma --reset
 
 ```sh
 # Test the RAG pipeline
-PYTHONPATH=. uv run python tests/unit/test_rag.py
+ uv run python tests/unit/test_rag.py
 # Windows
-$env:PYTHONPATH="."; uv run python tests/unit/test_rag.py
+uv run python tests/unit/test_rag.py
 
 # Run content filter tests
-PYTHONPATH=. uv run python tests/unit/test_content_filter.py
+uv run python tests/unit/test_content_filter.py
 # Windows
-$env:PYTHONPATH="."; uv run python tests/unit/test_content_filter.py
+uv run python tests/unit/test_content_filter.py
 ```
 
 ## Configuration
@@ -183,26 +183,26 @@ COLLECTION_NAME=formal DATA_PATH=./data/styles/formal CHROMA_PATH=./tests/chroma
   uv run -m src.vector_db.generate_chroma
 
 # Run retrieval evaluation (test embedding models)
-PYTHONPATH=. uv run python tests/eval/run_retrieval_eval.py
+uv run python tests/eval/run_retrieval_eval.py
 
 # Run generation evaluation (test LLM models)
-PYTHONPATH=. uv run python tests/eval/run_generation_eval.py
+uv run python tests/eval/run_generation_eval.py
 
 # Run batch LLM test
-PYTHONPATH=. uv run python tests/eval/batch_llm_test.py
+uv run python tests/eval/batch_llm_test.py
 
 # Windows
 $env:COLLECTION_NAME="essay"; $env:DATA_PATH=."/data/styles/essay"; CHROMA_PATH=./tests/chroma_eval \
   uv run -m src.vector_db.generate_chroma
 
 # Run retrieval evaluation (test embedding models)
-$env:PYTHONPATH="."; uv run python tests/eval/run_retrieval_eval.py
+uv run python tests/eval/run_retrieval_eval.py
 
 # Run generation evaluation (test LLM models)
-$env:PYTHONPATH="."; uv run python tests/eval/run_generation_eval.py
+uv run python tests/eval/run_generation_eval.py
 
 # Run batch LLM test
-$env:PYTHONPATH="."; uv run python tests/eval/batch_llm_test.py
+uv run python tests/eval/batch_llm_test.py
 ```
 
 **Note**: Full evaluation takes 1-3 hours on a 32GB system. Results are saved to `./reports/`.

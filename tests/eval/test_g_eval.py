@@ -6,14 +6,11 @@ from eval_config import EVAL_CONFIG, get_eval_results, save_eval_record
 
 def run_full_evaluation(user_prompt, style="formal"):
     """Run the full evaluation process for grammar, style, and clarity."""
-<<<<<<<< HEAD:tests/eval/test_g_eval.py
     feedback = query_rag(
         user_prompt,
         style=style, 
         return_dict=True
     )
-========
->>>>>>>> origin/naty-dev:tests/eval/run_generation_eval.py
 
     print(f"=== Starting Generation Evaluation ===")
     print(f"LLM Model: {EVAL_CONFIG['llm_model']}")
@@ -88,8 +85,4 @@ to the vlogger and feel any tourism company would
 benefit from the clear delight behind each experience in
 promoting their company."""
 
-<<<<<<<< HEAD:tests/eval/test_g_eval.py
     run_full_evaluation(test_user_prompt, style)
-========
-    run_full_evaluation(test_user_prompt)
->>>>>>>> origin/naty-dev:tests/eval/run_generation_eval.py
