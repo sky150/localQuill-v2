@@ -33,3 +33,5 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
+
+["ignore:builtin type Swig:DeprecationWarning"]
