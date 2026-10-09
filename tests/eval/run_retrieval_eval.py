@@ -3,7 +3,7 @@ import json
 import time
 from dotenv import load_dotenv
 import src.evaluation.metrics_retrieval as metrics_retrieval
-from src.model_query import (
+from src.tasks.utility import (
     get_db,
     text_normalization,
     similarity_search_eval,

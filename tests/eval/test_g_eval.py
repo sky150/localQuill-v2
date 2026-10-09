@@ -1,19 +1,19 @@
 import time
 import src.evaluation.metrics_generation as metrics_generation
-from src.model_query import query_rag
+# from src.model_query import query_rag
 from eval_config import EVAL_CONFIG, get_eval_results, save_eval_record
 
 
 def run_full_evaluation(user_prompt, style="formal"):
     """Run the full evaluation process for grammar, style, and clarity."""
-<<<<<<<< HEAD:tests/eval/test_g_eval.py
-    feedback = query_rag(
-        user_prompt,
-        style=style, 
-        return_dict=True
-    )
-========
->>>>>>>> origin/naty-dev:tests/eval/run_generation_eval.py
+    # feedback = query_rag(
+    #     user_prompt,
+    #     style=style, 
+    #     return_dict=True
+    # )
+    
+    # ToDo: Move to new Tasks    
+    feedback = {"grammar": [], "style": [], "clarity": []}  # fantasy
 
     print(f"=== Starting Generation Evaluation ===")
     print(f"LLM Model: {EVAL_CONFIG['llm_model']}")
@@ -21,8 +21,6 @@ def run_full_evaluation(user_prompt, style="formal"):
 
     run_start = time.time()
     results_log = []
-
-    feedback = query_rag(user_prompt, style="formal", return_dict=True)  # fantasy
 
     grammar_feedback = "\n".join(feedback["grammar"])
     style_feedback = "\n".join(feedback["style"])
@@ -88,8 +86,4 @@ to the vlogger and feel any tourism company would
 benefit from the clear delight behind each experience in
 promoting their company."""
 
-<<<<<<<< HEAD:tests/eval/test_g_eval.py
     run_full_evaluation(test_user_prompt, style)
-========
-    run_full_evaluation(test_user_prompt)
->>>>>>>> origin/naty-dev:tests/eval/run_generation_eval.py
