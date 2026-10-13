@@ -1,29 +1,30 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Neutral dark, warm-tinted — Anything LLM territory */
-  --color-base-950: #131417;
-  --color-base-900: #191b1f;
-  --color-base-850: #1f2227;
-  --color-base-800: #26292f;
-  --color-base-700: #34383f;
-  --color-line: #2a2e35;
+  /* Minimal light — after kepano's Minimal theme for Obsidian
+     bg1/bg2/ui1/tx1/tx2 + default slate accent (h 201, s 17%, l 50%) */
+  --color-base-950: #ffffff; /* bg1 — editor surface, app root */
+  --color-base-900: #f5f5f5; /* bg2 — sidebars, tab strips, status bar */
+  --color-base-850: #ffffff; /* raised surfaces on panels (composer, code blocks) */
+  --color-base-800: #ebebeb; /* hover */
+  --color-base-700: #dcdcdc; /* stronger hover, chips */
+  --color-line: #e6e6e6; /* ui1 — borders */
 
-  --color-text: #eae8e1;
-  --color-muted: #96948c;
+  --color-text: #0f0f0f; /* tx1 */
+  --color-muted: #757575; /* tx2 */
 
-  /* White-beige accent */
-  --color-accent: #e4dfd2;
-  --color-accent-bright: #f4f0e6;
-  --color-accent-soft: rgba(228, 223, 210, 0.1);
+  /* Minimal default accent — muted slate */
+  --color-accent: #6a8695; /* ax1 */
+  --color-accent-bright: #7c95a2; /* ax3 */
+  --color-accent-soft: rgba(106, 134, 149, 0.12);
 
   /* Proofreader's red — semantic only (strikethrough in corrections) */
-  --color-mark: #c2544e;
+  --color-mark: #d04255;
 }
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   html,
@@ -57,7 +58,7 @@
     height: 10px;
   }
   *::-webkit-scrollbar-thumb {
-    background: rgba(52, 56, 63, 0.7);
+    background: rgba(0, 0, 0, 0.22);
     border-radius: 8px;
     border: 3px solid transparent;
     background-clip: content-box;

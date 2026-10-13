@@ -21,17 +21,20 @@ export default function Editor({
   onClose,
   onChange,
 }: EditorProps) {
+  const activeName =
+    openFiles.find((file) => file.id === activeId)?.name ?? null
+
   return (
-    <section className="rise rise-2 flex h-full min-h-0 flex-col border-x border-line bg-base-950">
+    <section className="rise rise-2 flex h-full min-w-0 flex-1 flex-col border-x border-line bg-base-950">
       {/* open files */}
       {openFiles.length > 0 && (
-        <div className="flex h-10 shrink-0 items-end gap-1 overflow-x-auto border-b border-line bg-base-900 px-2">
+        <div className="flex h-11 shrink-0 items-end gap-1 overflow-x-auto border-b border-line bg-base-900 px-2">
           {openFiles.map((file) => {
             const isActive = file.id === activeId
             return (
               <div
                 key={file.id}
-                className={`group flex h-8 items-center gap-1.5 rounded-t-md px-3 text-[13px] ${
+                className={`group flex h-9 items-center gap-1.5 rounded-t-md px-3 text-[13px] ${
                   isActive
                     ? 'border border-b-0 border-line bg-base-950 text-text'
                     : 'text-muted hover:text-text'
@@ -76,8 +79,15 @@ export default function Editor({
       )}
 
       {/* status bar */}
-      <div className="flex h-7 shrink-0 items-center justify-end border-t border-line bg-base-900 px-3 text-[12px] text-muted">
-        {activeId !== null && <span>{wordCount} {wordCount === 1 ? 'word' : 'words'}</span>}
+      <div className="flex h-9 shrink-0 items-center justify-between gap-3 border-t border-line bg-base-900 px-4">
+        <span className="truncate text-[20px] font-semibold text-accent">
+          {activeName ?? ''}
+        </span>
+        {activeId !== null && (
+          <span className="shrink-0 text-[20px] font-semibold text-accent">
+            {wordCount} {wordCount === 1 ? 'word' : 'words'}
+          </span>
+        )}
       </div>
     </section>
   )

@@ -91,3 +91,11 @@ export const AtSign = (p: P) => (
     <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94" />
   </Base>
 )
+
+export const Upload = (p: P) => (
+  <Base {...p}>
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="17 8 12 3 7 8" />
+    <line x1="12" y1="3" x2="12" y2="15" />
+  </Base>
+)
