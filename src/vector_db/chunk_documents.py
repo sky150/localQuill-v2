@@ -16,18 +16,15 @@ def split_documents(documents: list[Document]):
     return text_splitter.split_documents(documents)
 
 
-# Id Format: "data/testing/Understanding_Climate_Change.pdf:6:2"
-# Page Source : Page Number : Chunk Index
+# Id Format: "source:page:chunk_index"; page is omitted when the loader provides none
 def calculate_chunk_ids(chunks):
-    # This will create IDs like
-
     last_page_id = None
     current_chunk_index = 0
 
     for chunk in chunks:
-        source = chunk.metadata.get("source")
+        source = chunk.metadata["source"] # raises error if its missing
         page = chunk.metadata.get("page")
-        current_page_id = f"{source}:{page}"
+        current_page_id = f"{source}:{page}" if page is not None else source
 
         # If the page ID is the same as the last one, increment the index.
         if current_page_id == last_page_id:

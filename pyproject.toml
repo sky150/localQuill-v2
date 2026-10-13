@@ -15,6 +15,7 @@ dependencies = [
     "langchain-ollama>=1.0.1",
     "langchain-openai>=0.3.0",
     "langchain-text-splitters>=1.1.0",
+    "markitdown[docx,pdf,pptx,xls,xlsx]>=0.1.8",
     "matplotlib>=3.10.8",
     "open-webui>=0.8.7",
     "pandas>=3.0.0",

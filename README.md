@@ -128,7 +128,7 @@ $env:COLLECTION_NAME="fiction"; $env:DATA_PATH="./data/styles/fiction"; uv run -
 uv run -m src.vector_db.generate_chroma --reset
 ```
 
-**Note**: This loads PDFs from `./data/styles/` into ChromaDB using the embedding model specified in `.env`.
+**Note**: This converts files from `./data/styles/` to Markdown with MarkItDown and loads them into ChromaDB using the embedding model specified in `.env`.
 
 ### Run Tests
 
