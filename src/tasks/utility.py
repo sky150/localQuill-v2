@@ -27,6 +27,18 @@ def clip(text: str, max_chars: int) -> str:
     return text[:max_chars].rsplit(" ", 1)[0] + " ..."
 
 
+def format_attachments(attachments) -> str:
+    """Join attached files into one labelled block for prompts."""
+    parts = []
+    for item in attachments or []:
+        content = (item.get("content") or "").strip()
+        if not content:
+            continue
+        name = item.get("name") or item.get("path") or "file"
+        parts.append(f"[{name}]\n{content}")
+    return "\n\n---\n\n".join(parts)
+
+
 # Methods moved form old model_query.py
 def text_normalization(user_text: str):
     """Normalize text by fixing hyphenated line breaks, normalizing line endings, and collapsing spaces with Regex."""

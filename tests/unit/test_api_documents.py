@@ -7,6 +7,7 @@ from src.api.main import app
 from src.api.routers import chat as chat_router
 from src.api.routers import meta as meta_router
 from src.vector_db import documents
+from src.workspace import files as workspace_files
 
 FAKE_EMBEDDINGS = DeterministicFakeEmbedding(size=16)
 
@@ -18,6 +19,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setattr(documents, "CHROMA_PATH", chroma_path)
     monkeypatch.setattr(meta_router, "CHROMA_PATH", chroma_path)
     monkeypatch.setattr(meta_router, "OLLAMA_URL", "http://127.0.0.1:1")
+    monkeypatch.setattr(workspace_files, "WORKSPACE_PATH", str(tmp_path / "workspace"))
     monkeypatch.setenv("EMBEDDING_PROVIDER", "ollama")
     app.dependency_overrides[embeddings] = lambda: FAKE_EMBEDDINGS
     with TestClient(app) as test_client:
@@ -99,3 +101,70 @@ def test_health_reports_collections(client):
     body = client.get("/api/health").json()
     assert body["collections"]["userdocs"] > 0
     assert body["ollama"] is False
+
+
+def test_set_outline_from_workspace(client):
+    client.post("/api/files", json={"name": "Outline.md", "kind": "file"})
+    client.put(
+        "/api/files/content",
+        json={"path": "Outline.md", "content": "1. Intro\n2. Body"},
+    )
+
+    response = client.post(
+        "/api/documents/from-workspace", json={"path": "Outline.md", "kind": "outline"}
+    )
+    assert response.status_code == 200, response.text
+
+    outline = client.get("/api/documents?kind=outline").json()
+    assert len(outline) == 1
+    assert outline[0]["filename"] == "Outline.md"
+
+    deleted = client.delete(f"/api/documents/{outline[0]['doc_id']}")
+    assert deleted.status_code == 200
+    still_there = client.get("/api/files/content", params={"path": "Outline.md"})
+    assert still_there.status_code == 200
+
+
+def test_chat_passes_attached_context(client, monkeypatch):
+    client.post("/api/files", json={"name": "alice.md", "kind": "file"})
+    client.put(
+        "/api/files/content",
+        json={"path": "alice.md", "content": "Alice was released in 2010"},
+    )
+
+    captured = {}
+
+    class FakeTask:
+        def run(self, text, **opts):
+            captured.update(opts)
+            return "ok"
+
+    monkeypatch.setattr(chat_router, "get_task", lambda *args, **kwargs: FakeTask())
+    response = client.post(
+        "/api/chat",
+        json={
+            "task": "qa",
+            "style": "formal",
+            "text": "when was it released?",
+            "history": [],
+            "context_paths": ["alice.md"],
+        },
+    )
+    assert response.status_code == 200, response.text
+    assert "Alice was released in 2010" in captured["context"][0]["content"]
+    assert captured["context"][0]["name"] == "alice.md"
+
+
+def test_qa_prompt_includes_context(monkeypatch):
+    import src.tasks.qa as qa_module
+    from src.tasks import get_task
+
+    monkeypatch.setattr(qa_module, "retrieve_from", lambda *args, **kwargs: "")
+    task = get_task("qa", "formal")
+    prompt = task.build_prompt(
+        "when was it released",
+        history=[],
+        context=[{"name": "alice.md", "content": "Alice was released in 2010"}],
+    )
+    assert "Alice was released in 2010" in prompt
+    assert "CURRENT DOCUMENT" in prompt

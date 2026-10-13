@@ -1,6 +1,6 @@
 from .base import Task
 from src.rag.retriever import retrieve_from
-from .utility import clip
+from .utility import clip, format_attachments
 
 
 class QATask(Task):
@@ -18,6 +18,9 @@ class QATask(Task):
 CONVERSATION SO FAR:
 {history}
 
+CURRENT DOCUMENT (the user's own writing, attached by the user):
+{current_documents}
+
 USER OUTLINE:
 {outline}
 
@@ -29,21 +32,24 @@ QUESTION:
 
 RULES:
 - Write in en-GB
-- Answer from USER DOCUMENTS and USER OUTLINE. If they do not contain the answer, say so
+- Answer from CURRENT DOCUMENT, USER OUTLINE and USER DOCUMENTS. If none contain the answer, say so
+- When asked whether the writing fits the outline or requirements, compare CURRENT DOCUMENT with USER OUTLINE and USER DOCUMENTS
 - Do not invent facts about the documents
 """
 
-    def build_prompt(self, text, history=None, **opts) -> str:
+    def build_prompt(self, text, history=None, context=None, **opts) -> str:
         """Override with multiple RAG collections for Question answering."""
         
         outline = clip(retrieve_from(self, "outline", text, top_k=self.collections["outline"]), 800)
         # Results are bad when files are short and fewer than three. Since duplication will happen.
         userdocs = clip(retrieve_from(self, "userdocs", text, top_k=self.collections["userdocs"]), 3000)
+        current_documents = clip(format_attachments(context), 4000) if context else ""
         
         return self.template.format(
             style_context=self.style_context.get(self.style, ""),
             outline=outline or "none found",
             userdocs=userdocs or "none found",
+            current_documents=current_documents or "none attached",
             history=self._format_history(history),
             text=text,
         )
