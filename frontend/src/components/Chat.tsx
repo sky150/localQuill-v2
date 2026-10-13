@@ -209,7 +209,7 @@ export default function Chat({
               task === 'qa'
                 ? 'Ask about your documents…'
                 : attached.length > 0
-                  ? 'Optional note — the attached file will be reviewed'
+                  ? 'Optional note. The attached file will be reviewed'
                   : `Paste text for ${mode.label.toLowerCase()}…`
             }
             className="mt-1 w-full resize-none bg-transparent px-3 py-1.5 text-[14px] text-text outline-none placeholder:text-muted/50"
