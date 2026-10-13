@@ -5,6 +5,7 @@ from langchain_core.documents import Document
 from markitdown import FileConversionException, MarkItDown, UnsupportedFormatException
 
 logger = logging.getLogger(__name__)
+logging.getLogger("pdfminer").setLevel(logging.ERROR)
 
 SUPPORTED_EXTENSIONS = {
     ".pdf",

@@ -6,6 +6,7 @@ from .utility import clip
 class QATask(Task):
     name = "qa"
     max_words = None
+    collections = {"userdocs": 3, "outline": 1}
 
     style_context = {
         "formal": "You answer questions about the user's documents and academic writing.",
@@ -35,9 +36,9 @@ RULES:
     def build_prompt(self, text, history=None, **opts) -> str:
         """Override with multiple RAG collections for Question answering."""
         
-        outline = clip(retrieve_from(self, "outline", text, top_k=1), 800)
+        outline = clip(retrieve_from(self, "outline", text, top_k=self.collections["outline"]), 800)
         # Results are bad when files are short and fewer than three. Since duplication will happen.
-        userdocs = clip(retrieve_from(self, "userdocs", text, top_k=3), 3000)
+        userdocs = clip(retrieve_from(self, "userdocs", text, top_k=self.collections["userdocs"]), 3000)
         
         return self.template.format(
             style_context=self.style_context.get(self.style, ""),
