@@ -164,6 +164,11 @@ export default function DocumentsModal({
                 onChange={pickFiles}
               />
 
+              <p className="mt-2 px-2 text-center text-[11px] leading-snug text-muted/60">
+                Files are processed locally by this Local Quill instance and are
+                never shared with third parties.
+              </p>
+
               {uploads.map((entry) => (
                 <div
                   key={entry.id}

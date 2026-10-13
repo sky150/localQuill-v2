@@ -203,7 +203,7 @@ export default function Sidebar({
     <aside className="rise rise-1 flex h-full min-h-0 flex-col overflow-y-auto bg-base-900">
       {/* wordmark */}
       <div className="flex h-11 shrink-0 items-center border-b border-line px-4">
-        <span className="text-[15px] font-semibold tracking-tight text-text">Local Quill</span>
+        <span className="text-[20px] font-semibold tracking-tight text-text">Local Quill</span>
       </div>
 
       {/* files */}

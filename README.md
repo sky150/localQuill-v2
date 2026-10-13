@@ -152,7 +152,7 @@ The Vite frontend talks to a FastAPI server:
 PYTHONPATH=. uv run uvicorn src.api.main:app --reload --port 8000
 ```
 
-The Vite dev server proxies `/api` to this port (see `frontend/vite.config.ts`), so no CORS setup is needed in development.
+The Vite dev server proxies `/api` to this port . No CORS setup is needed in development.
 
 | Endpoint | Purpose |
 |---|---|

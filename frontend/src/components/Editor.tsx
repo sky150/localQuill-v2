@@ -1,4 +1,4 @@
-import { FileText, X } from './icons'
+import { X } from './icons'
 
 export type OpenFile = { id: string; name: string }
 
@@ -40,8 +40,7 @@ export default function Editor({
                     : 'text-muted hover:text-text'
                 }`}
               >
-                <button onClick={() => onSelect(file.id)} className="flex items-center gap-1.5">
-                  <FileText size={13} className="opacity-60" />
+                <button onClick={() => onSelect(file.id)} className="flex items-center">
                   {file.name}
                 </button>
                 <button
