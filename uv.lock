@@ -3099,6 +3099,8 @@ source = { editable = "." }
 dependencies = [
     { name = "chainlit" },
     { name = "deepeval" },
+    { name = "fastapi" },
+    { name = "httpx" },
     { name = "ipykernel" },
     { name = "jupyter" },
     { name = "langchain" },
@@ -3113,14 +3115,18 @@ dependencies = [
     { name = "pandas" },
     { name = "psutil" },
     { name = "pypdf" },
+    { name = "python-multipart" },
     { name = "seaborn" },
     { name = "sentence-transformers" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "chainlit", specifier = ">=2.10.0" },
     { name = "deepeval", specifier = ">=3.9.3" },
+    { name = "fastapi", specifier = ">=0.128.5" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "ipykernel", specifier = ">=7.2.0" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "langchain", specifier = ">=1.2.9" },
@@ -3135,8 +3141,10 @@ requires-dist = [
     { name = "pandas", specifier = ">=3.0.0" },
     { name = "psutil", specifier = ">=7.2.2" },
     { name = "pypdf", specifier = ">=6.7.0" },
+    { name = "python-multipart", specifier = ">=0.0.22" },
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "sentence-transformers", specifier = ">=5.2.2" },
+    { name = "uvicorn", specifier = ">=0.40.0" },
 ]
 
 [[package]]

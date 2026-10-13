@@ -5,6 +5,7 @@ test/chroma_eval/
 # Personal files
 data/styles/outline/
 data/styles/userdocs/
+data/uploads/
 
 # Basic Gitignore template
 

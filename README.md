@@ -144,6 +144,25 @@ uv run python tests/unit/test_content_filter.py
 uv run python tests/unit/test_content_filter.py
 ```
 
+### Run the API
+
+The Vite frontend talks to a FastAPI server:
+
+```sh
+PYTHONPATH=. uv run uvicorn src.api.main:app --reload --port 8000
+```
+
+The Vite dev server proxies `/api` to this port (see `frontend/vite.config.ts`), so no CORS setup is needed in development.
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/health` | Ollama status + Chroma collection counts |
+| `GET /api/config` | Styles, tasks, upload limits |
+| `POST /api/chat` | `{task, style, text, history}` → feedback or answer |
+| `POST /api/documents?kind=userdocs\|outline` | Upload and index a document |
+| `GET /api/documents` | List indexed documents |
+| `DELETE /api/documents/{doc_id}` | Remove a document (optional `?delete_file=true`) |
+
 ## Configuration
 
 All configuration is managed through the `.env` file. **Copy [.env.example](.env.example) to `.env` and customize** for your setup.
