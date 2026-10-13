@@ -72,6 +72,12 @@ export const Trash = (p: P) => (
   </Base>
 )
 
+export const Bookmark = (p: P) => (
+  <Base {...p}>
+    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+  </Base>
+)
+
 export const ArrowUp = (p: P) => (
   <Base {...p}>
     <line x1="12" y1="19" x2="12" y2="5" />
