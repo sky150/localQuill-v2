@@ -1,11 +1,18 @@
 import asyncio
+import os
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 
 from src.api.deps import embeddings
-from src.api.schemas import DeleteResponse, DocumentOut, UploadResponse
+from src.api.schemas import (
+    DeleteResponse,
+    DocumentOut,
+    UploadResponse,
+    WorkspaceDocument,
+)
 from src.config import UPLOAD_MAX_MB
 from src.vector_db import documents
+from src.workspace import files as workspace_files
 
 router = APIRouter(prefix="/api/documents", tags=["documents"])
 
@@ -63,6 +70,40 @@ def list_documents(kind: str | None = None, embedding_function=Depends(embedding
     if kind is not None:
         _validate_kind(kind)
     return documents.list_documents(kind, embedding_function=embedding_function)
+
+
+@router.post("/from-workspace", response_model=UploadResponse)
+async def index_workspace_document(
+    request: WorkspaceDocument,
+    embedding_function=Depends(embeddings),
+):
+    _validate_kind(request.kind)
+    try:
+        path = workspace_files.resolve(request.path)
+        if not os.path.isfile(path):
+            raise FileNotFoundError(f"'{request.path}' does not exist in the workspace.")
+    except FileNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+
+    try:
+        result = await asyncio.to_thread(
+            documents.ingest_document, path, request.kind, embedding_function
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=422, detail=f"Could not convert or index the file: {e}"
+        ) from e
+
+    return UploadResponse(
+        doc_id=documents.doc_id_for(path),
+        filename=os.path.basename(path),
+        kind=request.kind,
+        added=result["added"],
+        skipped=result["skipped"],
+        total=result["total"],
+    )
 
 
 @router.delete("/{doc_id}", response_model=DeleteResponse)

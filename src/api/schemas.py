@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -11,6 +13,7 @@ class ChatRequest(BaseModel):
     style: str = "formal"
     text: str
     history: list[ChatMessage] = Field(default_factory=list)
+    context_paths: list[str] = Field(default_factory=list)
 
 
 class ChatResponse(BaseModel):
@@ -63,3 +66,48 @@ class ConfigResponse(BaseModel):
     upload_extensions: list[str]
     upload_max_mb: int
     guardrails: bool
+
+
+class WorkspaceDocument(BaseModel):
+    path: str
+    kind: Literal["userdocs", "outline"] = "outline"
+
+
+class FileNode(BaseModel):
+    name: str
+    path: str
+    type: Literal["file", "folder"]
+    children: list["FileNode"] | None = None
+
+
+class FileCreate(BaseModel):
+    parent: str = ""
+    name: str
+    kind: Literal["file", "folder"] = "file"
+
+
+class FileRename(BaseModel):
+    path: str
+    name: str
+
+
+class FileMove(BaseModel):
+    path: str
+    parent: str = ""
+
+
+class FileContent(BaseModel):
+    path: str
+    content: str
+
+
+class PathResponse(BaseModel):
+    path: str
+
+
+class ContentResponse(BaseModel):
+    path: str
+    content: str
+
+
+FileNode.model_rebuild()
