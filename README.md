@@ -128,7 +128,7 @@ $env:COLLECTION_NAME="fiction"; $env:DATA_PATH="./data/styles/fiction"; uv run -
 uv run -m src.vector_db.generate_chroma --reset
 ```
 
-**Note**: This loads PDFs from `./data/styles/` into ChromaDB using the embedding model specified in `.env`.
+**Note**: This converts files from `./data/styles/` to Markdown with MarkItDown and loads them into ChromaDB using the embedding model specified in `.env`.
 
 ### Run Tests
 
@@ -143,6 +143,25 @@ uv run python tests/unit/test_content_filter.py
 # Windows
 uv run python tests/unit/test_content_filter.py
 ```
+
+### Run the API
+
+The Vite frontend talks to a FastAPI server:
+
+```sh
+PYTHONPATH=. uv run uvicorn src.api.main:app --reload --port 8000
+```
+
+The Vite dev server proxies `/api` to this port . No CORS setup is needed in development.
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/health` | Ollama status + Chroma collection counts |
+| `GET /api/config` | Styles, tasks, upload limits |
+| `POST /api/chat` | `{task, style, text, history}` → feedback or answer |
+| `POST /api/documents?kind=userdocs\|outline` | Upload and index a document |
+| `GET /api/documents` | List indexed documents |
+| `DELETE /api/documents/{doc_id}` | Remove a document (optional `?delete_file=true`) |
 
 ## Configuration
 

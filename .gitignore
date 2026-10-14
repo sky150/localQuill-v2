@@ -5,6 +5,8 @@ test/chroma_eval/
 # Personal files
 data/styles/outline/
 data/styles/userdocs/
+data/uploads/
+data/workspace/
 
 # Basic Gitignore template
 
@@ -26,6 +28,7 @@ eggs/
 .eggs/
 lib/
 lib64/
+!frontend/src/lib/
 parts/
 sdist/
 var/

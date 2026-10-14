@@ -12,25 +12,27 @@ from src.vector_db.reset_db import reset_db
 logger = logging.getLogger(__name__)
 
 
-def add_to_chroma(chunks: list[Document], chroma_path="./chroma", collection_name="default"):
+def add_to_chroma(
+    chunks: list[Document],
+    chroma_path="./chroma",
+    collection_name="default",
+    embedding_function=None,
+):
     if not chunks:
         logger.warning(
             f"No chunks to add for collection '{collection_name}'. Skipping."
         )
         print(f"No chunks to add for collection '{collection_name}'. Skipping.")
-        return
+        return {"added": 0, "skipped": 0, "total": 0}
+
+    chunks_with_ids = calculate_chunk_ids(chunks)
 
     abs_chroma_path = os.path.abspath(chroma_path)
-    db = Chroma.from_documents(
-        documents=chunks,
-        embedding=get_embedding_function(),
+    db = Chroma(
         persist_directory=abs_chroma_path,
+        embedding_function=embedding_function or get_embedding_function(),
         collection_name=collection_name,
     )
-    logger.info(f"Successfully saved {len(chunks)} chunks to {chroma_path}")
-    logger.info(f"Collection '{collection_name}' now has {len(db.get()['ids'])} documents.")
-    print(f"Successfully saved {len(chunks)} chunks to {chroma_path}")
-    print(f"Collection '{collection_name}' now has {len(db.get()['ids'])} documents.")
 
     # Add or Update the documents.
     existing_items = db.get(include=[])  # IDs are always included by default
@@ -38,20 +40,28 @@ def add_to_chroma(chunks: list[Document], chroma_path="./chroma", collection_nam
     logger.info(f"Number of existing documents in DB: {len(existing_ids)}")
 
     # Only add documents that don't exist in the DB.
-    new_chunks = []
-    chunks_with_ids = calculate_chunk_ids(chunks)
-    for chunk in chunks_with_ids:
-        if chunk.metadata["id"] not in existing_ids:
-            new_chunks.append(chunk)
+    new_chunks = [
+        chunk for chunk in chunks_with_ids if chunk.metadata["id"] not in existing_ids
+    ]
 
     if len(new_chunks):
         logger.info(f"Adding new documents: {len(new_chunks)}")
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
-        db.add_documents(
-            new_chunks, ids=new_chunk_ids
-        ) 
+        db.add_documents(new_chunks, ids=new_chunk_ids)
     else:
         logger.info("No new documents to add")
+
+    result = {
+        "added": len(new_chunks),
+        "skipped": len(chunks_with_ids) - len(new_chunks),
+        "total": len(db.get(include=[])["ids"]),
+    }
+    logger.info(f"Collection '{collection_name}': {result}")
+    print(
+        f"Collection '{collection_name}': {result['added']} added, "
+        f"{result['skipped']} skipped, {result['total']} total."
+    )
+    return result
 
 
 def main():

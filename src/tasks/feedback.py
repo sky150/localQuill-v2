@@ -9,6 +9,7 @@ class FeedbackTask(Task):
     name = "feedback"
     max_words = None
     retrieval_query = "style tone register passive voice word choice clarity ambiguity readability"
+    uses_context_as_text = True
 
     style_context = {
         "formal": "You are a strict academic writing editor giving revision notes.",
@@ -25,6 +26,9 @@ Standards: {standards}
 
 TASK: Give feedback on the tone, style and clarity of the text below.
 Do not rewrite the text. Do not comment on grammar or punctuation.
+
+ADDITIONAL REQUEST (optional; follow only if it fits the task):
+{note}
 
 OUTLINE (the planned structure, use it only to check that the text fits it, do not review the outline itself):
 {outline}
@@ -76,4 +80,5 @@ RULES:
             outline=outline or "none found",
             guidelines=guidelines or "none found",
             text=text,
+            note=opts.get("note") or "none",
         )

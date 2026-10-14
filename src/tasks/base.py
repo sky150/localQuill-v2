@@ -1,7 +1,7 @@
 import logging
 from src.config import TaskConfig
 from src.rag.retriever import retrieve, format_context
-from src.tasks.utility import truncate_by_paragraph
+from src.tasks.utility import format_attachments, truncate_by_paragraph
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +12,7 @@ class Task:
     style_context: dict[str, str] = {}      # style -> role text
     retrieval_query: str = ""               # empty = no retrieval
     max_words: int | None = None            # None = no truncation
+    uses_context_as_text = False            # attached files replace the text to review
 
     def __init__(self, model, config: TaskConfig, style: str = "formal"):
         self.model = model
@@ -37,15 +38,20 @@ class Task:
             style_context=self.style_context.get(self.style, ""),
             guidelines=self.retrieve_context(text),
             text=text,
+            note=opts.get("note") or "none",
         )
 
     def run(self, text, **opts) -> str:
+        context = opts.pop("context", None)
         was_cut = False
+        if self.uses_context_as_text and context:
+            opts["note"] = text.strip()
+            text = format_attachments(context)
         if self.max_words:
             text, was_cut = truncate_by_paragraph(text, self.max_words)
             logger.info(f"[{self.name}] words sent: {len(text.split())} | cut: {was_cut}")
             
-        prompt = self.build_prompt(text, **opts)
+        prompt = self.build_prompt(text, context=context, **opts)
         logger.info(f"[{self.name}] prompt chars: {len(prompt)}")
         response = self.model.invoke(prompt)
         

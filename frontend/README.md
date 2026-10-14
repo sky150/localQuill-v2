@@ -1,32 +1,86 @@
-# React + TypeScript + Vite
+# Local Quill — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + TypeScript + Vite single-page app for Local Quill. It talks to the FastAPI backend through a dev proxy: requests to `/api/...` are forwarded to `http://localhost:8000` (configured in `vite.config.ts`), so no CORS setup is needed.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Node.js 22 LTS or newer** (Vite 8 requires Node 20.19+). Check with `node -v` and `npm -v`.
+- The **Local Quill API** running on port 8000 (from the repository root).
+- **Ollama** running with the models your tasks use (needed for chat; the file editor works without it).
 
-## React Compiler
+Install Node with [nvm](https://github.com/nvm-sh/nvm) (macOS/Linux), [nvm-windows](https://github.com/coreybutler/nvm-windows), [fnm](https://github.com/Schniz/fnm), or the [official installer](https://nodejs.org).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Install
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The same command works on Windows, Linux and macOS.
+
+## Run (development)
+
+1. Start Ollama (if it is not already running as a background app):
+
+   ```sh
+   ollama serve
+   ```
+
+2. Start the API from the repository root.
+
+   macOS / Linux:
+
+   ```sh
+   PYTHONPATH=. uv run uvicorn src.api.main:app --reload --port 8000
+   ```
+
+   Windows (PowerShell):
+
+   ```powershell
+   $env:PYTHONPATH="."; uv run uvicorn src.api.main:app --reload --port 8000
+   ```
+
+3. Start the frontend from this folder:
+
+   ```sh
+   npm run dev
+   ```
+
+4. Open `http://localhost:5173`.
+
+The Vite dev server proxies `/api` to `http://localhost:8000`, so leave the API on port 8000 unless you also update the proxy target.
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the dev server with hot reload |
+| `npm run build` | Type-check and build the production bundle into `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run oxlint |
+
+## How data flows
+
+- **Workspace files** (the editor sidebar) are stored by the API under `WORKSPACE_PATH` (default `./data/workspace`).
+- **Reference library** uploads are stored under `UPLOAD_PATH` (default `./data/uploads`) and indexed into ChromaDB.
+- **Vectors** live under `CHROMA_PATH` (default `./chroma`).
+- Paths and model settings come from the `.env` file at the repository root.
+
+If the API is not running, the file tree will be empty and an error toast appears at the bottom.
+
+## Troubleshooting
+
+- **Port 5173 already in use** — run `npm run dev -- --port 5174`; the proxy keeps working.
+- **Port 8000 already in use** — stop the other process or run uvicorn on another port and update the proxy target in `vite.config.ts`.
+- **Chat errors / "LLM unavailable"** — Ollama is not running or the model is not pulled; check with `ollama list`.
+- **Windows firewall prompt on first run** — allow Node.js so the browser can reach the dev server.
+
+## Project structure
+
+```
+src/
+  components/    Sidebar, Editor, Chat, Documents modal, icons
+  lib/api.ts     Typed API client (also XHR upload with progress)
+  lib/tree.ts    File tree helpers
+  App.tsx        App state: files, tabs, attachments, uploads
+```

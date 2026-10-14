@@ -9,7 +9,10 @@ load_dotenv()
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434")
 # LMStudio URL
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma")
-DEFAULT_STYLE = "test"
+UPLOAD_PATH = os.getenv("UPLOAD_PATH", "./data/uploads")
+UPLOAD_MAX_MB = int(os.getenv("UPLOAD_MAX_MB", "50"))
+WORKSPACE_PATH = os.getenv("WORKSPACE_PATH", "./data/workspace")
+DEFAULT_STYLE = "formal"
 
 
 @dataclass(frozen=True)
@@ -26,7 +29,7 @@ class TaskConfig:
 TASKS: dict[str, TaskConfig] = {
     "test": TaskConfig(model="gemma4:e2b", temperature=0.1),   # Test purposes
     "grammar": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.1),
-    "qa": TaskConfig(model="qwen3.5:4b", collection="user_docs", top_k=5, temperature=0.3),
+    "qa": TaskConfig(model="qwen3.5:4b", temperature=0.3),
     "feedback": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.3),
     "autocomplete": TaskConfig(model="gemma4:e2b", temperature=0.5, max_tokens=20),
 }

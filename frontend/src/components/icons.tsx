@@ -72,6 +72,12 @@ export const Trash = (p: P) => (
   </Base>
 )
 
+export const Bookmark = (p: P) => (
+  <Base {...p}>
+    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+  </Base>
+)
+
 export const ArrowUp = (p: P) => (
   <Base {...p}>
     <line x1="12" y1="19" x2="12" y2="5" />
@@ -83,5 +89,13 @@ export const AtSign = (p: P) => (
   <Base {...p}>
     <circle cx="12" cy="12" r="4" />
     <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94" />
+  </Base>
+)
+
+export const Upload = (p: P) => (
+  <Base {...p}>
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="17 8 12 3 7 8" />
+    <line x1="12" y1="3" x2="12" y2="15" />
   </Base>
 )
