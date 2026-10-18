@@ -1,4 +1,5 @@
 import logging
+import time
 from src.config import TaskConfig
 from src.rag.retriever import retrieve, format_context
 from src.tasks.utility import format_attachments, truncate_by_paragraph
@@ -53,9 +54,14 @@ class Task:
             
         prompt = self.build_prompt(text, context=context, **opts)
         logger.info(f"[{self.name}] prompt chars: {len(prompt)}")
+        
+        time_start = time.time()
         response = self.model.invoke(prompt)
+        time_end = time.time()
+        time_passed = time_end - time_start
+        logger.info(f"[{self.name}] response time: {time_passed:.2f}s")
         
         result = getattr(response, "content", response)
         if was_cut:
             result += f"\n\n---\nNote: input was cut at about {self.max_words} words. Later text was not processed."
-        return result
+        return result + f"\n\n---\nResponse time: {time_passed:.2f}s"

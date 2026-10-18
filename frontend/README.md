@@ -13,6 +13,7 @@ Install Node with [nvm](https://github.com/nvm-sh/nvm) (macOS/Linux), [nvm-windo
 ## Install
 
 ```sh
+cd .\frontend\
 npm install
 ```
 
@@ -31,7 +32,7 @@ The same command works on Windows, Linux and macOS.
    macOS / Linux:
 
    ```sh
-   PYTHONPATH=. uv run uvicorn src.api.main:app --reload --port 8000
+   uv run uvicorn src.api.main:app --reload --port 8000
    ```
 
    Windows (PowerShell):
@@ -43,6 +44,7 @@ The same command works on Windows, Linux and macOS.
 3. Start the frontend from this folder:
 
    ```sh
+   cd \.frontend\
    npm run dev
    ```
 
