@@ -91,7 +91,7 @@ COLLECTION_NAME=fiction DATA_PATH=./data/styles/fiction uv run -m src.vector_db.
 
 **Windows**
 ```sh
-$env:COLLECTION_NAME="essay"; $env:DATA_PATH="./data/styles/essay"; uv run -m src.vector_db.generate_chroma
+$env:COLLECTION_NAME="formal"; $env:DATA_PATH="./data/styles/formal"; uv run -m src.vector_db.generate_chroma
 $env:COLLECTION_NAME="fiction"; $env:DATA_PATH="./data/styles/fiction"; uv run -m src.vector_db.generate_chroma
 $env:COLLECTION_NAME="outline"; $env:DATA_PATH="./data/styles/outline"; uv run -m src.vector_db.generate_chroma
 $env:COLLECTION_NAME="userdocs"; $env:DATA_PATH="./data/styles/userdocs"; uv run -m src.vector_db.generate_chroma
