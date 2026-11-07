@@ -13,13 +13,15 @@ UPLOAD_PATH = os.getenv("UPLOAD_PATH", "./data/uploads")
 UPLOAD_MAX_MB = int(os.getenv("UPLOAD_MAX_MB", "50"))
 WORKSPACE_PATH = os.getenv("WORKSPACE_PATH", "./data/workspace")
 DEFAULT_STYLE = "formal"
+PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
+LMSTUDIO_URL = os.getenv("LMSTUDIO_URL", "http://127.0.0.1:11434")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "NotSet")
 
 
 @dataclass(frozen=True)
 class TaskConfig:
     model: str
     temperature: float = 0.1
-    provider: str = "ollama"          # "ollama", "lmstudio", "openai"
     collection: str | None = None     # Chroma collection; None = no retrieval
     top_k: int = 3
     max_tokens: int | None = None
@@ -60,5 +62,7 @@ def get_config(task: str, style: str = DEFAULT_STYLE) -> TaskConfig:
         config = replace(config, model=env_model)
     if env_temperature := os.getenv(f"{task.upper()}_TEMPERATURE"):
         config = replace(config, temperature=float(env_temperature))
+    if env_provider := os.getenv("PROVIDER"):
+        config = replace(config, provider=env_provider)
         
     return config

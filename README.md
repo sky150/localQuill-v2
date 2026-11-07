@@ -97,7 +97,7 @@ $env:COLLECTION_NAME="outline"; $env:DATA_PATH="./data/styles/outline"; uv run -
 $env:COLLECTION_NAME="userdocs"; $env:DATA_PATH="./data/styles/userdocs"; uv run -m src.vector_db.generate_chroma
 ```
 
-### 5. Launch the Interface
+### 5. Launch the ChainLit Interface (Task Tests)
 
 **Mac / Linux**
 ```sh

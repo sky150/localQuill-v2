@@ -1,4 +1,4 @@
-from src.config import get_config
+from src.config import TaskConfig, get_config
 from src.llm.factory import get_model
 from .grammar import GrammarTask
 from .feedback import FeedbackTask
@@ -15,6 +15,7 @@ TASK_CLASSES = {
 }
 
 _cache: dict[tuple[str, str], object] = {}
+
         
 def get_task(name: str, style: str = "fiction"):
     """Build a task once per (name, style) and reuse it."""

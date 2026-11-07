@@ -11,7 +11,7 @@ MAX_TURNS = 3  # last 3 messages, keeps local 4b models inside their context
 async def on_start():
     settings = await cl.ChatSettings([
         Select(id="style", label="Style", values=["formal", "fiction"], initial_index=1),    # formal, fiction
-        Select(id="task", label="Task", values=list(TASKS), initial_index=3),       # Test, Grammar, Q&A, Feedback, Autocorrect
+        Select(id="task", label="Task", values=list(TASKS), initial_index=0),       # Test, Grammar, Q&A, Feedback, Autocorrect
     ]).send()
     cl.user_session.set("settings", settings)
     cl.user_session.set("history", [])
