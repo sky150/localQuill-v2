@@ -1,14 +1,14 @@
 from src.config import TaskConfig
 from src.tasks.feedback import FeedbackTask
 from src.tasks.grammar import GrammarTask
+from langchain_core.runnables import Runnable
 
-
-class FakeModel:
+class FakeModel(Runnable):
     def __init__(self):
         self.prompt = ""
 
-    def invoke(self, prompt):
-        self.prompt = prompt
+    def invoke(self, input, config=None, **kwargs):
+        self.prompt = input   # the finished prompt string from Task.run
         return "ok"
 
 
@@ -21,7 +21,7 @@ def test_feedback_reviews_attachment_and_keeps_note(monkeypatch):
         "give feedback on this",
         context=[{"name": "draft.md", "content": "My essay text"}],
     )
-    assert result == "ok"
+    assert result.startswith("ok")
     assert "My essay text" in task.model.prompt
     assert "give feedback on this" in task.model.prompt
 

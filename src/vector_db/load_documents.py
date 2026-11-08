@@ -1,6 +1,6 @@
 import logging
 import os
-
+from collections.abc import Iterator
 from langchain_core.documents import Document
 from markitdown import FileConversionException, MarkItDown, UnsupportedFormatException
 
@@ -39,9 +39,8 @@ def load_file(path: str, metadata: dict | None = None) -> Document:
     return Document(page_content=result.markdown, metadata=meta)
 
 
-def load_documents(data_path: str, metadata: dict | None = None) -> list[Document]:
-    """Convert every supported file in a directory to Markdown Documents."""
-    documents = []
+def iter_documents(data_path: str, metadata: dict | None = None) -> Iterator[Document]:
+    """Yield one converted Document at a time instead of a full list."""
     for name in sorted(os.listdir(data_path)):
         path = os.path.join(data_path, name)
         if not os.path.isfile(path):
@@ -50,7 +49,11 @@ def load_documents(data_path: str, metadata: dict | None = None) -> list[Documen
             logger.warning(f"Skipping unsupported file: {path}")
             continue
         try:
-            documents.append(load_file(path, metadata))
+            yield load_file(path, metadata)
         except (UnsupportedFormatException, FileConversionException) as e:
             logger.error(f"Skipping {path}: {e}")
-    return documents
+
+
+def load_documents(data_path: str, metadata: dict | None = None) -> list[Document]:
+    """Convert every supported file in a directory to Markdown Documents."""
+    return list(iter_documents(data_path, metadata))

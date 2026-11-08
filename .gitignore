@@ -1,3 +1,8 @@
+# Docker volume data (local runtime state — never commit)
+data/postgres_data/
+data/s3_data/
+logs/
+
 # Chroma DB
 chroma/
 test/chroma_eval/

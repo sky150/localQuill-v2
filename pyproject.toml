@@ -19,6 +19,7 @@ dependencies = [
     "langchain-text-splitters>=1.1.0",
     "markitdown[docx,pdf,pptx,xls,xlsx]>=0.1.8",
     "matplotlib>=3.10.8",
+    "mlflow>=3.17.2",
     "open-webui>=0.8.7",
     "pandas>=3.0.0",
     "psutil>=7.2.2",
@@ -31,6 +32,7 @@ dependencies = [
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+markers = ["integration: needs a running local LLM server"]
 
 [build-system]
 requires = ["hatchling"]
@@ -40,3 +42,4 @@ build-backend = "hatchling.build"
 packages = ["src"]
 
 ["ignore:builtin type Swig:DeprecationWarning"]
+
