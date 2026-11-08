@@ -14,7 +14,7 @@ UPLOAD_MAX_MB = int(os.getenv("UPLOAD_MAX_MB", "50"))
 WORKSPACE_PATH = os.getenv("WORKSPACE_PATH", "./data/workspace")
 DEFAULT_STYLE = "formal"
 PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
-LMSTUDIO_URL = os.getenv("LMSTUDIO_URL", "http://127.0.0.1:11434")
+LMSTUDIO_URL = os.getenv("LMSTUDIO_URL", "http://127.0.0.1:1234/v1")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "NotSet")
 
 
@@ -29,7 +29,7 @@ class TaskConfig:
 
 # Defaults per task
 TASKS: dict[str, TaskConfig] = {
-    "test": TaskConfig(model="gemma4:e2b", temperature=0.1),   # Test purposes
+    "test": TaskConfig(model="qwen2.5-coder-0.5b-instruct", temperature=0.1),   # Test purposes -> Setting for LMStudio Integration Test
     "grammar": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.1),
     "qa": TaskConfig(model="qwen3.5:4b", temperature=0.3),
     "feedback": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.3),
@@ -62,7 +62,5 @@ def get_config(task: str, style: str = DEFAULT_STYLE) -> TaskConfig:
         config = replace(config, model=env_model)
     if env_temperature := os.getenv(f"{task.upper()}_TEMPERATURE"):
         config = replace(config, temperature=float(env_temperature))
-    if env_provider := os.getenv("PROVIDER"):
-        config = replace(config, provider=env_provider)
         
     return config

@@ -2,6 +2,7 @@ import os
 import shutil
 
 from src.config import WORKSPACE_PATH
+from pathlib import Path
 
 EDITABLE_EXTENSIONS = {".md", ".markdown", ".txt"}
 
@@ -21,7 +22,9 @@ def resolve(relative: str) -> str:
 
 
 def to_relative(path: str) -> str:
-    return os.path.relpath(path, workspace_root())
+    # return os.path.relpath(path, workspace_root())
+        # Relative Path caused issues for windows, using pathlib's relative_to ensures consistent POSIX-style paths
+    return Path(path).relative_to(workspace_root()).as_posix()
 
 
 def _node(path: str) -> dict:

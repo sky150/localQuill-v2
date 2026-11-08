@@ -8,12 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 EVAL_CONFIG = {
-    "embedding_model": os.getenv("EVAL_MODEL", "all-MiniLM-L6-v2"),
-    "chunk_size": int(os.getenv("EVAL_CHUNK_SIZE", 1500)),
-    "chunk_overlap": int(os.getenv("EVAL_CHUNK_OVERLAP", 200)),
+    "embedding_model": os.getenv("EVAL_MODEL", "nomic-embed-text"),
+    "chunk_size": int(os.getenv("EVAL_CHUNK_SIZE", 1000)),
+    "chunk_overlap": int(os.getenv("EVAL_CHUNK_OVERLAP", 400)),
     "top_k": int(os.getenv("TOP_K", 3)),
-    "llm_model": os.getenv("LOCAL_MODEL", "llama3.1:8b"),
-    "judge_model": os.getenv("JUDGE_MODEL", "llama3.1:8b"),
+    "llm_model": os.getenv("LOCAL_MODEL", "qwen2.5:0.5b"),
+    "judge_model": os.getenv("JUDGE_MODEL", "qwen2.5:0.5b"),
     "temperature": float(os.getenv("TEMPERATURE", 0.1)),
     "eval_db_path": os.getenv("CHROMA_EVAL_PATH", "./tests/chroma_eval"),
     "collection_name": os.getenv("COLLECTION_NAME", "formal"),

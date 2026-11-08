@@ -73,10 +73,44 @@ uv init
 
 ### 3. Download Ollama Models
 
+All the following models were evaluated for DISPRO2.
+
+```
+# Embedding Models
+ollama pull nomic-embed-text  
+ollama pull embeddinggemma-2:270m
+ollama pull embeddinggemma-2:740m
+  # https://ollama.com/library/embeddinggemma-2
+  # Comparison for Embedding Tests.
+  # Larges size and the one with similar size to nomic will be checked against nomic embed text
+
+# Main models
+ollama pull granite4.2:8b
+ollama pull qwen3.5:9b
+ollama pull llama3.1:8b
+ollama pull mistral:7b-instruct
+ollama pull gemma4:e4b
+
+# Q&A (up to 4b)
+ollama pull gemma4:e2b
+ollama pull phi4-mini:3.8b
+ollama pull gemma3:4b
+ollama pull qwen3.5:4b
+
+# Unit Test Model
+ollama pull qwen2.5:0.5b
+```
+
 Our recommendations:
-```sh
-ollama pull nomic-embed-text
-ollama pull ministral-3:8b
+```
+# Embedding Models
+ollama pull ?
+
+# Main models
+ollama pull ?
+
+# Q&A (up to 4b)
+ollama pull ?
 ```
 
 ### 4. Generate RAG Database
@@ -142,6 +176,10 @@ uv run python tests/unit/test_rag.py
 uv run python tests/unit/test_content_filter.py
 # Windows
 uv run python tests/unit/test_content_filter.py
+
+
+# Run all Unit Tests (Takes a while for Rag and Model Tests)
+uv run pytest -v
 ```
 
 ### Run the API

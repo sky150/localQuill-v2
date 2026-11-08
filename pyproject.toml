@@ -32,6 +32,7 @@ dependencies = [
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+markers = ["integration: needs a running local LLM server"]
 
 [build-system]
 requires = ["hatchling"]
@@ -41,3 +42,4 @@ build-backend = "hatchling.build"
 packages = ["src"]
 
 ["ignore:builtin type Swig:DeprecationWarning"]
+
