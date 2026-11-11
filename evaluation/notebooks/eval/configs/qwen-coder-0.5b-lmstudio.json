@@ -1,0 +1,7 @@
+{
+  "name": "qwen-coder-0.5b-lmstudio",
+  "provider": "lmstudio",
+  "model": "qwen2.5-coder-0.5b-instruct",
+  "temperature": 0.1,
+  "max_tokens": 512
+}
