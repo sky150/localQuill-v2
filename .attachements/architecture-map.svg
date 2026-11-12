@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 900" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a94a6"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#43a677"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8f83d8"/>
+    </marker>
+  </defs>
+
+  <rect width="1680" height="900" fill="#ffffff"/>
+
+  <rect x="24" y="100" width="1200" height="230" rx="18" fill="#f7f9fb" stroke="#e3e8ee"/>
+  <circle cx="54" cy="124" r="4" fill="#43a677"/>
+  <text x="66" y="128" font-size="12.5" font-weight="700" letter-spacing="2" fill="#64748b">OFFLINE · BUILD-TIME INGESTION</text>
+
+  <rect x="48" y="160" width="250" height="110" rx="14" fill="#e8f7ef" stroke="#43a677"/>
+  <text x="68" y="196" font-size="16" font-weight="700" fill="#1c6b4a">Writing guides</text>
+  <text x="68" y="222" font-size="12.5" fill="#4f8d72">formal → PDF guides</text>
+  <text x="68" y="242" font-size="12.5" fill="#4f8d72">fiction → guides + novels</text>
+
+  <rect x="358" y="160" width="230" height="110" rx="14" fill="#e9f2fc" stroke="#4a90d9"/>
+  <text x="378" y="196" font-size="16" font-weight="700" fill="#1d5d9b">MarkItDown</text>
+  <text x="378" y="222" font-size="12.5" fill="#5b87b0">PDF/DOCX/EPUB → Markdown</text>
+  <text x="378" y="242" font-size="12.5" fill="#5b87b0">headings, lists, tables kept</text>
+
+  <rect x="648" y="160" width="230" height="110" rx="14" fill="#e9f2fc" stroke="#4a90d9"/>
+  <text x="668" y="196" font-size="16" font-weight="700" fill="#1d5d9b">Text splitter</text>
+  <text x="668" y="222" font-size="12.5" fill="#5b87b0">recursive character split</text>
+  <text x="668" y="242" font-size="12.5" fill="#5b87b0">1000 chars · 400 overlap</text>
+
+  <rect x="938" y="160" width="230" height="110" rx="14" fill="#fdf2df" stroke="#dfa45a"/>
+  <text x="958" y="196" font-size="16" font-weight="700" fill="#8a5a1e">nomic-embed-text</text>
+  <text x="958" y="222" font-size="12.5" fill="#a97f4a">local embeddings</text>
+  <text x="958" y="242" font-size="12.5" fill="#a97f4a">(Ollama)</text>
+
+  <line x1="306" y1="215" x2="350" y2="215" stroke="#43a677" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="596" y1="215" x2="640" y2="215" stroke="#43a677" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="886" y1="215" x2="930" y2="215" stroke="#43a677" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="1176" y1="215" x2="1282" y2="215" stroke="#43a677" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="1229" y="203" font-size="12" fill="#6b7280" text-anchor="middle">vectors</text>
+
+  <polyline points="148,470 148,352 473,352 473,276" fill="none" stroke="#43a677" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#arrow-green)"/>
+  <text x="310" y="342" font-size="12" fill="#1c6b4a" text-anchor="middle">uploads and workspace files </text>
+
+  <rect x="1290" y="100" width="340" height="770" rx="20" fill="#ece9fa" stroke="#8f83d8"/>
+  <text x="1460" y="148" font-size="20" font-weight="700" fill="#4a3f8f" text-anchor="middle">ChromaDB</text>
+  <text x="1460" y="172" font-size="12" fill="#7a70b5" text-anchor="middle">persistent local vector store</text>
+
+  <rect x="1314" y="196" width="292" height="104" rx="12" fill="#f6f4fd" stroke="#cfc8ee"/>
+  <text x="1334" y="228" font-size="15" font-weight="700" fill="#4a3f8f">formal</text>
+  <text x="1334" y="252" font-size="11.5" fill="#7a70b5">writing guides (PDF corpus)</text>
+  <text x="1334" y="272" font-size="11.5" fill="#7a70b5">→ grammar, feedback context</text>
+
+  <rect x="1314" y="312" width="292" height="104" rx="12" fill="#f6f4fd" stroke="#cfc8ee"/>
+  <text x="1334" y="344" font-size="15" font-weight="700" fill="#4a3f8f">fiction</text>
+  <text x="1334" y="368" font-size="11.5" fill="#7a70b5">guides + public-domain novels</text>
+  <text x="1334" y="388" font-size="11.5" fill="#7a70b5">→ grammar, feedback context</text>
+
+  <rect x="1314" y="428" width="292" height="104" rx="12" fill="#f6f4fd" stroke="#cfc8ee"/>
+  <text x="1334" y="460" font-size="15" font-weight="700" fill="#4a3f8f">outline</text>
+  <text x="1334" y="484" font-size="11.5" fill="#7a70b5">the user's plan / outline</text>
+  <text x="1334" y="504" font-size="11.5" fill="#7a70b5">→ feedback, QA context</text>
+
+  <rect x="1314" y="544" width="292" height="104" rx="12" fill="#f6f4fd" stroke="#cfc8ee"/>
+  <text x="1334" y="576" font-size="15" font-weight="700" fill="#4a3f8f">userdocs</text>
+  <text x="1334" y="600" font-size="11.5" fill="#7a70b5">the user's own documents</text>
+  <text x="1334" y="620" font-size="11.5" fill="#7a70b5">→ QA context</text>
+
+  <text x="1460" y="700" font-size="12" fill="#7a70b5" text-anchor="middle">every chunk keeps source, page</text>
+  <text x="1460" y="722" font-size="12" fill="#7a70b5" text-anchor="middle">and id metadata</text>
+  <text x="1460" y="752" font-size="12" fill="#4a3f8f" text-anchor="middle" font-weight="600">→ any suggestion can be</text>
+  <text x="1460" y="774" font-size="12" fill="#4a3f8f" text-anchor="middle" font-weight="600">traced back to a source</text>
+
+  <rect x="24" y="400" width="1200" height="470" rx="18" fill="#f7f9fb" stroke="#e3e8ee"/>
+  <circle cx="54" cy="424" r="4" fill="#4a90d9"/>
+  <text x="66" y="428" font-size="12.5" font-weight="700" letter-spacing="2" fill="#64748b">RUNTIME · ONE REQUEST</text>
+
+  <rect x="48" y="470" width="200" height="120" rx="14" fill="#e9f2fc" stroke="#4a90d9"/>
+  <text x="68" y="506" font-size="15" font-weight="700" fill="#1d5d9b">React + Vite UI</text>
+  <text x="68" y="532" font-size="12" fill="#5b87b0">editor · file tree · chat</text>
+  <text x="68" y="554" font-size="12" fill="#5b87b0">local app in the browser</text>
+
+  <rect x="288" y="470" width="200" height="120" rx="14" fill="#e9f2fc" stroke="#4a90d9"/>
+  <text x="308" y="506" font-size="15" font-weight="700" fill="#1d5d9b">FastAPI</text>
+  <text x="308" y="530" font-size="12" fill="#5b87b0">/api/chat · /api/documents</text>
+  <text x="308" y="554" font-size="11" fill="#b23b2e">guardrails: injection check</text>
+
+  <rect x="528" y="470" width="200" height="120" rx="14" fill="#e9f2fc" stroke="#4a90d9"/>
+  <text x="548" y="506" font-size="15" font-weight="700" fill="#1d5d9b">Task router</text>
+  <text x="548" y="530" font-size="12" fill="#5b87b0">grammar · feedback</text>
+  <text x="548" y="552" font-size="12" fill="#5b87b0">qa · autocomplete</text>
+
+  <rect x="768" y="470" width="200" height="120" rx="14" fill="#ece9fa" stroke="#8f83d8"/>
+  <text x="788" y="506" font-size="15" font-weight="700" fill="#4a3f8f">Retrieval</text>
+  <text x="788" y="530" font-size="12" fill="#7a70b5">style (formal | fiction)</text>
+  <text x="788" y="552" font-size="12" fill="#7a70b5">outline · userdocs</text>
+  <text x="788" y="574" font-size="12" fill="#7a70b5">+ attached files</text>
+
+  <rect x="1008" y="470" width="200" height="120" rx="14" fill="#fdf2df" stroke="#dfa45a"/>
+  <text x="1028" y="506" font-size="15" font-weight="700" fill="#8a5a1e">Ollama (local)</text>
+  <text x="1028" y="530" font-size="12" fill="#a97f4a">one model per task</text>
+  <text x="1028" y="552" font-size="12" fill="#a97f4a">ONE call per request</text>
+  <text x="1028" y="574" font-size="12" fill="#a97f4a">answer carries its time</text>
+
+  <line x1="248" y1="530" x2="280" y2="530" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="488" y1="530" x2="520" y2="530" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="728" y1="530" x2="760" y2="530" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="968" y1="530" x2="1000" y2="530" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="888" y="612" font-size="11" fill="#6b7280" text-anchor="middle">prompt assembly:</text>
+  <text x="888" y="628" font-size="11" fill="#6b7280" text-anchor="middle">style role + retrieved guidelines + user text</text>
+
+  <polyline points="1290,432 868,432 868,462" fill="none" stroke="#8f83d8" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="1280" y="420" font-size="12" fill="#7a70b5" text-anchor="end">top-k similarity search</text>
+
+  <polyline points="1108,590 1108,800 148,800 148,596" fill="none" stroke="#8a94a6" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="628" y="790" font-size="12" fill="#64748b" text-anchor="middle">answer / feedback — returned with response time</text>
+</svg>
