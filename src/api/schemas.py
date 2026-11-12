@@ -16,10 +16,19 @@ class ChatRequest(BaseModel):
     context_paths: list[str] = Field(default_factory=list)
 
 
+class Notice(BaseModel):
+    """Something the guardrails left out or flagged, shown to the user."""
+
+    source: str            # user_text | attachment | retrieved | history | upload
+    name: str | None = None
+    message: str
+
+
 class ChatResponse(BaseModel):
     task: str
     style: str
     result: str
+    notices: list[Notice] = Field(default_factory=list)
 
 
 class UploadResponse(BaseModel):
@@ -29,6 +38,7 @@ class UploadResponse(BaseModel):
     added: int
     skipped: int
     total: int
+    notices: list[Notice] = Field(default_factory=list)
 
 
 class DocumentOut(BaseModel):

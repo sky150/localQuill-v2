@@ -14,6 +14,12 @@ export type DocumentInfo = {
   size_bytes: number
 }
 
+export type Notice = {
+  source: string
+  name: string | null
+  message: string
+}
+
 export type UploadResult = {
   doc_id: string
   filename: string
@@ -21,6 +27,7 @@ export type UploadResult = {
   added: number
   skipped: number
   total: number
+  notices?: Notice[]
 }
 
 export type TaskInfo = {
@@ -109,7 +116,7 @@ export const api = {
     history: ChatMessage[]
     contextPaths: string[]
   }) =>
-    request<{ result: string }>(
+    request<{ result: string; notices: Notice[] }>(
       '/chat',
       json('POST', {
         task: payload.task,

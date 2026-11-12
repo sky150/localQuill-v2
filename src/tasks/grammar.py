@@ -7,6 +7,7 @@ class GrammarTask(Task):
     max_words = int(os.getenv("GRAMMAR_MAX_WORDS", "300"))
     retrieval_query = "grammar punctuation tense agreement comma splice sentence structure"
     uses_context_as_text = True
+    contain_untrusted = True
 
     style_context = {
         "formal": "You are a careful copy editor for academic texts. Keep the formal tone.",

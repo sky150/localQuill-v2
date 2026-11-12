@@ -182,7 +182,7 @@ export default function DocumentsModal({
                         Processing…
                       </span>
                     )}
-                    {entry.status === 'error' && (
+                    {(entry.status === 'error' || entry.status === 'warning') && (
                       <button
                         aria-label="Dismiss"
                         onClick={() => onDismissUpload(entry.id)}
@@ -200,11 +200,16 @@ export default function DocumentsModal({
                       />
                     </div>
                   )}
-                  {entry.status === 'error' && entry.error && (
-                    <p className="mt-0.5 text-[11px] leading-snug text-mark/80">
-                      {entry.error}
-                    </p>
-                  )}
+                  {(entry.status === 'error' || entry.status === 'warning') &&
+                    entry.error && (
+                      <p
+                        className={`mt-0.5 text-[11px] leading-snug ${
+                          entry.status === 'error' ? 'text-mark/80' : 'text-muted'
+                        }`}
+                      >
+                        {entry.error}
+                      </p>
+                    )}
                 </div>
               ))}
 

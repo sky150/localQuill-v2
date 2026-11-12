@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { api, type ApiConfig, type ChatMessage } from '../lib/api'
+import { api, type ApiConfig, type ChatMessage, type Notice } from '../lib/api'
 import { ArrowUp, AtSign, FileText, X } from './icons'
 
 export type ChatTask = 'qa' | 'grammar' | 'feedback'
 
-type DisplayMessage = ChatMessage & { attachments?: string[] }
+type DisplayMessage = ChatMessage & { attachments?: string[]; notices?: Notice[] }
 
 const MODES: { label: string; task: ChatTask }[] = [
   { label: 'Q&A', task: 'qa' },
@@ -68,7 +68,7 @@ export default function Chat({
       })
       setMessages((current) => [
         ...current,
-        { role: 'assistant', content: response.result },
+        { role: 'assistant', content: response.result, notices: response.notices },
       ])
     } catch (reason) {
       setMessages((current) => [
@@ -135,6 +135,16 @@ export default function Chat({
                   {message.content}
                 </ReactMarkdown>
               </div>
+              {message.notices && message.notices.length > 0 && (
+                <ul
+                  role="status"
+                  className="mt-2 space-y-1 rounded-md border border-line bg-base-850 px-3 py-2 text-[12px] text-muted"
+                >
+                  {message.notices.map((notice, noticeIndex) => (
+                    <li key={noticeIndex}>{notice.message}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           ),
         )}
