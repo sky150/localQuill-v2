@@ -145,6 +145,29 @@ uv run chainlit run src/chainlit/app.py
 
 Open your browser to `http://localhost:8000` and start writing!
 
+## Run with Docker
+
+Runs the API, the web UI and the MLflow stack (Postgres, object storage) without installing Python or Node dependencies.
+
+```bash
+# 1. Create your .env and set the passwords
+cp .env.example .env
+#    edit .env: POSTGRES_PASSWORD (any value) and MINIO_SECRET (at least 8 characters)
+
+# 2. Start everything in the background
+docker compose up -d --build
+
+# 3. Open the app
+#    UI:     http://127.0.0.1:8080
+#    MLflow: http://127.0.0.1:5001
+```
+
+- **Needs the LLM server on your machine.** Start Ollama or LM Studio on the host first. Containers reach it at `host.docker.internal`, so the URLs in `.env` do not need changing.
+- **First start is slow.** The backend downloads the guardrail model once into the `hf_cache` volume (a few minutes). Later starts are fast.
+- **Your data persists.** Documents and the vector database are the `data/` and `chroma/` folders on your machine. The styles databases still need generating once (see step 4 above), or run it in the container: `docker compose exec -e COLLECTION_NAME=formal -e DATA_PATH=/app/data/styles/formal backend python -m src.vector_db.generate_chroma` (repeat with `fiction`).
+- **Useful commands:** `docker compose logs -f backend` (follow the API log), `docker compose ps` (status), `docker compose down` (stop; data is kept).
+- **Only the app, not MLflow:** `docker compose up -d --build backend frontend`.
+
 ## Common Commands
 
 ### Initialize Vector Database
