@@ -204,7 +204,7 @@ export default function DocumentsModal({
                     entry.error && (
                       <p
                         className={`mt-0.5 text-[11px] leading-snug ${
-                          entry.status === 'error' ? 'text-mark/80' : 'text-muted'
+                          entry.status === 'error' ? 'text-mark/80' : 'text-warn'
                         }`}
                       >
                         {entry.error}

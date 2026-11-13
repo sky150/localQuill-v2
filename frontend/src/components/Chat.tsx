@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { api, type ApiConfig, type ChatMessage, type Notice } from '../lib/api'
-import { ArrowUp, AtSign, FileText, X } from './icons'
+import { ArrowUp, AtSign, FileText, ShieldAlert, X } from './icons'
 
 export type ChatTask = 'qa' | 'grammar' | 'feedback'
 
@@ -136,14 +136,20 @@ export default function Chat({
                 </ReactMarkdown>
               </div>
               {message.notices && message.notices.length > 0 && (
-                <ul
+                <div
                   role="status"
-                  className="mt-2 space-y-1 rounded-md border border-line bg-base-850 px-3 py-2 text-[12px] text-muted"
+                  className="mt-2 rounded-md border border-warn-line bg-warn-soft px-3 py-2 text-[12px] text-text"
                 >
-                  {message.notices.map((notice, noticeIndex) => (
-                    <li key={noticeIndex}>{notice.message}</li>
-                  ))}
-                </ul>
+                  <div className="mb-1 flex items-center gap-1.5 font-medium text-warn">
+                    <ShieldAlert size={14} />
+                    Withheld by the safety filter
+                  </div>
+                  <ul className="space-y-1">
+                    {message.notices.map((notice, noticeIndex) => (
+                      <li key={noticeIndex}>{notice.message}</li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
           ),

@@ -20,6 +20,11 @@
 
   /* Proofreader's red — semantic only (strikethrough in corrections) */
   --color-mark: #d04255;
+
+  /* Safety-filter notices (something was withheld from the AI) */
+  --color-warn: #9a5b13;
+  --color-warn-soft: rgba(214, 140, 40, 0.1);
+  --color-warn-line: rgba(214, 140, 40, 0.45);
 }
 
 @layer base {

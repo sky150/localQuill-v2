@@ -55,6 +55,16 @@ def chat(client, **overrides):
 
 
 class TestChatRoute:
+    def test_unreachable_ollama_is_503_not_500(self, client, monkeypatch):
+        class Offline:
+            def run(self, *args, **kwargs):
+                raise ConnectionError("Failed to connect to Ollama.")
+
+        monkeypatch.setattr(chat_router, "get_task", lambda *a, **k: Offline())
+        response = chat(client)
+        assert response.status_code == 503
+        assert response.json()["detail"].startswith("LLM unavailable")
+
     def test_clean_request_has_no_notices(self, client):
         response = chat(client, context_paths=["clean.md"])
         assert response.status_code == 200

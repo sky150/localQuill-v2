@@ -243,7 +243,7 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 | `TOP_K` | `3` | Number of document chunks to retrieve |
 | `USER_TEXT_SPLIT` | `10'000` | Character limit per LLM call (roughly 2'000 words) |
 | `USE_BASE_MODEL` | `false` | Use per-criterion models from `base_models.json` |
-| `USE_GUARDRAILS` | `true` | Enable prompt injection detection |
+| `USE_GUARDRAILS` | `true` | Enable prompt injection detection (see [docs/guardrails.md](docs/guardrails.md)) |
 | `OPENAI_API_KEY` | (not requiered) | Your OpenAI key (used for comparison) |
 | `CHROMA_PATH` | `./chroma` | Path to vector database |
 
@@ -317,7 +317,7 @@ Available notebooks:
 
 ### "Content filter blocking legitimate input"
 - Check `.env` for `USE_GUARDRAILS=false` to disable temporarily
-- Review regex patterns in `src/guardrails/content_filter.py`
+- Review regex patterns in `src/guardrails/detectors/patterns.py` and thresholds in [docs/guardrails.md](docs/guardrails.md)
 
 ### GPU/Memory issues
 - Reduce `CHUNK_SIZE` in `.env` 

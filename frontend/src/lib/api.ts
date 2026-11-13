@@ -50,14 +50,24 @@ export type ChatMessage = {
   content: string
 }
 
+// Shown when the backend gives no detail of its own (e.g. an unhandled exception).
+const STATUS_HINTS: Record<number, string> = {
+  500: 'Something went wrong on the server. Check the backend logs for details.',
+  502: 'The backend is not reachable. Is it running?',
+  503: 'A required service is unavailable.',
+  504: 'The backend took too long to answer.',
+}
+
+// The status code always stays in the message so errors are easy to trace in the logs.
 async function errorDetail(response: Response): Promise<string> {
+  const status = response.status
   try {
     const body = (await response.json()) as { detail?: unknown }
-    if (typeof body?.detail === 'string') return body.detail
+    if (typeof body?.detail === 'string') return `${body.detail} (${status})`
   } catch {
     /* body was not json */
   }
-  return `Request failed (${response.status})`
+  return `${STATUS_HINTS[status] ?? 'Request failed.'} (${status})`
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {

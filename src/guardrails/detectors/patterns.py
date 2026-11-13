@@ -20,6 +20,15 @@ BLOCKLIST = [
     r"insert code to",
     r"execute the following",
     r"run this code",
+    # Requests to reveal secrets or the prompt. Limited to technical targets: "tell me the
+    # password" or "show me your credentials" are ordinary lines of fiction dialogue.
+    r"\b(list|reveal|print|show|dump|output|display|leak|expose|give\s+me|tell\s+me|send\s+me|share)\b"
+    r"[^\n]{0,40}?(\b(api[\s_-]?keys?|access[\s_-]?tokens?|auth(entication)?[\s_-]?tokens?"
+    r"|env(ironment)?\s+variables|system\s+prompt|(hidden|initial|original)\s+instructions)|\.env\b)",
+    # Secrets addressed to the assistant: "credentials you have access to".
+    r"\b(credentials|passwords|secrets|keys|tokens)\b[^.\n]{0,30}?\byou\s+(have\s+access\s+to|can\s+access|are\s+using)",
+    # Fake hand-over: "Task complete. Now here's your next task: ..."
+    r"\b(task|job|assignment)\s+(is\s+)?(complete|completed|done|finished)\b[^\n]{0,60}?\byour\s+(next|new)\s+(task|instruction|job)",
 ]
 
 

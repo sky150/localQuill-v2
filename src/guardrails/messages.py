@@ -16,11 +16,21 @@ def message_for(source: Source, name: str | None = None) -> str:
         )
     if source is Source.UPLOAD:
         return (
-            f"Some passages in {label} look like instructions to the model. "
-            "The file was added, but those passages will be ignored when answering."
+            f"Some passages in {label} look like instructions aimed at the AI. "
+            "The file was added, but those passages will be withheld when answering."
         )
     if source is Source.ATTACHMENT:
-        return f"{label} was not used: it contains text that looks like instructions to the model."
+        return (
+            f"{label} was withheld from the AI because it contains text that looks like "
+            "instructions aimed at the AI (a possible prompt injection). Remove or reword "
+            "those lines and attach the file again."
+        )
     if source is Source.RETRIEVED:
-        return f"A passage from {label} was left out: it looks like instructions to the model."
-    return "Part of the conversation history was ignored because it looks unsafe."
+        return (
+            f"A passage from {label} was withheld from the AI because it looks like "
+            "instructions aimed at the AI (a possible prompt injection)."
+        )
+    return (
+        "An earlier message in this conversation was withheld from the AI because it "
+        "looks like instructions aimed at the AI."
+    )

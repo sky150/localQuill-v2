@@ -79,7 +79,9 @@ async def chat(request: ChatRequest):
             raise HTTPException(
                 status_code=400, detail=f"Task '{request.task}' is not implemented yet."
             ) from e
-        except (httpx.ConnectError, httpx.ConnectTimeout, ResponseError) as e:
+        # The ollama client raises the builtin ConnectionError (e.g. from the embedding
+        # call during retrieval); httpx errors come from the chat call itself.
+        except (ConnectionError, httpx.ConnectError, httpx.ConnectTimeout, ResponseError) as e:
             raise HTTPException(status_code=503, detail=f"LLM unavailable: {e}") from e
 
     return ChatResponse(
