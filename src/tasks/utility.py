@@ -2,7 +2,6 @@ import re
 import os
 import logging
 from src.embedding import embeddings
-from src.guardrails.content_filter import ContentFilterMiddleware
 from langchain_chroma import Chroma
 
 logger = logging.getLogger(__name__)
@@ -52,17 +51,6 @@ def text_normalization(user_text: str):
     text = re.sub(r"[ ]{2,}", " ", text)
 
     return text.strip()
-
-def use_guardrails(user_text):
-    use_guardrails = os.getenv("USE_GUARDRAILS", "true").strip().lower() != "false"
-    if use_guardrails:
-        cf = ContentFilterMiddleware(logger=logger)
-        ok = cf.check_text(user_text)
-        if not ok:
-            logger.warning("Input blocked by content filter (deterministic check).")
-            return "Your input was rejected because it appears to contain unsafe instructions. Please reword and try again."
-    return None
-
 
 def user_text_split(user_text):
 # Split at ~5000 characters to Improve quality.

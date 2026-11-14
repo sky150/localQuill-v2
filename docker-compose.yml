@@ -87,8 +87,52 @@ services:
     networks:
       - development
 
+  backend:
+    build:
+      context: .
+      dockerfile: containers/backend/dockerfile
+    image: quill-backend:local
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # The LLM server runs on the host (GPU access); containers reach it via host.docker.internal.
+      # These override any 127.0.0.1 values from .env.
+      OLLAMA_URL: http://host.docker.internal:11434
+      LMSTUDIO_URL: http://host.docker.internal:1234/v1
+      CHROMA_PATH: /app/chroma
+      UPLOAD_PATH: /app/data/uploads
+      WORKSPACE_PATH: /app/data/workspace
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # needed on Linux; Docker Desktop already provides it
+    volumes:
+      - ./data:/app/data
+      - ./chroma:/app/chroma
+      - hf_cache:/hf   # embedding + guardrail models, downloaded once
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/api/health', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+    networks:
+      - development
+
+  frontend:
+    build:
+      context: .
+      dockerfile: containers/frontend/dockerfile
+    image: quill-frontend:local
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - backend
+    networks:
+      - development
 
 
+volumes:
+  hf_cache:
 
 networks:
   development:

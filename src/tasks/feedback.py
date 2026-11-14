@@ -10,6 +10,7 @@ class FeedbackTask(Task):
     max_words = None
     retrieval_query = "style tone register passive voice word choice clarity ambiguity readability"
     uses_context_as_text = True
+    contain_untrusted = True
 
     style_context = {
         "formal": "You are a strict academic writing editor giving revision notes.",

@@ -1,7 +1,22 @@
 .git
 .venv
 __pycache__
-data/postgres_data/
-data/s3_data/
+*.pyc
+.env
+.pytest_cache
+
+# runtime state is mounted, never baked into an image
+data/
+chroma/
+logs/
+
+# frontend build output and deps
+**/node_modules
+frontend/dist
+
+# not needed in any image
+tests/
+evaluation/
+docs/
 *.md
 !README.md

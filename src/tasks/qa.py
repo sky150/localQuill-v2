@@ -6,6 +6,7 @@ from .utility import clip, format_attachments
 class QATask(Task):
     name = "qa"
     max_words = None
+    contain_untrusted = True
     collections = {"userdocs": 3, "outline": 1}
 
     style_context = {

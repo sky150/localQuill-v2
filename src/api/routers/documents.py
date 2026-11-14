@@ -62,6 +62,7 @@ async def upload_document(
         added=result["added"],
         skipped=result["skipped"],
         total=result["total"],
+        notices=result.get("notices", []),
     )
 
 
@@ -103,6 +104,7 @@ async def index_workspace_document(
         added=result["added"],
         skipped=result["skipped"],
         total=result["total"],
+        notices=result.get("notices", []),
     )
 
 
