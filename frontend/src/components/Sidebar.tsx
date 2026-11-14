@@ -6,8 +6,8 @@ export type UploadEntry = {
   id: string
   name: string
   progress: number
-  status: 'uploading' | 'processing' | 'error'
-  error?: string
+  status: 'uploading' | 'processing' | 'error' | 'warning'
+  error?: string     // shown for both 'error' and 'warning'
 }
 
 type SidebarProps = {

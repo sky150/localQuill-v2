@@ -3,6 +3,7 @@ import logging
 from functools import lru_cache
 from langchain_chroma import Chroma
 from src.config import CHROMA_PATH
+from src.guardrails import screen_chunks
 from src.embedding.embeddings import get_embedding_function
 
 logger = logging.getLogger(__name__)
@@ -24,11 +25,11 @@ def get_db(collection: str, chroma_path: str = CHROMA_PATH):
 
 
 def retrieve(collection: str, query: str, top_k: int = 3):
-    """Return a list of (doc, score)."""
+    """Return a list of (doc, score). Chunks from user-supplied collections are scanned."""
     results = get_db(collection).similarity_search_with_score(query, k=top_k)
     for doc, score in results:
         logger.info(f"[rag] {collection} | score {score:.3f} | {doc.metadata.get('source', '?')}")
-    return results
+    return screen_chunks(results, collection)
 
 
 def format_context(results) -> str:

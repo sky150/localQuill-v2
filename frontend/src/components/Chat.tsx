@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { api, type ApiConfig, type ChatMessage } from '../lib/api'
-import { ArrowUp, AtSign, FileText, X } from './icons'
+import { api, type ApiConfig, type ChatMessage, type Notice } from '../lib/api'
+import { ArrowUp, AtSign, FileText, ShieldAlert, X } from './icons'
 
 export type ChatTask = 'qa' | 'grammar' | 'feedback'
 
-type DisplayMessage = ChatMessage & { attachments?: string[] }
+type DisplayMessage = ChatMessage & { attachments?: string[]; notices?: Notice[] }
 
 const MODES: { label: string; task: ChatTask }[] = [
   { label: 'Q&A', task: 'qa' },
@@ -68,7 +68,7 @@ export default function Chat({
       })
       setMessages((current) => [
         ...current,
-        { role: 'assistant', content: response.result },
+        { role: 'assistant', content: response.result, notices: response.notices },
       ])
     } catch (reason) {
       setMessages((current) => [
@@ -135,6 +135,22 @@ export default function Chat({
                   {message.content}
                 </ReactMarkdown>
               </div>
+              {message.notices && message.notices.length > 0 && (
+                <div
+                  role="status"
+                  className="mt-2 rounded-md border border-warn-line bg-warn-soft px-3 py-2 text-[12px] text-text"
+                >
+                  <div className="mb-1 flex items-center gap-1.5 font-medium text-warn">
+                    <ShieldAlert size={14} />
+                    Withheld by the safety filter
+                  </div>
+                  <ul className="space-y-1">
+                    {message.notices.map((notice, noticeIndex) => (
+                      <li key={noticeIndex}>{notice.message}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           ),
         )}

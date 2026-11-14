@@ -264,8 +264,24 @@ export default function App() {
             ),
           )
         })
-        .then(async () => {
+        .then(async (result) => {
           await refreshDocuments()
+          const notices = result.notices ?? []
+          if (notices.length > 0) {
+            // Indexed, but the guardrails flagged part of it: keep the entry visible.
+            setUploads((current) =>
+              current.map((entry) =>
+                entry.id === id
+                  ? {
+                      ...entry,
+                      status: 'warning',
+                      error: notices.map((notice) => notice.message).join(' '),
+                    }
+                  : entry,
+              ),
+            )
+            return
+          }
           setUploads((current) => current.filter((entry) => entry.id !== id))
         })
         .catch((reason: Error) => {
@@ -347,7 +363,9 @@ export default function App() {
           documents={userdocs}
           outline={outline}
           outlinePath={outlinePath}
-          uploadsActive={uploads.some((entry) => entry.status !== 'error')}
+          uploadsActive={uploads.some(
+            (entry) => entry.status !== 'error' && entry.status !== 'warning',
+          )}
           activeId={activePath}
           editingId={editingPath}
           onOpen={openFile}

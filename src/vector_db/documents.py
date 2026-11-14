@@ -6,6 +6,7 @@ from langchain_chroma import Chroma
 
 from src.config import CHROMA_PATH, UPLOAD_PATH
 from src.embedding.embeddings import get_embedding_function
+from src.guardrails import screen_upload_chunks
 from src.vector_db.chunk_documents import split_documents
 from src.vector_db.generate_chroma import add_to_chroma
 from src.vector_db.load_documents import SUPPORTED_EXTENSIONS, load_file
@@ -56,11 +57,13 @@ def remove_file(path: str) -> None:
 def ingest_document(path: str, kind: str, embedding_function=None) -> dict:
     document = load_file(path, metadata={"kind": kind})
     chunks = split_documents([document])
+    notices = screen_upload_chunks(chunks, os.path.basename(path))
     db = open_collection(kind, embedding_function)
     db.delete(where={"source": document.metadata["source"]})
-    return add_to_chroma(
+    result = add_to_chroma(
         chunks, CHROMA_PATH, kind, embedding_function=embedding_function
     )
+    return {**result, "notices": notices}
 
 
 def list_documents(kind: str | None = None, embedding_function=None) -> list[dict]:

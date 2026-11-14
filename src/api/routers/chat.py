@@ -6,10 +6,12 @@ import httpx
 from fastapi import APIRouter, HTTPException
 from ollama import ResponseError
 
-from src.api.schemas import ChatRequest, ChatResponse
+from src.api.schemas import ChatRequest, ChatResponse, Notice
 from src.config import STYLE_COLLECTIONS, TASKS
 from src.tasks import get_task
-from src.tasks.utility import clip, use_guardrails
+from src.guardrails import screen_attachments, screen_history, screen_user_text
+from src.guardrails.notices import collect_notices
+from src.tasks.utility import clip
 from src.workspace import files
 
 logger = logging.getLogger(__name__)
@@ -37,7 +39,7 @@ def _load_context(paths: list[str]) -> list[dict]:
                 "content": clip(content, CONTEXT_CHAR_LIMIT),
             }
         )
-    return context
+    return screen_attachments(context)   # scans what the model would receive
 
 
 @router.post("", response_model=ChatResponse)
@@ -52,23 +54,39 @@ async def chat(request: ChatRequest):
         raise HTTPException(status_code=422, detail="Text is empty.")
 
     if text:
-        blocked = use_guardrails(text)
-        if blocked:
-            raise HTTPException(status_code=400, detail=blocked)
+        verdict = await asyncio.to_thread(screen_user_text, text)
+        if not verdict.allowed:
+            raise HTTPException(status_code=400, detail=verdict.message)
 
     task = get_task(request.task, style=request.style)
-    history = [message.model_dump() for message in request.history]
-    context = _load_context(request.context_paths)
 
-    try:
-        result = await asyncio.to_thread(
-            task.run, text, history=history, context=context
-        )
-    except NotImplementedError as e:
-        raise HTTPException(
-            status_code=400, detail=f"Task '{request.task}' is not implemented yet."
-        ) from e
-    except (httpx.ConnectError, httpx.ConnectTimeout, ResponseError) as e:
-        raise HTTPException(status_code=503, detail=f"LLM unavailable: {e}") from e
+    with collect_notices() as notices:
+        history = [message.model_dump() for message in request.history]
+        # Scanning runs the classifier, so keep it off the event loop.
+        history = await asyncio.to_thread(screen_history, history)
+        context = await asyncio.to_thread(_load_context, request.context_paths)
 
-    return ChatResponse(task=request.task, style=request.style, result=result)
+        if not text and not context:
+            # Everything the user attached was left out; say why instead of running on nothing.
+            reasons = " ".join(n["message"] for n in notices) or "Text is empty."
+            raise HTTPException(status_code=422, detail=reasons)
+
+        try:
+            result = await asyncio.to_thread(
+                task.run, text, history=history, context=context
+            )
+        except NotImplementedError as e:
+            raise HTTPException(
+                status_code=400, detail=f"Task '{request.task}' is not implemented yet."
+            ) from e
+        # The ollama client raises the builtin ConnectionError (e.g. from the embedding
+        # call during retrieval); httpx errors come from the chat call itself.
+        except (ConnectionError, httpx.ConnectError, httpx.ConnectTimeout, ResponseError) as e:
+            raise HTTPException(status_code=503, detail=f"LLM unavailable: {e}") from e
+
+    return ChatResponse(
+        task=request.task,
+        style=request.style,
+        result=result,
+        notices=[Notice(**n) for n in notices],
+    )

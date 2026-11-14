@@ -1,6 +1,8 @@
 import logging
 import time
 from src.config import TaskConfig
+from src.guardrails.containment import LEAK_MESSAGE, containment_note, leaked, new_canary
+from src.guardrails.notices import report_text
 from src.rag.retriever import retrieve, format_context
 from src.tasks.utility import format_attachments, truncate_by_paragraph
 from langchain_core.output_parsers import StrOutputParser
@@ -14,6 +16,7 @@ class Task:
     retrieval_query: str = ""               # empty = no retrieval
     max_words: int | None = None            # None = no truncation
     uses_context_as_text = False            # attached files replace the text to review
+    contain_untrusted = False               # add the security note + canary (not for autocomplete)
 
     def __init__(self, model, config: TaskConfig, style: str = "formal"):
         self.model = model
@@ -57,6 +60,10 @@ class Task:
             logger.info(f"[{self.name}] words sent: {len(text.split())} | cut: {was_cut}")
             
         prompt = self.build_prompt(text, context=context, **opts)
+        canary = None
+        if self.contain_untrusted:
+            canary = new_canary()
+            prompt += containment_note(canary)
         logger.info(f"[{self.name}] prompt chars: {len(prompt)}")
         
         # Invoke the model
@@ -64,7 +71,12 @@ class Task:
         result = self.chain.invoke(prompt)
         time_passed = time.time() - time_start
         logger.info(f"[{self.name}] response time: {time_passed:.2f}s")
-   
+
+        if canary and leaked(canary, result):
+            logger.warning(f"[{self.name}] canary found in output; reply withheld")
+            report_text("output", LEAK_MESSAGE)
+            return LEAK_MESSAGE
+
         if was_cut:
             result += f"\n\n---\nNote: input was cut at about {self.max_words} words. Later text was not processed."
         return result + f"\n\n---\nResponse time: {time_passed:.2f}s"

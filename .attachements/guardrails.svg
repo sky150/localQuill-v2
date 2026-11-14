@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 540" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect width="1240" height="540" fill="#ffffff"/>
+
+  <line x1="40" y1="36" x2="100" y2="36" stroke="#d9534f" stroke-width="3"/>
+  <text x="110" y="40" font-size="12.5" fill="#475569">today</text>
+  <line x1="180" y1="36" x2="240" y2="36" stroke="#d9534f" stroke-width="3" stroke-dasharray="12 10"/>
+  <text x="250" y="40" font-size="12.5" fill="#475569">planned</text>
+
+  <rect x="40" y="90" width="170" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="60" y="142" font-size="15" font-weight="700" fill="#334155">Chat text</text>
+
+  <rect x="250" y="90" width="190" height="90" rx="12" fill="#fdeae6" stroke="#d9534f"/>
+  <text x="270" y="128" font-size="15" font-weight="700" fill="#a13c2e">Guardrail</text>
+  <text x="270" y="152" font-size="12" fill="#b5675a">patterns + structure</text>
+
+  <rect x="480" y="90" width="150" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="500" y="142" font-size="15" font-weight="700" fill="#334155">Tasks</text>
+
+  <rect x="670" y="90" width="150" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="690" y="142" font-size="15" font-weight="700" fill="#334155">Retrieval</text>
+
+  <rect x="860" y="90" width="150" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="880" y="142" font-size="15" font-weight="700" fill="#334155">Prompt</text>
+
+  <rect x="1050" y="90" width="150" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1070" y="142" font-size="15" font-weight="700" fill="#334155">Local model</text>
+
+  <line x1="210" y1="135" x2="242" y2="135" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="440" y1="135" x2="472" y2="135" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="630" y1="135" x2="662" y2="135" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="820" y1="135" x2="852" y2="135" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1010" y1="135" x2="1042" y2="135" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="250" width="170" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="60" y="290" font-size="15" font-weight="700" fill="#334155">File upload</text>
+  <text x="60" y="312" font-size="12" fill="#64748b">userdocs | outline</text>
+
+  <rect x="250" y="250" width="190" height="90" rx="12" fill="none" stroke="#d9534f" stroke-width="2" stroke-dasharray="12 10"/>
+  <text x="270" y="288" font-size="15" font-weight="700" fill="#a13c2e">Guardrail</text>
+  <text x="270" y="312" font-size="12" fill="#b5675a">content scan</text>
+
+  <rect x="480" y="250" width="190" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="500" y="290" font-size="15" font-weight="700" fill="#334155">Ingestion</text>
+  <text x="500" y="312" font-size="12" fill="#64748b">→ Chroma (RAG)</text>
+
+  <line x1="210" y1="295" x2="242" y2="295" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="440" y1="295" x2="472" y2="295" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <polyline points="575,250 575,215 745,215 745,182" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="410" width="170" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="60" y="452" font-size="15" font-weight="700" fill="#334155">Attachments</text>
+
+  <rect x="250" y="410" width="190" height="90" rx="12" fill="none" stroke="#d9534f" stroke-width="2" stroke-dasharray="12 10"/>
+  <text x="270" y="448" font-size="15" font-weight="700" fill="#a13c2e">Guardrail</text>
+  <text x="270" y="472" font-size="12" fill="#b5675a">content scan</text>
+
+  <line x1="210" y1="455" x2="242" y2="455" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <polyline points="440,455 935,455 935,182" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
