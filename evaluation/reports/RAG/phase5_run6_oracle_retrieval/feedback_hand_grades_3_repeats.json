@@ -1,0 +1,6 @@
+{"_note": "Run 6 (oracle): feedback with the cleaned fixed file plus the right style-guide passages, found with the hand-written problem label as the query and re-ranked (vector top 30 -> cross-encoder ms-marco-MiniLM-L-6-v2, top 2). Not possible in the app; shows what perfect retrieval adds. Compare with run 5 (same drafts, same fixed file). Same rubric: 2 = names the known problem with a usable fix, 1 = touches on it, 0 = misses it. st-f-02 graded but left out of the means.",
+ "st-f-01": {"oracle": [2,2,2]}, "st-f-02": {"oracle": [2,2,2]}, "st-f-03": {"oracle": [2,2,2]},
+ "st-f-04": {"oracle": [2,2,2]}, "st-f-05": {"oracle": [2,2,2]}, "st-f-06": {"oracle": [0,1,0]},
+ "st-f-07": {"oracle": [0,0,2]}, "st-f-08": {"oracle": [0,0,0]}, "st-f-09": {"oracle": [1,0,1]},
+ "st-f-10": {"oracle": [0,1,1]}, "st-p-05": {"oracle": [2,2,2]}, "st-p-06": {"oracle": [2,2,2]},
+ "st-p-07": {"oracle": [1,1,1]}, "st-p-08": {"oracle": [2,2,2]}}

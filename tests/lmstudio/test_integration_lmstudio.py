@@ -77,8 +77,8 @@ def lmstudio_ready():
 
 @pytest.fixture
 def no_chroma(monkeypatch):
-    monkeypatch.setattr("src.tasks.base.retrieve", lambda *a, **k: [])
-    monkeypatch.setattr("src.tasks.base.format_context", lambda r: "GUIDELINES")
+    monkeypatch.setattr("src.tasks.base.retrieve_reranked", lambda *a, **k: [])
+    monkeypatch.setattr("src.tasks.base.format_references", lambda r: "GUIDELINES")
 
 
 def test_lmstudio_server_lists_models(lmstudio_ready):

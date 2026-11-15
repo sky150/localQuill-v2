@@ -234,7 +234,8 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 |----------|---------|-------------|
 | `COLLECTION_NAME` | `essay` | `essay` or `fiction` |
 | `CHUNK_SIZE` | `1000` | Characters per document chunk for embeddings (1000 recommended) |
-| `CHUNK_OVERLAP` | `400` | Character overlap between chunks (400 recommended for high recall) |
+| `CHUNK_OVERLAP` | `400` | Character overlap between style-guide chunks |
+| `UPLOAD_CHUNK_OVERLAP` | `0` | Character overlap for user documents and outlines (0 retrieved best, see [docs/rag-evaluation.md](docs/rag-evaluation.md)) |
 | `EMBEDDING_PROVIDER` | `ollama` | `ollama` or `huggingface` |
 | `EMBEDDING_MODEL` | `nomic-embed-text` | Model for generating embeddings |
 | `LOCAL_MODEL` | `ministral-3:8b` | Default LLM for feedback generation |

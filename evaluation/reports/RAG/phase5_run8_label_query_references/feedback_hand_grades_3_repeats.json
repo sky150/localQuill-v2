@@ -1,0 +1,11 @@
+{"_note": "Run 8: feedback on 10 drafts, 3 repeats, qwen3.5:4b, no judge (graded by hand, same rubric: 2 = names the known problem with a usable fix, 1 = touches on it, 0 = misses it). hybrid = fixed file + style-guide passages found with the label-picking query (1 label from a list), re-ranked (cross-encoder, top 30), passages marked as REFERENCE with their source. fixed = fixed file only, regenerated in this run (same setup as run 5's fixed: the difference between the two runs shows the noise). st-f-10 hybrid: all 3 answers reviewed sentences from the Book Reviews guide ('With any luck', 'You can and should', 'Finally, a few general considerations') as if they were the user's text.",
+ "st-f-04": {"hybrid": [2,2,2], "fixed": [2,1,1]},
+ "st-f-05": {"hybrid": [2,2,2], "fixed": [2,1,1]},
+ "st-f-06": {"hybrid": [0,0,0], "fixed": [0,0,0]},
+ "st-f-07": {"hybrid": [2,0,0], "fixed": [2,1,1]},
+ "st-f-08": {"hybrid": [0,0,0], "fixed": [0,2,2]},
+ "st-f-09": {"hybrid": [2,2,2], "fixed": [0,2,0]},
+ "st-f-10": {"hybrid": [0,0,0], "fixed": [1,0,0]},
+ "st-p-06": {"hybrid": [2,0,2], "fixed": [2,2,0]},
+ "st-p-07": {"hybrid": [1,1,2], "fixed": [2,1,0]},
+ "st-p-08": {"hybrid": [2,2,2], "fixed": [2,2,2]}}

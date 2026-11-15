@@ -1,0 +1,103 @@
+{
+ "_note": "Search queries written by the query model in Phase 3 (from evaluation/cache/rag/llm_queries.json), next to the hand-written problem label.",
+ "st-f-01": {
+  "issue": "weak intensifiers and qualifiers",
+  "llm_query": "Overuse of intensifiers and redundant adjectives",
+  "model": "ministral-3:8b"
+ },
+ "st-f-02": {
+  "issue": "redundant words and phrases",
+  "llm_query": "Comma splice and run-on sentence correction",
+  "model": "ministral-3:8b"
+ },
+ "st-f-03": {
+  "issue": "contractions and informal register in an academic text",
+  "llm_query": "Tone: overly casual and informal",
+  "model": "ministral-3:8b"
+ },
+ "st-f-04": {
+  "issue": "first and second person in a formal essay",
+  "llm_query": "Passive voice and informal tone in formal writing",
+  "model": "ministral-3:8b"
+ },
+ "st-f-05": {
+  "issue": "no clear thesis: the introduction lists topics without a central claim",
+  "llm_query": "Lack of cohesive thesis-driven structure",
+  "model": "ministral-3:8b"
+ },
+ "st-f-06": {
+  "issue": "paragraph without a topic sentence",
+  "llm_query": "Inconsistent sentence structure and fragmented transitions",
+  "model": "ministral-3:8b"
+ },
+ "st-f-07": {
+  "issue": "missing transitions between ideas",
+  "llm_query": "Fragmented sentences with no cohesive structure or logical flow",
+  "model": "ministral-3:8b"
+ },
+ "st-f-08": {
+  "issue": "vague email subject line",
+  "llm_query": "Lack of formal email structure and professional tone",
+  "model": "ministral-3:8b"
+ },
+ "st-f-09": {
+  "issue": "literature review that only summarises sources one by one",
+  "llm_query": "Lack of cohesive argumentative structure in paragraph",
+  "model": "ministral-3:8b"
+ },
+ "st-f-10": {
+  "issue": "book review that only retells the plot",
+  "llm_query": "Lacks cohesive narrative flow and emotional depth",
+  "model": "ministral-3:8b"
+ },
+ "st-p-01": {
+  "issue": "comma splice",
+  "llm_query": "Comma splice sentence fragments",
+  "model": "ministral-3:8b"
+ },
+ "st-p-02": {
+  "issue": "fused (run-on) sentences",
+  "llm_query": "Comma splice and run-on sentences",
+  "model": "ministral-3:8b"
+ },
+ "st-p-03": {
+  "issue": "subject-verb agreement",
+  "llm_query": "Subject-verb agreement errors",
+  "model": "ministral-3:8b"
+ },
+ "st-p-04": {
+  "issue": "agreement with neither/nor and either/or",
+  "llm_query": "Comma splice and subject-verb agreement in compound sentences",
+  "model": "ministral-3:8b"
+ },
+ "st-p-05": {
+  "issue": "passive voice and wordy 'to be' constructions",
+  "llm_query": "Passive voice overuse in narrative prose",
+  "model": "ministral-3:8b"
+ },
+ "st-p-06": {
+  "issue": "point of view switches from first person to third person",
+  "llm_query": "Inconsistent narrative perspective and tense shifts",
+  "model": "ministral-3:8b"
+ },
+ "st-p-07": {
+  "issue": "third person limited suddenly becomes omniscient",
+  "llm_query": "Inconsistent narrative perspective and abrupt shifts",
+  "model": "ministral-3:8b"
+ },
+ "st-p-08": {
+  "issue": "telling emotions instead of showing them",
+  "llm_query": "Overly repetitive phrasing and passive emotional delivery",
+  "model": "ministral-3:8b"
+ },
+ "st-p-09": {
+  "issue": "nested quotation marks in British style",
+  "llm_query": "Comma usage in quoted dialogue attribution",
+  "model": "ministral-3:8b"
+ },
+ "st-p-10": {
+  "issue": "dangling modifiers",
+  "llm_query": "Comma splice sentence fragments",
+  "model": "ministral-3:8b"
+ }
+}
