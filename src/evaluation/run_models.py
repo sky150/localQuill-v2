@@ -13,7 +13,8 @@ stopped. All evaluators read only that file, so a vLLM runner that writes the sa
 
 Row fields: backend (the provider), model, setting_id, params, run, seed, text_id, prompt,
 style, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s,
-done_reason. Rows from LM Studio have load_s and gen_tok_per_s null: its API reports neither.
+done_reason. For LM Studio, run_models first (re)loads each model with config.NUM_CTX (LLM_CONTEXT).
+Rows from LM Studio have load_s and gen_tok_per_s null: its API reports neither.
 """
 
 from __future__ import annotations
@@ -23,7 +24,7 @@ import argparse
 from . import config
 from .common import (add_target_args, append_jsonl, build_messages, clean_output, load_testset,
                      paths_from_args, read_jsonl, run_key)
-from .generation import build_task, generate, warm_up
+from .generation import build_task, ensure_context, generate, warm_up
 
 
 def main() -> None:
@@ -42,6 +43,7 @@ def main() -> None:
     n = 0
 
     for model in models:
+        ensure_context(args.provider, model)
         task = build_task(paths, args.provider, model)
         warm_up(task, args.provider)
         for setting in config.SETTINGS:

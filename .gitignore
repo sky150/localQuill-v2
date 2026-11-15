@@ -10,8 +10,12 @@ test/chroma_eval/
 # Personal files
 data/styles/outline/
 data/styles/userdocs/
+data/eval/*/languagetool/
 data/uploads/
 data/workspace/
+.idea/
+.claude
+
 
 # Basic Gitignore template
 

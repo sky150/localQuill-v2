@@ -34,12 +34,29 @@ REQUEST_TIMEOUT_S = 1800
 # server URLs come from the app config (OLLAMA_URL, LMSTUDIO_URL in .env). The eval provider is
 # hardcoded here on purpose: .env's LLM_PROVIDER configures the app, not the experiment.
 PROVIDERS = ("ollama", "lmstudio")
-PROVIDER = "lmstudio"
+PROVIDER = "ollama"
+
+
 # Model names differ per provider (Ollama tag vs. LM Studio model id).
 MODELS_BY_PROVIDER = {
     "ollama": [
-        # "gemma4:e2b",
         "qwen2.5:0.5b",
+        # Grammar
+        #"granite4.2:8b",
+        #"qwen3.5:9b",
+        #"llama3.1:8b",
+        #"mistral:7b-instruct",
+        #"gemma4:e4b",
+
+        # Q&A
+        #"gemma4:e2b",
+        #"gemma4:e4b",
+        #"phi4-mini:3.8b",
+        #"gemma3:4b",
+        #"qwen3.5:4b",
+
+        # Feedback
+        #"gemma3:4b", # Best Previous Semester. Same Settings as DISPRO1.
     ],
     "lmstudio": [
         "qwen2.5-coder-0.5b-instruct",
@@ -57,7 +74,9 @@ SETTINGS = [
     {"id": "t0.2", "temperature": 0.2, "top_p": 1.0},
     {"id": "t0.3", "temperature": 0.3, "top_p": 1.0},
 ]
-NUM_CTX = 16384            # Ollama only: LM Studio ignores it, its context length is set when the model is loaded there
+# One context size for every tested model and both providers. Ollama takes it per request;
+# LM Studio fixes it at load time, so run_models (re)loads the model with it (generation.py).
+NUM_CTX = int(os.getenv("LLM_CONTEXT", "16384"))
 # Small models can loop without stopping; uncapped, qwen2.5:0.5b on CPU ran past the
 # 1800 s request timeout on one ~400-token text. Rows with done_reason "length" hit the cap.
 NUM_PREDICT = 2048

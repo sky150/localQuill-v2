@@ -12,7 +12,9 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 
-from src.config import TaskConfig
+import requests
+
+from src.config import LMSTUDIO_URL, TaskConfig
 from src.llm.factory import get_model
 from src.tasks.base import Task
 
@@ -47,7 +49,7 @@ def build_task(paths: EvalPaths, provider: str, model: str) -> Task:
 
 def _invoke_kwargs(provider: str, params: dict, seed: int | None, num_predict: int) -> dict:
     if provider == "ollama":
-        # `options` replaces every option the factory set (its num_ctx=4096 included), so the
+        # `options` replaces every option the factory set (its num_ctx included), so the
         # eval's context size, cap and seed apply.
         return {"options": {**params, "num_ctx": config.NUM_CTX, "num_predict": num_predict,
                             **({"seed": seed} if seed is not None else {})}}
@@ -79,3 +81,46 @@ def generate(task: Task, provider: str, prompt: str, params: dict, seed: int) ->
 def warm_up(task: Task, provider: str) -> None:
     """Load the model once so load time does not land in run 0's timing."""
     task.model.invoke("Hi", **_invoke_kwargs(provider, {}, None, 1))
+
+
+class ContextMismatch(SystemExit):
+    """LM Studio could not load the model with the eval's context size."""
+
+
+def _lmstudio_instances(base: str, model: str) -> list[dict]:
+    r = requests.get(f"{base}/api/v1/models", timeout=30)
+    r.raise_for_status()
+    return next((m["loaded_instances"] for m in r.json()["models"] if m["key"] == model), [])
+
+
+def ensure_context(provider: str, model: str) -> None:
+    """Make sure the model runs with config.NUM_CTX.
+
+    Ollama: nothing to do, num_ctx goes with every request. LM Studio: unload every loaded
+    instance of `model` whose context differs (or all instances, if the context cannot be read),
+    then load one instance with config.NUM_CTX, then re-read and raise ContextMismatch if the
+    loaded context still differs. If exactly one instance is already loaded with the right
+    context, do nothing.
+    """
+    if provider != "lmstudio":
+        return
+    # The native REST API lives next to the OpenAI-compatible /v1 endpoint the app uses.
+    base = LMSTUDIO_URL.rstrip("/").removesuffix("/v1")
+
+    def ctx(inst: dict) -> int | None:
+        return inst.get("config", {}).get("context_length")
+
+    instances = _lmstudio_instances(base, model)
+    if len(instances) == 1 and ctx(instances[0]) == config.NUM_CTX:
+        return
+    for inst in instances:
+        requests.post(f"{base}/api/v1/models/unload", json={"instance_id": inst["id"]},
+                      timeout=120).raise_for_status()
+    print(f"[lmstudio] loading {model} with context {config.NUM_CTX}")
+    requests.post(f"{base}/api/v1/models/load",
+                  json={"model": model, "context_length": config.NUM_CTX},
+                  timeout=600).raise_for_status()
+    loaded = [ctx(i) for i in _lmstudio_instances(base, model)]
+    if loaded != [config.NUM_CTX]:
+        raise ContextMismatch(f"LM Studio loaded {model} with context {loaded}, "
+                              f"expected {config.NUM_CTX}.")

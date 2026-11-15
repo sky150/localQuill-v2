@@ -4,7 +4,8 @@ from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 from src.config import (
     get_config, OLLAMA_URL, LMSTUDIO_URL, OPENAI_API_KEY,
-    VERBOSE, KEEP_ALIVE, LIMIT_TOKEN_NUMBER, PROVIDER, 
+    VERBOSE, KEEP_ALIVE, LIMIT_TOKEN_NUMBER, PROVIDER,
+    LLM_CONTEXT,
 )
 
 logger = logging.getLogger(__name__)
@@ -37,7 +38,7 @@ def _build_ollama(cfg) -> BaseChatModel:
         "temperature": cfg.temperature,
         "keep_alive": _keep_alive(),                  # Ollama only
         "num_predict": _token_limit(cfg.max_tokens),  # Ollama name for max tokens
-        "num_ctx": 4096,                              # Ollama only
+        "num_ctx": LLM_CONTEXT,                       # Ollama only
     }))
 
 

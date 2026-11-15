@@ -15,6 +15,9 @@ WORKSPACE_PATH = os.getenv("WORKSPACE_PATH", "./data/workspace")
 DEFAULT_STYLE = "formal"
 PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
 LMSTUDIO_URL = os.getenv("LMSTUDIO_URL", "http://127.0.0.1:1234/v1")
+# Context window for the app's models. Ollama takes it per request; LM Studio fixes it when a
+# model is loaded, so there it must match the load setting in LM Studio.
+LLM_CONTEXT = int(os.getenv("LLM_CONTEXT") or 4096)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "NotSet")
 
 

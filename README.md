@@ -232,6 +232,7 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 | `EMBEDDING_MODEL` | `nomic-embed-text` | Model for generating embeddings |
 | `LOCAL_MODEL` | `ministral-3:8b` | Default LLM for feedback generation |
 | `JUDGE_MODEL` | `llama3.1` | LLM for evaluation scoring (used by G-Eval) |
+| `LLM_CONTEXT` | `4096` | Context window in tokens. Ollama takes it per request; for LM Studio, set the same value when you load the model. The eval uses it for both providers (default 16384) |
 | `TEMPERATURE` | `0.1` | 0.0 (deterministic) to 1.0 (bit more creative) |
 | `TOP_K` | `3` | Number of document chunks to retrieve |
 | `USER_TEXT_SPLIT` | `10'000` | Character limit per LLM call (roughly 2'000 words) |
@@ -241,6 +242,8 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 | `CHROMA_PATH` | `./chroma` | Path to vector database |
 
 ## Evaluation & Benchmarking
+
+The grammar evaluation lives in `src/evaluation/`. [src/evaluation/README.md](src/evaluation/README.md) covers its run order, data layout, metrics and MLflow logging.
 
 Local Quill uses **G-Eval**, an LLM-as-judge framework, to measure feedback quality. Three metrics are evaluated:
 
