@@ -4,7 +4,7 @@ from .base import Task
 
 class GrammarTask(Task):
     name = "grammar"
-    max_words = int(os.getenv("GRAMMAR_MAX_WORDS", "300"))
+    max_words = int(os.getenv("GRAMMAR_MAX_WORDS", "1000"))
     retrieval_query = "grammar punctuation tense agreement comma splice sentence structure"
     uses_context_as_text = True
     contain_untrusted = True

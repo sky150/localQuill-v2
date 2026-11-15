@@ -239,3 +239,5 @@ __marimo__/
 # Chainlit
 .chainlit/translations/
 .webui_secret_key
+
+data/eval/results/

@@ -127,8 +127,6 @@ COLLECTION_NAME=fiction DATA_PATH=./data/styles/fiction uv run -m src.vector_db.
 ```sh
 $env:COLLECTION_NAME="formal"; $env:DATA_PATH="./data/styles/formal"; uv run -m src.vector_db.generate_chroma
 $env:COLLECTION_NAME="fiction"; $env:DATA_PATH="./data/styles/fiction"; uv run -m src.vector_db.generate_chroma
-$env:COLLECTION_NAME="outline"; $env:DATA_PATH="./data/styles/outline"; uv run -m src.vector_db.generate_chroma
-$env:COLLECTION_NAME="userdocs"; $env:DATA_PATH="./data/styles/userdocs"; uv run -m src.vector_db.generate_chroma
 ```
 
 ### 5. Launch the ChainLit Interface (Task Tests)
@@ -192,14 +190,9 @@ uv run -m src.vector_db.generate_chroma --reset
 ```sh
 # Test the RAG pipeline
  uv run python tests/unit/test_rag.py
-# Windows
-uv run python tests/unit/test_rag.py
 
 # Run content filter tests
 uv run python tests/unit/test_content_filter.py
-# Windows
-uv run python tests/unit/test_content_filter.py
-
 
 # Run all Unit Tests (Takes a while for Rag and Model Tests)
 uv run pytest -v
