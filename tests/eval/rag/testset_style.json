@@ -1,0 +1,281 @@
+{
+  "_note": "Style-guide retrieval test set for the grammar and feedback tasks. Each case is a short draft with one known problem; gold snippets are guide passages that contain the actual rule or advice for it (not just a heading or a list entry). When a case has several snippets, ANY of them is useful advice on its own. The eval builds the query the way the task does (retrieval_query + draft) and also tests other query styles. Drafted by Claude.",
+  "corpus": {
+    "formal": "data/styles/formal",
+    "fiction": "data/styles/fiction"
+  },
+  "cases": [
+    {
+      "id": "st-f-01",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "weak intensifiers and qualifiers",
+      "draft": "The results of the survey were quite surprising and really very important for the company. It is extremely clear that customers are rather unhappy with the new design, and the team was totally convinced that a change was absolutely necessary.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Clear and Concise Writing.pdf",
+          "snippet": "Delete weak intensifiers and qualifiers; sentences are more forceful without them"
+        }
+      ]
+    },
+    {
+      "id": "st-f-02",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "redundant words and phrases",
+      "draft": "In my personal opinion, the final outcome of the study was the end result of past history. The researchers joined together in close proximity and repeated again the experiment, which was completely finished by the month of May.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Clear and Concise Writing.pdf",
+          "snippet": "any student could randomly sit delete \"any\" and \"randomly\""
+        }
+      ]
+    },
+    {
+      "id": "st-f-03",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "contractions and informal register in an academic text",
+      "draft": "Climate policy isn't something governments can ignore anymore. They've tried to delay it, but that won't work forever :) Basically, it's a huge deal and everybody knows it, so we shouldn't wait any longer.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Guidelines for Effective Professional and Academic .pdf",
+          "snippet": "contractions (such as \"can't\"), emoticons (smiley faces)"
+        },
+        {
+          "file": "data/styles/formal/Guidelines for Effective Professional and Academic .pdf",
+          "snippet": "Remember to take out contractions"
+        }
+      ]
+    },
+    {
+      "id": "st-f-04",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "first and second person in a formal essay",
+      "draft": "I think this policy is a mistake. You should know that I have read many reports, and in my view you can clearly see that the costs are too high. I feel that we need to reconsider the whole approach.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Guidelines for Effective Professional and Academic .pdf",
+          "snippet": "avoid addressing the reader (i.e., using \"you should know...\") or using first person (i.e., \"i think this is...\")"
+        }
+      ]
+    },
+    {
+      "id": "st-f-05",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "no clear thesis: the introduction lists topics without a central claim",
+      "draft": "Social media is used by many people. There are many platforms such as Instagram and TikTok. Some people use it for news and others for entertainment. In this essay I will talk about social media and some of its aspects.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Harvard_Strategies for Essay Writing--Complete.pdf",
+          "snippet": "Your thesis is the central claim in your essay-your main insight or idea about your source or topic. your thesis should appear early in an academic essay"
+        }
+      ]
+    },
+    {
+      "id": "st-f-06",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "paragraph without a topic sentence",
+      "draft": "In 2019, the city added two bus lines. Ticket prices fell by ten per cent. Some residents said they still preferred driving. Parking fees went up in the centre. A survey found that cycling had also increased slightly.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Harvard_Strategies for Essay Writing--Complete.pdf",
+          "snippet": "strong topic sentence makes a claim or states a main idea that is then developed in the rest of the paragraph"
+        }
+      ]
+    },
+    {
+      "id": "st-f-07",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "missing transitions between ideas",
+      "draft": "Renewable energy has become cheaper. Many countries still depend on coal. Solar panels need a lot of space. Governments offer subsidies. Wind farms are often opposed by local residents. The climate targets for 2030 are ambitious.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Harvard_Strategies for Essay Writing--Complete.pdf",
+          "snippet": "your goal should be to help readers see how your ideas are connected"
+        }
+      ]
+    },
+    {
+      "id": "st-f-08",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "vague email subject line",
+      "draft": "Subject: Question\n\nDear Professor Miller,\nI had a question about the assignment that is due next week and wanted to ask whether we can submit it a few days later because of the field trip.\nBest regards,\nAnna",
+      "gold": [
+        {
+          "file": "data/styles/formal/Effective Email Communication – The Writing Center.pdf",
+          "snippet": "they should convey the main point of your message or the idea that you want the reader to take away. therefore, be as specific as possible"
+        }
+      ]
+    },
+    {
+      "id": "st-f-09",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "literature review that only summarises sources one by one",
+      "draft": "Smith (2018) studied remote work and found that productivity increased. Jones (2020) also studied remote work and found that employees felt lonely. Brown (2021) looked at managers and found that they preferred office work. Lee (2022) studied remote work in Asia.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Literature Reviews – The Writing Center.pdf",
+          "snippet": "A summary is a recap of the important information of the source, but a synthesis is a re-organization"
+        }
+      ]
+    },
+    {
+      "id": "st-f-10",
+      "style": "formal",
+      "task": "feedback",
+      "issue": "book review that only retells the plot",
+      "draft": "The novel begins when Clara moves to London. She finds a job in a bakery and meets Tom. Then her mother falls ill and she goes back home. Later Tom visits her and they decide to open their own shop. At the end the shop is a success.",
+      "gold": [
+        {
+          "file": "data/styles/formal/Book Reviews – The Writing Center.pdf",
+          "snippet": "the most important element of a review is that it is a commentary, not merely a summary"
+        }
+      ]
+    },
+    {
+      "id": "st-p-01",
+      "style": "fiction",
+      "task": "grammar",
+      "issue": "comma splice",
+      "draft": "The rain had stopped by the time Mara reached the harbour, the boats were already coming in. She waited by the wall, her coat was still dripping. Nobody looked at her, everyone was busy with the nets.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Writing for Success.pdf",
+          "snippet": "When two complete sentences are joined by a comma, the result is a comma splice"
+        }
+      ]
+    },
+    {
+      "id": "st-p-02",
+      "style": "fiction",
+      "task": "grammar",
+      "issue": "fused (run-on) sentences",
+      "draft": "The door creaked open nobody was inside. Elias stepped into the hall the floorboards groaned under his boots. He called his brother's name there was no answer.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Writing for Success.pdf",
+          "snippet": "When two complete sentences are combined into one without any punctuation, the result is a fused sentence"
+        }
+      ]
+    },
+    {
+      "id": "st-p-03",
+      "style": "fiction",
+      "task": "grammar",
+      "issue": "subject-verb agreement",
+      "draft": "The soldiers at the gate was tired after the long night. Each of the horses were restless, and the captain, together with his two sergeants, were arguing about the route. The list of supplies were shorter than expected.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Writing for Success.pdf",
+          "snippet": "the subject of a sentence and the verb of a sentence must agree with each other in number"
+        }
+      ]
+    },
+    {
+      "id": "st-p-04",
+      "style": "fiction",
+      "task": "grammar",
+      "issue": "agreement with neither/nor and either/or",
+      "draft": "Neither the twins nor their father want to leave the village. Either the innkeeper or his daughters knows the way through the forest, but neither the map nor the stories agrees on where the path begins.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Writing for Success.pdf",
+          "snippet": "The verb must agree with the subject that is nearest to the verb"
+        }
+      ]
+    },
+    {
+      "id": "st-p-05",
+      "style": "fiction",
+      "task": "feedback",
+      "issue": "passive voice and wordy 'to be' constructions",
+      "draft": "The letter was found by Ellen under the stairs. It was decided by her that it should be read later. The candle was lit and the window was closed, and it was felt by everyone in the house that something had been hidden from them.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Writing for Success.pdf",
+          "snippet": "Sentences with passive-voice verbs often create confusion, because the subject of the sentence does not perform an action"
+        }
+      ]
+    },
+    {
+      "id": "st-p-06",
+      "style": "fiction",
+      "task": "feedback",
+      "issue": "point of view switches from first person to third person",
+      "draft": "I had never seen the lighthouse so dark. My hands shook as I climbed the stairs. Jonah reached the top and looked out at the sea. He wondered whether his sister had seen the ship before the storm took it. I pushed open the door.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Points of View.pdf",
+          "snippet": "Do not begin your story with a first person narrator and then switch to a third person narrator"
+        },
+        {
+          "file": "data/styles/fiction/Points of View.pdf",
+          "snippet": "establish the point of view within the first two paragraphs of your story"
+        }
+      ]
+    },
+    {
+      "id": "st-p-07",
+      "style": "fiction",
+      "task": "feedback",
+      "issue": "third person limited suddenly becomes omniscient",
+      "draft": "Anna pushed open the café door and looked for an empty table. She was tired after the long shift and wanted only a coffee. The waiter, who had been secretly planning to quit for weeks, thought she looked familiar. In the corner, an old man remembered the war and wondered whether his son would ever call.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Points of View.pdf",
+          "snippet": "do not start with third person limited point of view and then abruptly give your narrator full omniscience"
+        }
+      ]
+    },
+    {
+      "id": "st-p-08",
+      "style": "fiction",
+      "task": "feedback",
+      "issue": "telling emotions instead of showing them",
+      "draft": "Sarah was very sad. She was sad because her dog had died. Her father was angry, and her brother was also upset. The whole family felt terrible, and the house felt empty and sad for a long time.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/_Elements of Creative Writing 2nd edition_FullBook.pdf",
+          "snippet": "don't generalize a feeling with a summary sentence or two, put us in the immediacy of the moment, and rely on scenic detail"
+        },
+        {
+          "file": "data/styles/fiction/_Elements of Creative Writing 2nd edition_FullBook.pdf",
+          "snippet": "Showing is another way to talk about the inclusion of images in your writing. images are not only visual. they include all five senses"
+        }
+      ]
+    },
+    {
+      "id": "st-p-09",
+      "style": "fiction",
+      "task": "grammar",
+      "issue": "nested quotation marks in British style",
+      "draft": "\"I heard her say \"never again\" before she left,\" said Tom. Later the vicar remarked, \"The phrase \"fraudulent conversion\" will never stick.\"",
+      "gold": [
+        {
+          "file": "data/styles/fiction/House_style_UK.pdf",
+          "snippet": "use double quotes within single quotes for a quotation within a quotation"
+        }
+      ]
+    },
+    {
+      "id": "st-p-10",
+      "style": "fiction",
+      "task": "grammar",
+      "issue": "dangling modifiers",
+      "draft": "Walking through the forest at dusk, the trees seemed to lean closer. Tired and hungry, the cabin finally appeared between the pines. After lighting the fire, the room grew warm and the storm outside was forgotten.",
+      "gold": [
+        {
+          "file": "data/styles/fiction/Writing for Success.pdf",
+          "snippet": "A dangling modifier is a word, phrase, or clause that describes something that has been left out of the sentence"
+        }
+      ]
+    }
+  ]
+}

@@ -13,8 +13,8 @@ FAKE_REPLY = "Corrected text."
 @pytest.fixture(autouse=True)
 def no_chroma(monkeypatch):
     """Replace retrieval so no embedding model or Chroma collection is touched."""
-    monkeypatch.setattr("src.tasks.base.retrieve", lambda *a, **k: [])
-    monkeypatch.setattr("src.tasks.base.format_context", lambda results: "GUIDELINES")
+    monkeypatch.setattr("src.tasks.base.retrieve_reranked", lambda *a, **k: [])
+    monkeypatch.setattr("src.tasks.base.format_references", lambda results: "GUIDELINES")
 
 
 @pytest.fixture

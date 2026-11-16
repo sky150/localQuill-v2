@@ -1,0 +1,24 @@
+st-f-01   vector None  rerank    1  | weak intensifiers and qualifiers  ->  ['weak intensifiers and qualifiers']
+st-f-02   vector None  rerank None  | redundant words and phrases  ->  ['first or second person in formal writing']
+st-f-03   vector    7  rerank    1  | contractions and informal register in an academic text  ->  ['informal register, contractions or slang']
+st-f-04   vector    1  rerank    1  | first and second person in a formal essay  ->  ['first or second person in formal writing']
+st-f-05   vector None  rerank None  | no clear thesis: the introduction lists topics without a central claim  ->  ['first or second person in formal writing']
+st-f-06   vector None  rerank None  | paragraph without a topic sentence  ->  ['no clear thesis or central claim']
+st-f-07   vector None  rerank None  | missing transitions between ideas  ->  ['no clear thesis or central claim']
+st-f-08   vector    2  rerank    1  | vague email subject line  ->  ['email with a vague subject line']
+st-f-09   vector    1  rerank    2  | literature review that only summarises sources one by one  ->  ['literature review that summarises sources one by one instead of synthesising them']
+st-f-10   vector    8  rerank None  | book review that only retells the plot  ->  ['book review that only retells the plot instead of evaluating the book']
+st-p-01   vector    1  rerank    1  | comma splice  ->  ['run-on (fused) sentences']
+st-p-02   vector    1  rerank    1  | fused (run-on) sentences  ->  ['run-on (fused) sentences']
+st-p-03   vector    2  rerank    2  | subject-verb agreement  ->  ['subject-verb agreement']
+st-p-04   vector    3  rerank    2  | agreement with neither/nor and either/or  ->  ['agreement with either/or and neither/nor']
+st-p-05   vector    1  rerank    1  | passive voice and wordy 'to be' constructions  ->  ["passive voice and weak 'to be' verbs"]
+st-p-06   vector    6  rerank    1  | point of view switches from first person to third person  ->  ['point of view switches between first and third person']
+st-p-07   vector    6  rerank    1  | third person limited suddenly becomes omniscient  ->  ['point of view switches between first and third person']
+st-p-08   vector None  rerank    2  | telling emotions instead of showing them  ->  ['telling emotions instead of showing them']
+st-p-09   vector    5  rerank    4  | nested quotation marks in British style  ->  ['quotation marks and punctuation inside quotes']
+st-p-10   vector    4  rerank    4  | dangling modifiers  ->  ['dangling or misplaced modifiers']
+feedback Hit@2 vector: 4/14
+grammar Hit@3 vector: 4/6
+feedback Hit@2 rerank: 9/14
+grammar Hit@3 rerank: 4/6

@@ -1,0 +1,6 @@
+{"_note": "Run 7b: task model ministral-3:8b, 5 more drafts, 3 repeats, no judge (graded by hand, same rubric). Together with st-f-06 (feedback_hand_grades.json) that is 6 drafts x 3 = 18 answers per variant. qwen3.5:4b on the same 6 drafts (runs 5/6): fixed 1.33, oracle 1.11, hybrid 1.17. ministral: fixed 0.83, oracle 0.94, hybrid 0.89. oracle st-f-09 #1 again quoted the guide's 'No.' as if it were the user's text.",
+ "st-f-05": {"fixed": [2,2,2], "oracle": [2,2,2], "hybrid": [2,2,2]},
+ "st-f-07": {"fixed": [1,0,0], "oracle": [0,2,0], "hybrid": [0,1,1]},
+ "st-f-09": {"fixed": [2,0,0], "oracle": [1,1,2], "hybrid": [0,1,2]},
+ "st-p-06": {"fixed": [2,2,2], "oracle": [2,1,2], "hybrid": [2,2,0]},
+ "st-p-07": {"fixed": [0,0,0], "oracle": [0,0,0], "hybrid": [0,0,0]}}

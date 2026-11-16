@@ -1,0 +1,202 @@
+[
+ {
+  "id": "st-f-01",
+  "task": "feedback",
+  "issue": "weak intensifiers and qualifiers",
+  "picked": [
+   "weak intensifiers and qualifiers"
+  ],
+  "rank_vector": null,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-02",
+  "task": "feedback",
+  "issue": "redundant words and phrases",
+  "picked": [
+   "first or second person in formal writing"
+  ],
+  "rank_vector": null,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-f-03",
+  "task": "feedback",
+  "issue": "contractions and informal register in an academic text",
+  "picked": [
+   "informal register, contractions or slang"
+  ],
+  "rank_vector": 7,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-04",
+  "task": "feedback",
+  "issue": "first and second person in a formal essay",
+  "picked": [
+   "first or second person in formal writing"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-05",
+  "task": "feedback",
+  "issue": "no clear thesis: the introduction lists topics without a central claim",
+  "picked": [
+   "first or second person in formal writing"
+  ],
+  "rank_vector": null,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-f-06",
+  "task": "feedback",
+  "issue": "paragraph without a topic sentence",
+  "picked": [
+   "no clear thesis or central claim"
+  ],
+  "rank_vector": null,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-f-07",
+  "task": "feedback",
+  "issue": "missing transitions between ideas",
+  "picked": [
+   "no clear thesis or central claim"
+  ],
+  "rank_vector": null,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-f-08",
+  "task": "feedback",
+  "issue": "vague email subject line",
+  "picked": [
+   "email with a vague subject line"
+  ],
+  "rank_vector": 2,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-09",
+  "task": "feedback",
+  "issue": "literature review that only summarises sources one by one",
+  "picked": [
+   "literature review that summarises sources one by one instead of synthesising them"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 2
+ },
+ {
+  "id": "st-f-10",
+  "task": "feedback",
+  "issue": "book review that only retells the plot",
+  "picked": [
+   "book review that only retells the plot instead of evaluating the book"
+  ],
+  "rank_vector": 8,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-p-01",
+  "task": "grammar",
+  "issue": "comma splice",
+  "picked": [
+   "run-on (fused) sentences"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-02",
+  "task": "grammar",
+  "issue": "fused (run-on) sentences",
+  "picked": [
+   "run-on (fused) sentences"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-03",
+  "task": "grammar",
+  "issue": "subject-verb agreement",
+  "picked": [
+   "subject-verb agreement"
+  ],
+  "rank_vector": 2,
+  "rank_rerank": 2
+ },
+ {
+  "id": "st-p-04",
+  "task": "grammar",
+  "issue": "agreement with neither/nor and either/or",
+  "picked": [
+   "agreement with either/or and neither/nor"
+  ],
+  "rank_vector": 3,
+  "rank_rerank": 2
+ },
+ {
+  "id": "st-p-05",
+  "task": "feedback",
+  "issue": "passive voice and wordy 'to be' constructions",
+  "picked": [
+   "passive voice and weak 'to be' verbs"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-06",
+  "task": "feedback",
+  "issue": "point of view switches from first person to third person",
+  "picked": [
+   "point of view switches between first and third person"
+  ],
+  "rank_vector": 6,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-07",
+  "task": "feedback",
+  "issue": "third person limited suddenly becomes omniscient",
+  "picked": [
+   "point of view switches between first and third person"
+  ],
+  "rank_vector": 6,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-08",
+  "task": "feedback",
+  "issue": "telling emotions instead of showing them",
+  "picked": [
+   "telling emotions instead of showing them"
+  ],
+  "rank_vector": null,
+  "rank_rerank": 2
+ },
+ {
+  "id": "st-p-09",
+  "task": "grammar",
+  "issue": "nested quotation marks in British style",
+  "picked": [
+   "quotation marks and punctuation inside quotes"
+  ],
+  "rank_vector": 5,
+  "rank_rerank": 4
+ },
+ {
+  "id": "st-p-10",
+  "task": "grammar",
+  "issue": "dangling modifiers",
+  "picked": [
+   "dangling or misplaced modifiers"
+  ],
+  "rank_vector": 4,
+  "rank_rerank": 4
+ }
+]

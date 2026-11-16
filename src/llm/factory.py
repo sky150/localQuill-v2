@@ -38,7 +38,8 @@ def _build_ollama(cfg) -> BaseChatModel:
         "temperature": cfg.temperature,
         "keep_alive": _keep_alive(),                  # Ollama only
         "num_predict": _token_limit(cfg.max_tokens),  # Ollama name for max tokens
-        "num_ctx": LLM_CONTEXT,                       # Ollama only
+        "num_ctx": LLM_CONTEXT,                           # Ollama only
+        "reasoning": cfg.think,  # thinking alone can fill num_ctx and leave the answer empty
     }))
 
 

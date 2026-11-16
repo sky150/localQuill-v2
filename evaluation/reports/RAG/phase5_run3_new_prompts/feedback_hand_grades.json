@@ -1,0 +1,5 @@
+{"_note": "Hand grades for feedback, repeat 0, qwen3.5:4b thinking off, prompts with Structure heading. 2 = names the known problem with a usable fix, 1 = touches on it, 0 = misses it. Order: hybrid, fixed, retrieval, none. Grammar judge scores are kept, except st-p-09 is 0 for every variant (judge accepted US-style quotes).",
+ "st-f-01": [2, 2, 2, 2], "st-f-02": [2, 2, 2, 2], "st-f-03": [2, 2, 2, 2], "st-f-04": [1, 2, 1, 2],
+ "st-f-05": [2, 2, 2, 2], "st-f-06": [2, 2, 2, 2], "st-f-07": [2, 1, 2, 2], "st-f-08": [2, 2, 0, 0],
+ "st-f-09": [2, 2, 2, 2], "st-f-10": [2, 1, 1, 1], "st-p-05": [2, 2, 2, 2], "st-p-06": [2, 2, 2, 2],
+ "st-p-07": [1, 2, 0, 0], "st-p-08": [2, 2, 2, 2]}

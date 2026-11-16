@@ -244,4 +244,5 @@ __marimo__/
 .chainlit/translations/
 .webui_secret_key
 
-data/eval/results/
+# RAG eval index cache (rebuilt by tests/eval/rag/run_rag_eval.py)
+evaluation/cache/

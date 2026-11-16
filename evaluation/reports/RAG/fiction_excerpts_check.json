@@ -1,0 +1,347 @@
+{
+ "chunks_per_source": {
+  "Writing for Success.pdf": 1730,
+  "_Elements of Creative Writing 2nd edition_FullBook.pdf": 884,
+  "EU_styleguide_english_dgt_en_2018.pdf": 389,
+  "House_style_UK.pdf": 35,
+  "Points of View.pdf": 29,
+  "Comedy-The Importance of Being Earnest A Trivial Comedy for Serious People.md": 1,
+  "Crime-The Adventures of Sherlock Holmes.md": 1,
+  "Fantasy-The Wonderful Wizard.md": 1,
+  "Gothic-Horror-Dracula.md": 1,
+  "Play-Drama-Hamlet.md": 1,
+  "Romance-Drama-Romeo and Juliet.md": 1
+ },
+ "cases": [
+  {
+   "id": "st-p-01",
+   "task": "grammar",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-01",
+   "task": "grammar",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-01",
+   "task": "grammar",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-02",
+   "task": "grammar",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-02",
+   "task": "grammar",
+   "query_style": "draft",
+   "top3": [
+    "excerpt",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-02",
+   "task": "grammar",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-03",
+   "task": "grammar",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-03",
+   "task": "grammar",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-03",
+   "task": "grammar",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-04",
+   "task": "grammar",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-04",
+   "task": "grammar",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-04",
+   "task": "grammar",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-05",
+   "task": "feedback",
+   "query_style": "task",
+   "top3": [
+    "excerpt",
+    "guide",
+    "excerpt"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-05",
+   "task": "feedback",
+   "query_style": "draft",
+   "top3": [
+    "excerpt",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-05",
+   "task": "feedback",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-06",
+   "task": "feedback",
+   "query_style": "task",
+   "top3": [
+    "excerpt",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-06",
+   "task": "feedback",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "excerpt"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-06",
+   "task": "feedback",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-07",
+   "task": "feedback",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-07",
+   "task": "feedback",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-07",
+   "task": "feedback",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-08",
+   "task": "feedback",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-08",
+   "task": "feedback",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-08",
+   "task": "feedback",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 2
+  },
+  {
+   "id": "st-p-09",
+   "task": "grammar",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-09",
+   "task": "grammar",
+   "query_style": "draft",
+   "top3": [
+    "excerpt",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-09",
+   "task": "grammar",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-10",
+   "task": "grammar",
+   "query_style": "task",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-10",
+   "task": "grammar",
+   "query_style": "draft",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  },
+  {
+   "id": "st-p-10",
+   "task": "grammar",
+   "query_style": "keywords",
+   "top3": [
+    "guide",
+    "guide",
+    "guide"
+   ],
+   "app_k": 3
+  }
+ ]
+}

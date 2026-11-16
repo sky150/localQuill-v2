@@ -1,0 +1,2 @@
+{"_note": "Run 7: task model ministral-3:8b instead of qwen3.5:4b, one draft only (st-f-06, paragraph without a topic sentence), 3 repeats. Same rubric (2 = names it with a usable fix, 1 = touches on it, 0 = misses it). One draft is an anecdote, not a result. qwen3.5:4b on the same draft (runs 5/6): fixed [1,0,2], oracle [0,1,0], hybrid [1,0,0].",
+ "st-f-06": {"fixed": [0,0,0], "oracle": [0,0,0], "hybrid": [1,0,0]}}

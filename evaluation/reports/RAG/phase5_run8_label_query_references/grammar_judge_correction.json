@@ -1,0 +1,2 @@
+{"_note": "Run 8 grammar, judge ministral-3:8b. st-p-09 corrected by hand from 2 to 0 in both variants: British style needs single outer and double inner quotation marks; every output used double outer and single inner (US style), so the known problem is not fixed (same judge error as in run 5). Corrected means: hybrid 1.33, fixed 1.33 (judge: 1.67 / 1.67).",
+ "st-p-09": {"hybrid": [0,0,0], "fixed": [0,0,0]}}

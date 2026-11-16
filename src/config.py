@@ -11,6 +11,8 @@ OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434")
 CHROMA_PATH = os.getenv("CHROMA_PATH", "./chroma")
 UPLOAD_PATH = os.getenv("UPLOAD_PATH", "./data/uploads")
 UPLOAD_MAX_MB = int(os.getenv("UPLOAD_MAX_MB", "50"))
+# Overlap for user documents and outlines (Q&A). 0 retrieved best (docs/rag-evaluation.md)
+UPLOAD_CHUNK_OVERLAP = int(os.getenv("UPLOAD_CHUNK_OVERLAP", "0"))
 WORKSPACE_PATH = os.getenv("WORKSPACE_PATH", "./data/workspace")
 DEFAULT_STYLE = "formal"
 PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
@@ -28,14 +30,15 @@ class TaskConfig:
     collection: str | None = None     # Chroma collection; None = no retrieval
     top_k: int = 3
     max_tokens: int | None = None
+    think: bool | None = None         # False = thinking off (Ollama); None = model default
 
 
 # Defaults per task
 TASKS: dict[str, TaskConfig] = {
     "test": TaskConfig(model="qwen2.5-coder-0.5b-instruct", temperature=0.1),   # Test purposes -> Setting for LMStudio Integration Test
-    "grammar": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.1),
+    "grammar": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.1, think=False),
     "qa": TaskConfig(model="qwen3.5:4b", temperature=0.3),
-    "feedback": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.3),
+    "feedback": TaskConfig(model="qwen3.5:4b", collection="style", temperature=0.3, think=False),
     "autocomplete": TaskConfig(model="gemma4:e2b", temperature=0.5, max_tokens=20),
 }
 
@@ -49,6 +52,7 @@ def _env_bool(name: str) -> bool:
 VERBOSE = _env_bool("VERBOSE")
 KEEP_ALIVE = os.getenv("KEEP_ALIVE", "").strip()
 LIMIT_TOKEN_NUMBER = int(os.getenv("LIMIT_TOKEN_NUMBER") or 0) or None  # None = no cap
+NUM_CTX = int(os.getenv("NUM_CTX") or 4096)  # Ollama context window (prompt + answer), in tokens
 
 
 
