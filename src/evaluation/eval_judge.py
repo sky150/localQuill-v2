@@ -134,23 +134,32 @@ def main() -> None:
     items = {i["id"]: i for i in load_testset(paths)}
     steps = load_steps(paths)
     done = {(r["model"], r["setting_id"], r["run"], r["text_id"], r["criterion"]) for r in read_jsonl(out_file)}
-    runs = [r for r in load_runs(paths) if args.runs is None or r["run"] in args.runs]
-    total = len(runs) * len(args.criteria)
+    runs_by_model: dict[str, list[dict]] = {}
+    for r in load_runs(paths):
+        if args.runs is None or r["run"] in args.runs:
+            runs_by_model.setdefault(r["model"], []).append(r)
+    total = sum(len(rs) for rs in runs_by_model.values()) * len(args.criteria)
     n = 0
 
-    for run in runs:
-        item = items[run["text_id"]]
-        for name in args.criteria:
-            n += 1
-            key = (run["model"], run["setting_id"], run["run"], run["text_id"], name)
-            if key in done:
-                continue
-            value, method, samples = score(score_prompt(name, steps[name], item["text"], run["output"]))
-            append_jsonl(out_file, {"model": run["model"], "setting_id": run["setting_id"],
-                                    "run": run["run"], "text_id": item["id"], "style": item["style"],
-                                    "criterion": name, "score": value, "method": method, "samples": samples})
-            print(f"[{n}/{total}] {run['model']} {run['setting_id']} run{run['run']} {item['id']} "
-                  f"{name}={value:.2f}")
+    for m_idx, (model, runs) in enumerate(runs_by_model.items(), 1):
+        per_model = len(runs) * len(args.criteria)
+        m_n = 0
+        print(f"=== model {m_idx}/{len(runs_by_model)}: {model} ({per_model} judgements) ===")
+        for run in runs:
+            item = items[run["text_id"]]
+            for name in args.criteria:
+                n += 1
+                m_n += 1
+                key = (model, run["setting_id"], run["run"], run["text_id"], name)
+                if key in done:
+                    continue
+                value, method, samples = score(score_prompt(name, steps[name], item["text"], run["output"]))
+                append_jsonl(out_file, {"model": model, "setting_id": run["setting_id"],
+                                        "run": run["run"], "text_id": item["id"], "style": item["style"],
+                                        "criterion": name, "score": value, "method": method,
+                                        "samples": samples})
+                print(f"[model {m_idx}/{len(runs_by_model)} {m_n}/{per_model} | total {n}/{total}] "
+                      f"{model} {run['setting_id']} run{run['run']} {item['id']} {name}={value:.2f}")
 
 
 if __name__ == "__main__":

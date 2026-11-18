@@ -92,15 +92,15 @@ def load_extras(paths: EvalPaths) -> dict[tuple, dict]:
 def log_group(paths: EvalPaths, model: str, setting_id: str, runs: list[dict], items: dict, per_run: pd.DataFrame,
               long: pd.DataFrame, extras: dict, sha: str) -> None:
     first = runs[0]
-    with mlflow.start_run(run_name=f"{paths.prompt}_{paths.style}_{model}_{setting_id}") as active:
+    with mlflow.start_run(run_name=f"{paths.prompt}_{paths.variant}_{model}_{setting_id}") as active:
         mlflow.set_tags({"testset_sha": sha, "backend": first["backend"],
-                          "style": paths.style, "prompt": paths.prompt})
+                          "style": paths.style, "prompt": paths.prompt, "rag": str(paths.rag)})
         mlflow.log_params({
             "provider": first["backend"], "model": model,
             "temperature": first["params"].get("temperature"), "top_p": first["params"].get("top_p"),
             "prompt": paths.prompt, "style": paths.style,
             "collection": paths.style,
-            "top_k": config.RAG_TOP_K, "n_cases": len({r["text_id"] for r in runs}),
+            "rag": paths.rag, "top_k": config.RAG_TOP_K if paths.rag else 0, "n_cases": len({r["text_id"] for r in runs}),
             "n_runs": len({r["run"] for r in runs}), "num_ctx": config.NUM_CTX,
             "seed_base": config.SEED_BASE, "judge_model": config.JUDGE_MODEL,
             "embed_model": config.EMBED_MODEL, "references": ",".join(config.REFERENCES)})

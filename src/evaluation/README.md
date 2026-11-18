@@ -32,7 +32,17 @@ uv run python -m src.evaluation.aggregate        --style formal --prompt grammar
 uv run python -m src.evaluation.log_mlflow       --style formal --prompt grammar
 ```
 
-Steps 1 to 4 write their results to the gitignored folder `data/eval/results/<prompt>/<style>/`, and each step resumes where it stopped. Every (prompt, style) pair gets its own folder, so formal and fiction results stay apart. `runs.jsonl` keys rows by model, setting, run and text, not by provider: if you switch provider, the model names differ, so the rows stay apart, but every later step reads both providers' rows.
+`run_all` runs steps 1 to 4 in order for every style, or for the styles you pass to `--style`. It stops at the first failing step. `--skip` leaves out the steps you name, and `log_mlflow` stays a manual step:
+
+```sh
+uv run python -m src.evaluation.run_all                                  # grammar, formal and fiction
+uv run python -m src.evaluation.run_all --style formal --skip build_references
+uv run python -m src.evaluation.run_all --norag --skip build_references  # no-RAG baseline
+```
+
+Steps 1 to 4 write their results to the gitignored folder `data/eval/results/<prompt>/<style>/`, and each step resumes where it stopped. Every (prompt, style) pair gets its own folder, so formal and fiction results stay apart.
+
+`--norag` runs the no-RAG baseline. Every script accepts it. The prompt keeps the task template but leaves `WRITING GUIDELINES` empty, and the results go to `data/eval/results/<prompt>/<style>-norag/`. Pass `--norag` to every step of a baseline run, including `log_mlflow`; `run_all --norag` does this for you. The MLflow run name then carries `<style>-norag`, and the run has a `rag` tag and param. `runs.jsonl` keys rows by model, setting, run and text, not by provider: if you switch provider, the model names differ, so the rows stay apart, but every later step reads both providers' rows.
 
 Dependencies: errant, language_tool_python, mlflow and the `en_core_web_sm` wheel (pinned in `[tool.uv.sources]`) sit in the dev group of `pyproject.toml`. `uv sync` installs them; you need no `spacy download`.
 
@@ -51,7 +61,7 @@ Models get the app's `GrammarTask` template (`src/tasks/grammar.py`) as one user
 
 ## Data layout
 
-`common.EvalPaths(style, prompt)` resolves every path.
+`common.EvalPaths(style, prompt, rag)` resolves every path. `EvalPaths.variant` is `<style>`, or `<style>-norag` when `rag` is off.
 
 ```
 data/eval/
@@ -65,12 +75,12 @@ data/eval/
   prompts/<prompt>/                grammar | feedback | qna
     rag_cache.json                 frozen top-k guides per "<style>/<id>|k=<k>" (auto)
     judge_steps.json               frozen G-Eval steps per criterion (hand-editable)
-  results/<prompt>/<style>/        gitignored
+  results/<prompt>/<style>[-norag]/  gitignored; -norag holds the no-RAG baseline
     runs.jsonl                     one row per generation, the input of every scoring step
     errant.csv, embedding.csv, embedding_refs.csv, judge.jsonl, summary.csv, summary_long.csv
 ```
 
-A `runs.jsonl` row holds `backend, model, setting_id, params, run, seed, text_id, style, prompt, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s, done_reason`.
+A `runs.jsonl` row holds `backend, model, setting_id, params, run, seed, text_id, style, prompt, rag, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s, done_reason`.
 
 - `backend` names the provider: `ollama` or `lmstudio`.
 - `done_reason` is Ollama's `done_reason` or LM Studio's `finish_reason`. `length` in both means the output hit `NUM_PREDICT` and ends mid-text.
@@ -86,7 +96,7 @@ A vLLM runner only has to write the same fields with `backend="vllm"`.
 | `common.py` | Eval paths, shared I/O, app prompt, RAG, Ollama calls for judge and embeddings, text normalization | `EvalPaths`, `eval_paths`, `add_target_args`/`paths_from_args`, `UnsupportedPrompt`, `load_testset`, `testset_sha`, `load_reference`, `load_runs`, `run_key`, `read_jsonl`/`append_jsonl`, `clean_output`, `normalize_for_scoring` (unwraps hard line breaks, collapses spaces, straightens curly quotes), `split_paragraphs`, `ollama_chat`, `ollama_embed`, `TASK_BY_PROMPT`, `retrieve_guides`, `build_messages` |
 | `build_references.py` | LanguageTool reference (first suggestion per match, never overwrites a file); lists missing opus files | `build_languagetool`, `report_missing` |
 | `generation.py` | Builds the app's task with the factory model, sets the LM Studio context, invokes the model and keeps token counts and timings; per-provider request options (Ollama `options`; LM Studio `max_tokens`, `seed`) | `build_task`, `ensure_context`, `generate`, `warm_up`, `Generation`, `UnknownProvider`, `ContextMismatch` |
-| `run_models.py` | Model x setting x run x text loop; resumes via `run_key` | `main` (`--style`, `--prompt`, `--provider`, `--models`, `--runs`) |
+| `run_models.py` | Model x setting x run x text loop; resumes via `run_key` | `main` (`--style`, `--prompt`, `--norag`, `--provider`, `--models`, `--runs`) |
 | `eval_errant.py` | ERRANT edits against the original text; edit key `(o_start, o_end, c_str)` per paragraph; compares paragraph by paragraph, or the whole text if paragraph counts differ (`mode` column) | `parse`/`edits` (lru-cached), `segment`, `f05`, `score_item`, `reference_agreement` |
 | `eval_embedding.py` | Cosine similarity of original and output: `cos_doc` (mean-pooled), `cos_mean`/`cos_min` (paragraph pairs); reference calibration in `embedding_refs.csv` | `embed` (cached, batches of 32), `similarity` |
 | `eval_judge.py` | G-Eval judge on Ollama; sees the original and the output, nothing else. Two criteria, two calls per generation. Refuses a judge model listed in `MODELS_BY_PROVIDER` | `load_steps`, `score_prompt`, `weighted_score`, `score` (`--runs`, `--criteria`) |

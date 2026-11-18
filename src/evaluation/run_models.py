@@ -4,6 +4,10 @@ model factory (src.llm.factory.get_model), see generation.py.
     uv run python -m src.evaluation.run_models --style formal --prompt grammar
     uv run python -m src.evaluation.run_models --style fiction --prompt grammar --models gemma4:e2b --runs 3
     uv run python -m src.evaluation.run_models --style formal --prompt grammar --provider lmstudio
+    uv run python -m src.evaluation.run_models --style formal --prompt grammar --norag
+
+--norag runs the no-RAG baseline: the same task template with empty writing guidelines,
+written to the "<style>-norag" results folder (EvalPaths.variant).
 
 The provider is "ollama" or "lmstudio" (config.PROVIDER by default, --provider to override);
 config.MODELS_BY_PROVIDER lists the default models of each. Appends one row per generation to
@@ -12,7 +16,7 @@ stopped. All evaluators read only that file, so a vLLM runner that writes the sa
 (backend="vllm") plugs in without changes.
 
 Row fields: backend (the provider), model, setting_id, params, run, seed, text_id, prompt,
-style, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s,
+style, rag, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s,
 done_reason. For LM Studio, run_models first (re)loads each model with config.NUM_CTX (LLM_CONTEXT).
 Rows from LM Studio have load_s and gen_tok_per_s null: its API reports neither.
 """
@@ -39,10 +43,13 @@ def main() -> None:
 
     items = load_testset(paths)
     done = {run_key(r) for r in read_jsonl(paths.runs_file)}
-    total = len(models) * sum(config.runs_for(s, args.runs) for s in config.SETTINGS) * len(items)
+    per_model = sum(config.runs_for(s, args.runs) for s in config.SETTINGS) * len(items)
+    total = len(models) * per_model
     n = 0
 
-    for model in models:
+    for m_idx, model in enumerate(models, 1):
+        m_n = 0
+        print(f"=== model {m_idx}/{len(models)}: {model} ({per_model} generations) ===")
         ensure_context(args.provider, model)
         task = build_task(paths, args.provider, model)
         warm_up(task, args.provider)
@@ -52,6 +59,7 @@ def main() -> None:
                 seed = config.SEED_BASE + run
                 for item in items:
                     n += 1
+                    m_n += 1
                     key = (model, setting["id"], run, item["id"])
                     if key in done:
                         continue
@@ -61,7 +69,7 @@ def main() -> None:
                         "backend": args.provider, "model": model, "setting_id": setting["id"],
                         "params": params, "run": run, "seed": seed,
                         "text_id": item["id"], "prompt": paths.prompt,
-                        "style": paths.style,
+                        "style": paths.style, "rag": paths.rag,
                         "output": clean_output(gen.raw), "raw_output": gen.raw,
                         "wall_s": gen.wall_s, "load_s": gen.load_s,
                         "prompt_tokens": gen.prompt_tokens,
@@ -69,8 +77,8 @@ def main() -> None:
                         "gen_tok_per_s": gen.gen_tok_per_s,
                         "done_reason": gen.done_reason,
                     })
-                    print(f"[{n}/{total}] {model} {setting['id']} run{run} {item['id']} "
-                          f"{gen.wall_s:.1f}s")
+                    print(f"[model {m_idx}/{len(models)} {m_n}/{per_model} | total {n}/{total}] "
+                          f"{model} {setting['id']} run{run} {item['id']} {gen.wall_s:.1f}s")
 
 
 if __name__ == "__main__":

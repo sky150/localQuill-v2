@@ -24,9 +24,11 @@ SUPPORTED_PROMPTS = ("grammar",)
 REFERENCES = ("languagetool", "opus")         # = data/eval/<style>/<reference>/<id>.txt
 
 # --- Hosts -------------------------------------------------------------------
+# Set OLLAMA_URL in .env, not here: the tested models are built by the app's factory, which
+# reads OLLAMA_URL from src.config, so a URL hardcoded in this file would miss them.
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 JUDGE_URL = os.getenv("JUDGE_URL", OLLAMA_URL)    # desktop that hosts the judge
-EMBED_URL = os.getenv("EMBED_URL", OLLAMA_URL)
+EMBED_URL = os.getenv("EMBED_URL", "http://localhost:11434")
 REQUEST_TIMEOUT_S = 1800
 
 # --- Models under test -------------------------------------------------------
@@ -80,7 +82,7 @@ NUM_CTX = int(os.getenv("LLM_CONTEXT", "16384"))
 # Small models can loop without stopping; uncapped, qwen2.5:0.5b on CPU ran past the
 # 1800 s request timeout on one ~400-token text. Rows with done_reason "length" hit the cap.
 NUM_PREDICT = 2048
-N_RUNS = 5                 # 3-5 retries per setting
+N_RUNS = 3                 # 3-5 retries per setting
 
 
 def runs_for(setting: dict, n_runs: int = N_RUNS) -> int:
@@ -91,7 +93,6 @@ def runs_for(setting: dict, n_runs: int = N_RUNS) -> int:
 SEED_BASE = 1000           # run k uses seed SEED_BASE + k, so runs differ but are reproducible
 
 # --- RAG (writing guides) ----------------------------------------------------
-RAG_ENABLED = True
 RAG_TOP_K = 3              # hardcoded until the embedding-test results are in
 CHROMA_PATH = os.getenv("CHROMA_PATH", "chroma")
 RAG_EMBED_MODEL = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")     # must be the model the collections were built with

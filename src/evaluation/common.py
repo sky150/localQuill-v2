@@ -29,10 +29,18 @@ class EvalPaths:
 
     data/eval/<style>/                 error_texts/, opus/, languagetool/, n_errors.json, agreement.csv
     data/eval/prompts/<prompt>/        rag_cache.json, judge_steps.json
-    data/eval/results/<prompt>/<style>/  runs.jsonl and all eval outputs (gitignored)
+    data/eval/results/<prompt>/<variant>/  runs.jsonl and all eval outputs (gitignored)
+
+    rag=False is the no-RAG baseline: the prompt gets no writing guides, and its results go to
+    "<style>-norag" so its rows never share a run_key with the RAG rows.
     """
     style: str
     prompt: str
+    rag: bool = True
+
+    @property
+    def variant(self) -> str:
+        return self.style if self.rag else f"{self.style}-norag"
 
     @property
     def style_dir(self) -> Path:
@@ -67,7 +75,7 @@ class EvalPaths:
 
     @property
     def results_dir(self) -> Path:
-        return config.EVAL_DATA_DIR / "results" / self.prompt / self.style
+        return config.EVAL_DATA_DIR / "results" / self.prompt / self.variant
 
     @property
     def runs_file(self) -> Path:
@@ -77,23 +85,25 @@ class EvalPaths:
         return self.results_dir / name
 
 
-def eval_paths(style: str, prompt: str) -> EvalPaths:
+def eval_paths(style: str, prompt: str, rag: bool = True) -> EvalPaths:
     if style not in config.STYLES:
         raise SystemExit(f"Unknown style {style!r}; choose one of {config.STYLES}.")
     if prompt not in config.SUPPORTED_PROMPTS:
         raise UnsupportedPrompt(f"Prompt {prompt!r} has no prompt builder or metrics yet; "
                                 f"supported: {config.SUPPORTED_PROMPTS}.")
-    return EvalPaths(style, prompt)
+    return EvalPaths(style, prompt, rag)
 
 
 def add_target_args(ap: argparse.ArgumentParser) -> None:
-    """The two arguments every eval script needs to find its folders."""
+    """The arguments every eval script needs to find its folders."""
     ap.add_argument("--style", required=True, choices=config.STYLES)
     ap.add_argument("--prompt", required=True, choices=config.PROMPTS)
+    ap.add_argument("--norag", action="store_true",
+                    help="no-RAG baseline: prompt without writing guides, results in <style>-norag/")
 
 
 def paths_from_args(args: argparse.Namespace) -> EvalPaths:
-    return eval_paths(args.style, args.prompt)
+    return eval_paths(args.style, args.prompt, rag=not args.norag)
 
 
 # ----------------------------------------------------------------------------- I/O
@@ -239,7 +249,7 @@ def retrieve_guides(paths: EvalPaths, item: dict) -> list[str]:
     every model gets byte-identical prompts. Delete the cache after changing RAG_TOP_K.
     The query matches the app's (Task.retrieval_query plus the first RAG_QUERY_CHARS of text).
     """
-    if not config.RAG_ENABLED:
+    if not paths.rag:
         return []
     task = TASK_BY_PROMPT[paths.prompt]
     cache = json.loads(paths.rag_cache.read_text(encoding="utf-8")) if paths.rag_cache.exists() else {}

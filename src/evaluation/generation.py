@@ -14,7 +14,7 @@ from dataclasses import dataclass
 
 import requests
 
-from src.config import LMSTUDIO_URL, TaskConfig
+from src.config import LMSTUDIO_URL, TASKS, TaskConfig
 from src.llm.factory import get_model
 from src.tasks.base import Task
 
@@ -41,8 +41,10 @@ class Generation:
 
 def build_task(paths: EvalPaths, provider: str, model: str) -> Task:
     task_cls = TASK_BY_PROMPT[paths.prompt]
+    # think comes from the app's task defaults: left at None, qwen3.5 thinks by default and
+    # spends the NUM_PREDICT budget on reasoning the app never generates.
     cfg = TaskConfig(model=model, collection=paths.style, top_k=config.RAG_TOP_K,
-                     max_tokens=config.NUM_PREDICT)
+                     max_tokens=config.NUM_PREDICT, think=TASKS[task_cls.name].think)
     llm = get_model(task_cls.name, paths.style, cfg=cfg, provider=provider)
     return task_cls(model=llm, config=cfg, style=paths.style)
 
