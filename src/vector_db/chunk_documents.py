@@ -5,11 +5,13 @@ import os
 
 
 # Split documents into smaller chunks
-def split_documents(documents: list[Document]):
+def split_documents(documents: list[Document], chunk_overlap: int | None = None):
     load_dotenv()
+    if chunk_overlap is None:
+        chunk_overlap = int(os.getenv("CHUNK_OVERLAP", 200))
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=int(os.getenv("CHUNK_SIZE", 1000)),
-        chunk_overlap=int(os.getenv("CHUNK_OVERLAP", 200)),
+        chunk_overlap=chunk_overlap,
         length_function=len,
         is_separator_regex=False,
     )

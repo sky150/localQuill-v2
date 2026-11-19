@@ -1,0 +1,128 @@
+
+== generating: hybrid
+  st-f-01 #0: 43.9s
+  st-f-01 #1: 4.4s
+  st-f-01 #2: 4.6s
+  st-f-02 #0: 4.3s
+  st-f-02 #1: 4.9s
+  st-f-02 #2: 4.9s
+  st-f-03 #0: 5.3s
+  st-f-03 #1: 5.4s
+  st-f-03 #2: 5.8s
+  st-f-04 #0: 5.0s
+  st-f-04 #1: 4.2s
+  st-f-04 #2: 4.7s
+  st-f-05 #0: 4.4s
+  st-f-05 #1: 4.5s
+  st-f-05 #2: 4.3s
+  st-f-06 #0: 3.8s
+  st-f-06 #1: 5.7s
+  st-f-06 #2: 5.2s
+  st-f-07 #0: 6.8s
+  st-f-07 #1: 5.1s
+  st-f-07 #2: 4.9s
+  st-f-08 #0: 6.3s
+  st-f-08 #1: 4.9s
+  st-f-08 #2: 4.9s
+  st-f-09 #0: 7.2s
+  st-f-09 #1: 6.0s
+  st-f-09 #2: 5.0s
+  st-f-10 #0: 6.0s
+  st-f-10 #1: 4.6s
+  st-f-10 #2: 4.9s
+  st-p-01 #0: 1.8s
+  st-p-01 #1: 1.3s
+  st-p-01 #2: 1.4s
+  st-p-02 #0: 1.6s
+  st-p-02 #1: 1.2s
+  st-p-02 #2: 1.2s
+  st-p-03 #0: 1.7s
+  st-p-03 #1: 1.3s
+  st-p-03 #2: 1.3s
+  st-p-04 #0: 1.3s
+  st-p-04 #1: 1.3s
+  st-p-04 #2: 1.3s
+  st-p-05 #0: 4.9s
+  st-p-05 #1: 5.0s
+  st-p-05 #2: 4.3s
+  st-p-06 #0: 6.4s
+  st-p-06 #1: 4.6s
+  st-p-06 #2: 4.7s
+  st-p-07 #0: 6.7s
+  st-p-07 #1: 6.4s
+  st-p-07 #2: 5.5s
+  st-p-08 #0: 4.5s
+  st-p-08 #1: 5.1s
+  st-p-08 #2: 6.1s
+  st-p-09 #0: 1.3s
+  st-p-09 #1: 1.3s
+  st-p-09 #2: 1.2s
+  st-p-10 #0: 1.4s
+  st-p-10 #1: 1.3s
+  st-p-10 #2: 1.4s
+
+== judging
+  hybrid st-f-01 #0: 2  The feedback explicitly identifies the problem of 'weak intensifiers and qualifiers' (e.g.
+  hybrid st-f-01 #1: 2  The feedback explicitly identifies the problem of 'weak intensifiers and qualifiers' (e.g.
+  hybrid st-f-01 #2: 2  The feedback explicitly identifies the known problem of 'weak intensifiers and qualifiers'
+  hybrid st-f-02 #0: 2  The feedback explicitly identifies the known problem ('redundant words and phrases') and p
+  hybrid st-f-02 #1: 2  The feedback explicitly identifies the **redundant words/phrases** ('joined together in cl
+  hybrid st-f-02 #2: 2  The feedback explicitly identifies the known problem ('redundant words and phrases')—e.g.,
+  hybrid st-f-03 #0: 2  The feedback explicitly identifies the known problem ('contractions and informal register'
+  hybrid st-f-03 #1: 2  The feedback explicitly identifies the known problem ('contractions and informal register'
+  hybrid st-f-03 #2: 2  The feedback explicitly identifies the known problem ('contractions and informal register'
+  hybrid st-f-04 #0: 2  The feedback explicitly identifies the **first-person ('I think', 'I feel', 'in my view') 
+  hybrid st-f-04 #1: 2  The feedback explicitly identifies the **first-person perspective** ('I think,' 'I feel,' 
+  hybrid st-f-04 #2: 2  The feedback explicitly identifies the **first-person ('I think,' 'I feel,' 'in my view') 
+  hybrid st-f-05 #0: 2  The feedback explicitly identifies the lack of a clear thesis ('vague scope' with 'some of
+  hybrid st-f-05 #1: 2  The feedback explicitly identifies the core problem ('no clear thesis'/'non-committal thes
+  hybrid st-f-05 #2: 2  The feedback explicitly identifies the lack of a clear thesis ('vague reference to 'some o
+  hybrid st-f-06 #0: 0  The feedback does not explicitly mention or address the absence of a topic sentence in the
+  hybrid st-f-06 #1: 2  The feedback explicitly identifies the paragraph’s lack of a topic sentence by flagging am
+  hybrid st-f-06 #2: 2  The feedback explicitly identifies the paragraph's lack of a topic sentence by noting the 
+  hybrid st-f-07 #0: 2  The feedback explicitly identifies the **missing transitions between ideas** (e.g., 'juxta
+  hybrid st-f-07 #1: 2  The feedback explicitly identifies the **lack of transitions between ideas** by addressing
+  hybrid st-f-07 #2: 2  The feedback explicitly identifies the **missing transitions between ideas** by addressing
+  hybrid st-f-08 #0: 2  The feedback explicitly identifies the vague subject line ('Question') as a problem and pr
+  hybrid st-f-08 #1: 2  The feedback explicitly identifies the vague subject line ('Question') as a problem by cri
+  hybrid st-f-08 #2: 2  The feedback explicitly identifies the vague subject line ('Question') as a problem and pr
+  hybrid st-f-09 #0: 2  The feedback explicitly identifies the core problem ('disjointed tone from isolated citati
+  hybrid st-f-09 #1: 2  The feedback explicitly identifies the **known problem** (sequential, unconnected source s
+  hybrid st-f-09 #2: 2  The feedback explicitly identifies the core problem ('isolated facts without establishing 
+  hybrid st-f-10 #0: 2  The feedback explicitly identifies the core problem ('only retells the plot') by critiquin
+  hybrid st-f-10 #1: 2  The feedback explicitly identifies the core problem ('only retells the plot') by flagging 
+  hybrid st-f-10 #2: 2  The feedback explicitly identifies the core problem ('book review that only retells the pl
+  hybrid st-p-01 #0: 2  Both comma splices were correctly replaced with semicolons in the corrected text.
+  hybrid st-p-01 #1: 2  Both comma splices were correctly replaced with semicolons in the corrected text.
+  hybrid st-p-01 #2: 2  Both comma splices were correctly replaced with semicolons in the corrected text.
+  hybrid st-p-02 #0: 2  All fused (run-on) sentences were correctly separated by semicolons in the corrected text.
+  hybrid st-p-02 #1: 2  All fused (run-on) sentences were correctly separated by semicolons in the corrected text.
+  hybrid st-p-02 #2: 2  All fused (run-on) sentences were correctly separated by semicolons in the corrected text.
+  hybrid st-p-03 #0: 2  All instances of subject-verb agreement errors in the original text were corrected in the 
+  hybrid st-p-03 #1: 2  All instances of subject-verb agreement errors in the original text were corrected in the 
+  hybrid st-p-03 #2: 2  All instances of subject-verb agreement errors in the original text were corrected in the 
+  hybrid st-p-04 #0: 2  Both instances of agreement with 'neither/nor' and 'either/or' were correctly fixed by cha
+  hybrid st-p-04 #1: 2  Both instances of agreement with 'neither/nor' and 'either/or' were correctly fixed by cha
+  hybrid st-p-04 #2: 2  Both instances of agreement with 'neither/nor' and 'either/or' were correctly fixed by cha
+  hybrid st-p-05 #0: 2  The feedback explicitly identifies the **passive voice** ('was found', 'was decided', 'was
+  hybrid st-p-05 #1: 2  The feedback explicitly identifies the **passive voice** ('was found by Ellen', 'was decid
+  hybrid st-p-05 #2: 2  The feedback explicitly identifies the known problem (passive voice and wordy 'to be' cons
+  hybrid st-p-06 #0: 2  The feedback explicitly identifies the **point-of-view inconsistency** (e.g., 'I' → 'Jonah
+  hybrid st-p-06 #1: 2  The feedback explicitly identifies the **point-of-view inconsistency** (first-person to th
+  hybrid st-p-06 #2: 2  The feedback explicitly identifies the **point-of-view inconsistency** (first-person to th
+  hybrid st-p-07 #0: 2  The feedback explicitly identifies the **third-person limited → omniscient shift** (via th
+  hybrid st-p-07 #1: 2  The feedback explicitly identifies the **third-person limited → omniscient shift** (e.g., 
+  hybrid st-p-07 #2: 2  The feedback explicitly identifies the 'sudden shift from third-person limited to omniscie
+  hybrid st-p-08 #0: 2  The feedback explicitly identifies the 'telling emotions' problem (e.g., 'overused cliché'
+  hybrid st-p-08 #1: 2  The feedback explicitly identifies the core problem ('telling emotions instead of showing 
+  hybrid st-p-08 #2: 2  The feedback explicitly identifies the 'telling emotions' problem (e.g., 'overused intensi
+  hybrid st-p-09 #0: 2  All nested quotation marks were consistently converted from British-style double quotes (“
+  hybrid st-p-09 #1: 2  All nested quotation marks were consistently converted from British-style double quotes (“
+  hybrid st-p-09 #2: 2  All nested quotation marks were consistently converted from British-style double quotes (“
+  hybrid st-p-10 #0: 0  The corrected text still contains dangling modifiers ('Tired and hungry' incorrectly modif
+  hybrid st-p-10 #1: 0  The corrected text still contains dangling modifiers ('Tired and hungry' incorrectly modif
+  hybrid st-p-10 #2: 0  The corrected text still contains dangling modifiers ('Tired and hungry' incorrectly modif
+
+Mean score (0-2), task model qwen3.5:4b, judge ministral-3:8b, 3 repeats
+variant     grammar  feedback
+hybrid         1.67      1.95 

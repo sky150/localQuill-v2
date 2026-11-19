@@ -1,0 +1,19 @@
+{
+  "correction": [
+    "Verify spelling and punctuation, focusing on comma placement.",
+    "Check subject-verb agreement in all clauses and phrases.",
+    "Ensure tense consistency throughout the text, confirming no unintended shifts.",
+    "Compare each sentence with the original and assess whether awkward or broken sentences were rewritten for clarity and fluency.",
+    "Check that the corrections did not introduce new grammatical or structural errors.",
+    "Assign a score (1-5) based on how many of the original's errors were fixed and how few remain."
+  ],
+  "preservation": [
+    "Compare the original and corrected texts side by side to identify all changes.",
+    "Check that nothing was added that was not in the original and that no content was removed or omitted.",
+    "Ensure that changes in wording or structure do not alter the original meaning or intent.",
+    "Verify that sentences that were already correct and well-structured were left unaltered.",
+    "Verify that names, invented words and Japanese honorifics match the original exactly, and that paragraph breaks and formatting are unchanged.",
+    "Check that the author's voice, tone and register (formality, narrative perspective) are kept.",
+    "Assign a score (1-5) based on how much of the original content, voice and form was kept beyond the needed corrections."
+  ]
+}

@@ -1,0 +1,136 @@
+Report Local Quill
+
+1 Introduction
+
+Automated writing feedback have become increasingly accessible through large language models
+(LLMs); however, most solutions depend on cloud-hosted models from tech companies. This
+raises concerns around data privacy. For students submiting coursework and young authors
+developing unpublished work, there are a meaningful risk that submitted text may be retained or
+used for model training by third-party providers. This creates a need of a locally deployable
+feedback system which keep all user data on-device.
+
+Local Quill targets this gap. The project focuses on two writing categories: academic essays and
+fictional prose. Both are reflective of the two primary user groups in need of targeted feedback:
+students who require structured feedback and aspiring author seeking narrative and stylistic
+guidance. The goal is to deliver feedback reflective of the category using only local models within
+the scope of user hardware.
+
+Local deployment naturally favors small-parameter LLMs of approximately 8 billion parameters,
+which is reflected in the size of context windows, reduced instruction-following capacity and
+degraded output quality on open-ended tasks. However this is precisely a task type where
+retrieval-augmented generation (RAG) shines. A high-quality pipeline of publicly available
+writing guides and style manuals were selected to build a focused knowledge base. A context is
+retrieved and injected into the system prompt on every queries to ground model answers with
+field-specific knowledge and ensure high-quality responses.
+
+Feedback generation is further structured into three focused sub-tasks: grammar, clarity and
+style, each handled though a separate LLM prompt. This decomposition allows each call to
+specialize in a single dimension, producing more targeted feedback then a single composite
+prompt could.
+
+The research question of the project is: Can a local solution within the scope of 8b-parameter
+LLM models achieve results comparable to GPT-5-nano, given the context provided by RAG
+writing guidelines, as measured by G-Eval metrics?
+
+The remainder of the report is structured as follows. Section 2 State of the Art reviews LLM
+structure and compression as well as RAG techniques. The section 3 Data describes the writing
+guidelines and test data used in the RAG pipeline. The section 4 Methods focuses on the steps
+taken during development. The environment setup through prompt engineering, RAG pipeline
+and G-Eval. The section 5 Results analyses the G-Eval results for embedding and LLM models.
+Finally, the section 6 Conclusions discusses the results and proposes further development.
+
+2 State of the Art
+
+2.1 Large Language Models
+
+Research institutes have generated text and images for decades, but the release of Attention
+Is All You Need [1] in 2017 marked an turning point. The transformer architecture contained
+
+both encoder and decoder architectures, which were regulated through self-attention. For text
+generation, it allowed models to weigh the relevance of every previous word when produced
+the next. This enabled a qualitative improvement in text coherence and the understanding of
+context over prior recurrent neural network approaches.
+
+These transformer models was developed and scaled by research labs over the following years,
+but public attention peaked in 2022 with the release of ChatGPT. It's conversational interface
+made the technology accessible to average users for the first time, which triggered widespread
+adoption across writing, coding, and education.
+
+Training a full LLM from scratch requires vast computational resources and task-specific data
+at a scale far beyond student projects, even most smaller companies. However, there are
+countless pretrained transformer models perfect suited for zero-shot generalization tasks. This
+architecture is known as Generative Pre-trained Transformers (GPT). Unfortunately the most
+capable models contains billions of parameters and are only accessible via the cloud, which is
+precisely the constraint this project addresses.
+
+2.2 Model Compression
+
+This introduces major privacy concerns; powerful models capable of generating feedback exist, but
+using them means potentially exposing user data. This requires a local alternative. Fortunately,
+powerful models can compress their knowledge base to create compact models with only a few
+billion parameters.
+
+"Quantization (Gray and Neuhoff, 1998) refers to the process of reducing the number of bits
+(i.e., precision) in the parameters of the model with minimal loss in inference performance." [2]
+With two distinct variations. Quantization-aware training, which retrains a quantized model to
+counteract performance degradation, while post-training quantization directly converts a full
+LLM.
+
+This quantization method is used on various powerful LLM Models, and countless compressed
+models exist. Many remain in the hands of powerful companies; however, there are publicly
+available open source models for companies and private users. These models include 8-billion
+parameter models, which can be self-hosted in a local machine. The perfect sweet spot between
+privacy and model power. The only remaining issues is the model source.
+
+2.3 Ollama
+
+Some companies share their smaller models to encourage further development. There are multiple
+websites which serve this purpose. From the widely open-source Hugging Face, to Ollama, owned
+by Llamafactory. However, Ollama offers a runtime for locally hosted quantized models without
+requiring a connection, which suited this project the better. On the other hand, Ollama models
+also arrive with hardware requirements and performance limitations. This limitation primary
+affects query speed in return for absolute privacy.
+
+This privacy can be guaranteed since every query is executed on the same machine, and the
+models can be checked since they have to be downloaded from Ollama in the compressed GGUF
+format. GGUF is "[...]a binary format that is optimised for quick loading and saving of models,
+making it highly efficient for inference purposes." [3]
+
+Thus, a compressed model is downloaded over the Ollama site and can be target via local API
+calls. Only the response quality of compressed LLMs remains a severe issue, since compression
+always comes at a tradeoff.
+
+2.4 Retrieval-Augmented Generation
+
+Retrieval-Augmented Generation (RAG) is a technique that inject targeted context at query
+time. For this purpose, the user prompt needs to be encoded for a similarity search to be
+performed on a vector database consisting of external files. These file are predominantly used
+to build a knowledge base backend to supplement compressed LLMs by retrieving task-specific
+information. [4]
+
+The use case in these projects differs slightly, since guidelines are retrieved in contrast to the
+more traditional information retrieval [5], which requires more reasoning from the quantized
+models than simply returning information.
+
+A metaparameter determines the number of similar vectors the similarity search returns, which
+are then decoded back into chunks before prompting the LLM. Since the context is selected from
+previously prepared documents, the accuracy of responses can be greatly enhance. This allows
+even compact models to achieve significantly better results if the task is specific enough and the
+documents are not yet outdated.
+
+Forgetting information and updating it regularly is a known issue with RAG systems; however,
+this project age slowly since writing and style guides only change at the pace of natural languages.
+
+3 Data
+
+The knowledge base comprises 12 PDF documents, a total of 17 MB, drawn from three categories:
+essay writing guides, fiction writing guides, and test materials. All sources are publicly available
+resources from academic institutions and educational platforms, written predominantly in UK
+English. No personal identifiable information is present in any document. Table 1 gives a full
+overview.
+
+Essay writing sources cover argument structure, essay structure, vocabulary, and clarity. Fiction
+writing sources addresses narrative style, point of view, dialogue formatting, and idiomatic language.
+Test materials consist of Cambridge English sample responses across CEFR levels A1-C2, a
+accompanying assessment guide, and an excerpt from Chapter 1 of The Fellowship of the Ring,
+used solely for fiction evaluation.

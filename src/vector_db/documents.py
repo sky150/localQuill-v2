@@ -4,7 +4,7 @@ import os
 
 from langchain_chroma import Chroma
 
-from src.config import CHROMA_PATH, UPLOAD_PATH
+from src.config import CHROMA_PATH, UPLOAD_CHUNK_OVERLAP, UPLOAD_PATH
 from src.embedding.embeddings import get_embedding_function
 from src.guardrails import screen_upload_chunks
 from src.vector_db.chunk_documents import split_documents
@@ -56,7 +56,7 @@ def remove_file(path: str) -> None:
 
 def ingest_document(path: str, kind: str, embedding_function=None) -> dict:
     document = load_file(path, metadata={"kind": kind})
-    chunks = split_documents([document])
+    chunks = split_documents([document], chunk_overlap=UPLOAD_CHUNK_OVERLAP)
     notices = screen_upload_chunks(chunks, os.path.basename(path))
     db = open_collection(kind, embedding_function)
     db.delete(where={"source": document.metadata["source"]})

@@ -1,0 +1,93 @@
+
+== generating: oracle
+
+  st-f-01 #0: 52.5s
+  st-f-01 #1: 5.9s
+  st-f-01 #2: 5.5s
+  st-f-02 #0: 7.0s
+  st-f-02 #1: 5.9s
+  st-f-02 #2: 5.7s
+  st-f-03 #0: 6.2s
+  st-f-03 #1: 7.1s
+  st-f-03 #2: 8.0s
+  st-f-04 #0: 5.9s
+  st-f-04 #1: 6.7s
+  st-f-04 #2: 7.1s
+  st-f-05 #0: 5.7s
+  st-f-05 #1: 5.2s
+  st-f-05 #2: 6.2s
+  st-f-06 #0: 7.9s
+  st-f-06 #1: 6.4s
+  st-f-06 #2: 5.9s
+  st-f-07 #0: 7.1s
+  st-f-07 #1: 6.6s
+  st-f-07 #2: 6.7s
+  st-f-08 #0: 6.3s
+  st-f-08 #1: 4.6s
+  st-f-08 #2: 6.4s
+  st-f-09 #0: 6.2s
+  st-f-09 #1: 6.4s
+  st-f-09 #2: 6.4s
+  st-f-10 #0: 5.3s
+  st-f-10 #1: 5.1s
+  st-f-10 #2: 6.5s
+  st-p-05 #0: 6.7s
+  st-p-05 #1: 6.3s
+  st-p-05 #2: 6.0s
+  st-p-06 #0: 8.1s
+  st-p-06 #1: 6.5s
+  st-p-06 #2: 7.8s
+  st-p-07 #0: 7.6s
+  st-p-07 #1: 6.4s
+  st-p-07 #2: 6.2s
+  st-p-08 #0: 5.3s
+  st-p-08 #1: 6.2s
+  st-p-08 #2: 6.1s
+
+== judging
+  oracle st-f-01 #0: None  not judged (--no-judge)
+  oracle st-f-01 #1: None  not judged (--no-judge)
+  oracle st-f-01 #2: None  not judged (--no-judge)
+  oracle st-f-02 #0: None  not judged (--no-judge)
+  oracle st-f-02 #1: None  not judged (--no-judge)
+  oracle st-f-02 #2: None  not judged (--no-judge)
+  oracle st-f-03 #0: None  not judged (--no-judge)
+  oracle st-f-03 #1: None  not judged (--no-judge)
+  oracle st-f-03 #2: None  not judged (--no-judge)
+  oracle st-f-04 #0: None  not judged (--no-judge)
+  oracle st-f-04 #1: None  not judged (--no-judge)
+  oracle st-f-04 #2: None  not judged (--no-judge)
+  oracle st-f-05 #0: None  not judged (--no-judge)
+  oracle st-f-05 #1: None  not judged (--no-judge)
+  oracle st-f-05 #2: None  not judged (--no-judge)
+  oracle st-f-06 #0: None  not judged (--no-judge)
+  oracle st-f-06 #1: None  not judged (--no-judge)
+  oracle st-f-06 #2: None  not judged (--no-judge)
+  oracle st-f-07 #0: None  not judged (--no-judge)
+  oracle st-f-07 #1: None  not judged (--no-judge)
+  oracle st-f-07 #2: None  not judged (--no-judge)
+  oracle st-f-08 #0: None  not judged (--no-judge)
+  oracle st-f-08 #1: None  not judged (--no-judge)
+  oracle st-f-08 #2: None  not judged (--no-judge)
+  oracle st-f-09 #0: None  not judged (--no-judge)
+  oracle st-f-09 #1: None  not judged (--no-judge)
+  oracle st-f-09 #2: None  not judged (--no-judge)
+  oracle st-f-10 #0: None  not judged (--no-judge)
+  oracle st-f-10 #1: None  not judged (--no-judge)
+  oracle st-f-10 #2: None  not judged (--no-judge)
+  oracle st-p-05 #0: None  not judged (--no-judge)
+  oracle st-p-05 #1: None  not judged (--no-judge)
+  oracle st-p-05 #2: None  not judged (--no-judge)
+  oracle st-p-06 #0: None  not judged (--no-judge)
+  oracle st-p-06 #1: None  not judged (--no-judge)
+  oracle st-p-06 #2: None  not judged (--no-judge)
+  oracle st-p-07 #0: None  not judged (--no-judge)
+  oracle st-p-07 #1: None  not judged (--no-judge)
+  oracle st-p-07 #2: None  not judged (--no-judge)
+  oracle st-p-08 #0: None  not judged (--no-judge)
+  oracle st-p-08 #1: None  not judged (--no-judge)
+  oracle st-p-08 #2: None  not judged (--no-judge)
+
+Mean score (0-2), task model qwen3.5:4b, judge ministral-3:8b, 3 repeats
+variant     grammar  feedback
+oracle          nan       nan 

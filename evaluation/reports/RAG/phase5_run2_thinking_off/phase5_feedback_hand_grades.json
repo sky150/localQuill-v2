@@ -1,0 +1,5 @@
+{"_note": "Hand grades for feedback, repeat 0, task model qwen3.5:4b thinking off. 2 = names the known problem with a usable fix, 1 = touches on it, 0 = misses it. Order: fixed, retrieval, none.",
+ "st-f-01": [2, 2, 2], "st-f-03": [2, 2, 2], "st-f-04": [2, 1, 1], "st-f-05": [2, 1, 2],
+ "st-f-06": [1, 1, 1], "st-f-07": [0, 2, 1], "st-f-08": [0, 2, 1], "st-f-09": [2, 0, 2],
+ "st-f-10": [1, 0, 0], "st-p-05": [2, 2, 2], "st-p-06": [2, 2, 2], "st-p-07": [1, 0, 1],
+ "st-p-08": [2, 2, 2]}

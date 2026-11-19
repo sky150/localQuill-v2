@@ -20,8 +20,8 @@ def force_test_environment():
 force_test_environment()
 
 @pytest.fixture(scope="session")
-def ollama_ready():
-    """Skip the Ollama tests if the server is down or the model is not pulled."""
+def lmstudio_ready():
+    """Skip the LM Studio tests if the server is down or the model is not pulled."""
     url = os.getenv("LMSTUDIO_URL", "http://127.0.0.1:1234/v1")
     try:
         response = httpx.get(f"{url}/api/tags", timeout=2)

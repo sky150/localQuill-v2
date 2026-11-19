@@ -1,0 +1,359 @@
+{
+  "_note": "Q&A retrieval test set. Query = the user's question (as in src/tasks/qa.py). A retrieved chunk matches a gold snippet when it contains it (whitespace, case and quote style are normalised). Each snippet must contain the answer itself, not just a nearby line. When a case has several snippets, ALL of them are needed for a complete answer (e.g. two jobs, or the outline point plus the essay passage). Drafted by Claude, reviewed by a human.",
+  "corpus": {
+    "userdocs": [
+      "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+      "data/eval/formal/Article_C2_Profishency_Response_3.txt",
+      "data/eval/formal/Essay_C2_Profishency_Response_1.txt",
+      "data/eval/formal/Essay_C2_Profishency_Response_2.txt",
+      "data/eval/formal/Review_C2_Profishency_Response_5.txt"
+    ],
+    "outline": [
+      "tests/eval/rag/corpus/outline/Outline_Technology_Essay.md"
+    ]
+  },
+  "cases": [
+    {
+      "id": "qa-oz-01",
+      "collection": "userdocs",
+      "query": "Where does Dorothy live at the start of the story, and who does she live with?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Dorothy lived in the midst of the great Kansas prairies, with Uncle Henry, who was a farmer, and Aunt Em"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-02",
+      "collection": "userdocs",
+      "query": "What is Dorothy's house in Kansas like?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Their house was small, for the lumber to build it had to be carried by wagon many miles"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-03",
+      "collection": "userdocs",
+      "query": "What does Toto look like?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Toto was not gray; he was a little black dog"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-04",
+      "collection": "userdocs",
+      "query": "What does the Scarecrow say he is missing when Dorothy first meets him, and why?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "I don't know anything. You see, I am stuffed, so I have no brains at all"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-05",
+      "collection": "userdocs",
+      "query": "Why can't the Tin Woodman move his joints when they find him, and what does he need?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Get an oil-can and oil my joints,\" he answered. \"They are rusted so badly that I cannot move them at all"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-06",
+      "collection": "userdocs",
+      "query": "Why does the Tin Woodman want a heart?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "no one can love who has not a heart, and so I am resolved to ask Oz to give me one. If he does, I will go back to the Munchkin maiden and marry her"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-07",
+      "collection": "userdocs",
+      "query": "What does the Cowardly Lion hope to get from Oz?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Do you think Oz could give me courage?"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-08",
+      "collection": "userdocs",
+      "query": "What are the Kalidahs?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "They are monstrous beasts with bodies like bears and heads like tigers"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-09",
+      "collection": "userdocs",
+      "query": "Who calls the field mice back after Toto frightens them?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "the Tin Woodman caught the dog in his arms and held him tight, while he called to the mice, \"Come back! Come back!"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-10",
+      "collection": "userdocs",
+      "query": "Why does everyone in the Emerald City wear green glasses?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "if you did not wear spectacles the brightness and glory of the Emerald City would blind you"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-11",
+      "collection": "userdocs",
+      "query": "Which country do the Winkies live in and who rules it?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "that it is the same at the West. And that country, where the Winkies live, is ruled by the Wicked Witch of the West"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-12",
+      "collection": "userdocs",
+      "query": "What magic power does the Golden Cap have?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Whoever owned it could call three times upon the Winged Monkeys"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-13",
+      "collection": "userdocs",
+      "query": "How does Dorothy destroy the Wicked Witch of the West?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "she picked up the bucket of water that stood near and dashed it over the Witch"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-14",
+      "collection": "userdocs",
+      "query": "What were the Scarecrow's new brains made of?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "took up a measure of bran, which he mixed with a great many pins and needles"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-15",
+      "collection": "userdocs",
+      "query": "What jobs did the Wizard have before he came to Oz?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "When I grew up I became a ventriloquist"
+        },
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "I tired of that, and became a balloonist"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-16",
+      "collection": "userdocs",
+      "query": "Why is Dorothy left behind when the Wizard leaves in the balloon?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "Toto had run into the crowd to bark at a kitten"
+        },
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "crack! went the ropes, and the balloon rose into the air without her"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-17",
+      "collection": "userdocs",
+      "query": "Who is Glinda?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "The Witch of the South. She is the most powerful of all the Witches, and rules over the Quadlings"
+        }
+      ]
+    },
+    {
+      "id": "qa-oz-18",
+      "collection": "userdocs",
+      "query": "How do the silver shoes take Dorothy home?",
+      "gold": [
+        {
+          "file": "data/eval/raw/md/Fantasy-The Wonderful Wizard.md",
+          "snippet": "knock the heels together three times and command the shoes to carry you wherever you wish to go"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-01",
+      "collection": "userdocs",
+      "query": "In my article about an unforgettable event, what did my English teacher offer me?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Article_C2_Profishency_Response_3.txt",
+          "snippet": "how would you like to go to Canda Canada for a month to study at a local highschoo high school, all expenses paid"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-02",
+      "collection": "userdocs",
+      "query": "How old was I when I was offered the trip abroad?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Article_C2_Profishency_Response_3.txt",
+          "snippet": "I was sixteen at the time"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-03",
+      "collection": "userdocs",
+      "query": "What does my article say about the effect of remembering memorable events?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Article_C2_Profishency_Response_3.txt",
+          "snippet": "I believe that recalling memorable events in our lives has a very positive effect on us"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-04",
+      "collection": "userdocs",
+      "query": "In the Man vs. Computer essay, which people welcome technological change?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Essay_C2_Profishency_Response_1.txt",
+          "snippet": "people who hold tighter reins on the happenings in their lives tend to welcome the change"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-05",
+      "collection": "userdocs",
+      "query": "What first step does my essay suggest for bringing new technology into the workplace?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Essay_C2_Profishency_Response_1.txt",
+          "snippet": "The first step here would be to instill the right mindset in employees"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-06",
+      "collection": "userdocs",
+      "query": "According to my summary of the first text, how do older people react to new technology?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Essay_C2_Profishency_Response_2.txt",
+          "snippet": "Often, older people require more time to accept changes"
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-07",
+      "collection": "userdocs",
+      "query": "Which book did I review?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Review_C2_Profishency_Response_5.txt",
+          "snippet": "A book that brings back endless memories of my childhood is \"The Hobbit\""
+        }
+      ]
+    },
+    {
+      "id": "qa-doc-08",
+      "collection": "userdocs",
+      "query": "What is the protagonist's goal in the book I reviewed?",
+      "gold": [
+        {
+          "file": "data/eval/formal/Review_C2_Profishency_Response_5.txt",
+          "snippet": "The ultimate goal of the protagonist was to defeat a dragon"
+        }
+      ]
+    },
+    {
+      "id": "qa-out-01",
+      "collection": "outline",
+      "query": "What is the thesis I planned for my essay?",
+      "gold": [
+        {
+          "file": "tests/eval/rag/corpus/outline/Outline_Technology_Essay.md",
+          "snippet": "Thesis: people adapt to technology at different speeds"
+        }
+      ]
+    },
+    {
+      "id": "qa-out-02",
+      "collection": "outline",
+      "query": "Which counterargument did I plan to address?",
+      "gold": [
+        {
+          "file": "tests/eval/rag/corpus/outline/Outline_Technology_Essay.md",
+          "snippet": "Some argue that training costs too much time and money for small companies"
+        }
+      ]
+    },
+    {
+      "id": "qa-out-03",
+      "collection": "outline",
+      "query": "How long should the conclusion be?",
+      "gold": [
+        {
+          "file": "tests/eval/rag/corpus/outline/Outline_Technology_Essay.md",
+          "snippet": "Keep the conclusion to three sentences"
+        }
+      ]
+    },
+    {
+      "id": "qa-mix-01",
+      "collection": "both",
+      "query": "Does my Man vs. Computer essay cover the point about workplace training from my outline?",
+      "gold": [
+        {
+          "file": "tests/eval/rag/corpus/outline/Outline_Technology_Essay.md",
+          "snippet": "proper training in the workplace is essential"
+        },
+        {
+          "file": "data/eval/formal/Essay_C2_Profishency_Response_1.txt",
+          "snippet": "Therefore, it is imperative that works are effectively and practically trained so that they can be in control"
+        }
+      ]
+    }
+  ]
+}
