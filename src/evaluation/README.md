@@ -21,6 +21,7 @@ Every script takes two required arguments that pick the folders: `--style formal
 3. **`eval_errant`, `eval_embedding`, `eval_judge`** score the generations. They don't depend on each other, so run them in any order.
 4. **`aggregate`** writes `summary.csv` and `summary_long.csv`.
 5. **`log_mlflow`** publishes one MLflow run per model and setting to the experiment "Grammar Evaluation" at `MLFLOW_TRACKING_URI` (default `http://127.0.0.1:5001`). Start the server with `docker compose up -d mlflow`. Run it last: it exits if a results file is missing.
+6. **`rag_norag_best`** (optional) reads the `summary_long.csv` of the RAG and the no-RAG run of one style. It plots each metric over temperature with RAG on the left and no RAG on the right, and writes a composite ranking per condition. It takes `--style` and `--prompt` but no `--norag`, since it always reads both conditions. A missing condition is skipped. See [Composite ranking](#composite-ranking).
 
 ```sh
 uv run python -m src.evaluation.build_references --style formal --prompt grammar
@@ -30,6 +31,7 @@ uv run python -m src.evaluation.eval_embedding   --style formal --prompt grammar
 uv run python -m src.evaluation.eval_judge       --style formal --prompt grammar
 uv run python -m src.evaluation.aggregate        --style formal --prompt grammar
 uv run python -m src.evaluation.log_mlflow       --style formal --prompt grammar
+uv run python -m src.evaluation.rag_norag_best   --style formal --prompt grammar   # after aggregate --norag too
 ```
 
 `run_all` runs steps 1 to 4 in order for every style, or for the styles you pass to `--style`. It stops at the first failing step. `--skip` leaves out the steps you name, and `log_mlflow` stays a manual step:
@@ -78,6 +80,8 @@ data/eval/
   results/<prompt>/<style>[-norag]/  gitignored; -norag holds the no-RAG baseline
     runs.jsonl                     one row per generation, the input of every scoring step
     errant.csv, embedding.csv, embedding_refs.csv, judge.jsonl, summary.csv, summary_long.csv
+    ranking.csv                    composite ranking of this folder's runs (rag_norag_best)
+    rag_vs_norag.png               RAG vs. no-RAG plot, written to the RAG folder only (rag_norag_best)
 ```
 
 A `runs.jsonl` row holds `backend, model, setting_id, params, run, seed, text_id, style, prompt, rag, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s, done_reason`.
@@ -102,6 +106,7 @@ A vLLM runner only has to write the same fields with `backend="vllm"`.
 | `eval_judge.py` | G-Eval judge on Ollama; sees the original and the output, nothing else. Two criteria, two calls per generation. Refuses a judge model listed in `MODELS_BY_PROVIDER` | `load_steps`, `score_prompt`, `weighted_score`, `score` (`--runs`, `--criteria`) |
 | `aggregate.py` | Per run, sums ERRANT counts over texts, then computes rates; then mean, median and std over runs | `errant_metrics`, `per_run_tables`, `summarize` (returns tables, writes nothing) |
 | `log_mlflow.py` | Reads the results folder and `summarize()`, logs one MLflow run per model x setting; adds new runs on every call | `load_extras`, `log_group`, `main` |
+| `rag_norag_best.py` | RAG vs. no-RAG plot per metric and composite score per condition; writes `rag_vs_norag.png` and `ranking.csv`, opens no window | `load_grouped`, `plot`, `metric_ranking`, `composite` (`WEIGHTS`, `GATES`) |
 
 ## Judge
 
@@ -159,6 +164,25 @@ Correction rewards changes and preservation penalizes them, so an under-correcti
 | `gen_tok_per_s` | tok/s | higher | output tokens per second of pure generation (`eval_count / eval_duration`). Ollama only |
 
 Known limitation: `cos_doc` averages all output paragraphs, so a preface such as "Certainly! Here is the revised text:" lowers it as if content had changed. Good qwen2.5:0.5b outputs on `g_man_vs_computer` land near 0.88 for this reason.
+
+### Composite ranking
+
+`rag_norag_best` combines several metrics into one `score` per model x temperature:
+
+1. **Gate.** A row with `cos_doc` below 0.95 (`GATES`) has made-up or missing text. It stays in `ranking.csv` with `passed_gate = False` but gets no score and no rank.
+2. **Scale.** Each metric in `WEIGHTS` is min-max scaled to 0-1 over the rows that pass the gate: the best row gets 1, the worst 0. Lower-is-better metrics (`overcorr_per_100tok`, `wall_s`) are flipped. A metric with the same value in every row scores 1 for all of them.
+3. **Weight.** `score` is the weighted mean of the scaled metrics a row has. It divides by the sum of the weights present, so a row without `gen_tok_per_s` (LM Studio) still scores 0-1, and the weights need not sum to 1.
+
+`ranking.csv` holds one row per model x temperature: `rank`, `model`, `temperature`, `best_for_model` (that model's highest-scoring temperature), `passed_gate`, `score`, then the mean of every summary.csv metric.
+
+**Scores only compare within one folder.** Min-max scaling makes a score relative to the other rows in the same run. Each `ranking.csv` scales over its own folder, `results/<prompt>/<style>/` or `results/<prompt>/<style>-norag/`. So:
+
+- A score of 0.8 for RAG and 0.6 for no RAG does not mean RAG is better. Each side calls its own best row 1 and its own worst row 0.
+- Formal and fiction scores don't compare either. The texts, references and error counts differ, and each style is scaled on its own.
+- Adding or removing a model changes the min and max, so every other score moves too. Compare ranks within one run, not scores between runs.
+- Min-max stretches small gaps. If `f05_best` only spans 0.80 to 0.81, that 0.01 still covers the full 0-1 range.
+
+To compare RAG with no RAG, use the raw metric values instead: the plot, the per-metric tables the script prints, or the metric columns of `ranking.csv`. Both conditions use the same texts and references, so their raw values are comparable. The plot shares the y-axis across each row, so the RAG and no-RAG panels of one metric line up. Raw values from formal and fiction come from different texts, so read a gap between the styles as a hint, not a result.
 
 ### Per-generation columns (errant.csv, MLflow `results.json`)
 
