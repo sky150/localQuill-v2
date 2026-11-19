@@ -42,13 +42,13 @@ PROVIDER = "ollama"
 # Model names differ per provider (Ollama tag vs. LM Studio model id).
 MODELS_BY_PROVIDER = {
     "ollama": [
-        "qwen2.5:0.5b",
+        #"qwen2.5:0.5b",
         # Grammar
-        #"granite4.2:8b",
-        #"qwen3.5:9b",
-        #"llama3.1:8b",
-        #"mistral:7b-instruct",
-        #"gemma4:e4b",
+        "granite4.2:8b",
+        "qwen3.5:9b",
+        "llama3.1:8b",
+        "mistral:7b-instruct",
+        "gemma4:e4b",
 
         # Q&A
         #"gemma4:e2b",
