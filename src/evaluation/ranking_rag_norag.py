@@ -1,6 +1,6 @@
 """Compare RAG and no-RAG results of one style and prompt: plots per metric and a composite ranking.
 
-    uv run python -m src.evaluation.rag_norag_best --style fiction --prompt grammar
+    uv run python -m src.evaluation.ranking_rag_norag --style fiction --prompt grammar
 
 Reads summary_long.csv from results/<prompt>/<style>/ (RAG) and results/<prompt>/<style>-norag/
 (no RAG), so run aggregate for both first. A missing condition is skipped.
@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import pandas as pd  # noqa: E402
 
 from . import config  # noqa: E402
-from .common import EvalPaths, eval_paths  # noqa: E402
+from .common import EvalPaths, UnsupportedPrompt, eval_paths  # noqa: E402
 
 # Metrics where a LOWER mean is better. Everything else: higher is better.
 LOWER_IS_BETTER = {"overcorr_per_100tok", "wall_s", "wall_s_median"}
@@ -35,13 +35,17 @@ LOWER_IS_BETTER = {"overcorr_per_100tok", "wall_s", "wall_s_median"}
 # Composite score weights. The score divides by the sum of the weights a row has, so they
 # need not sum to 1 and the score stays 0-1.
 WEIGHTS = {
-    "f05_best": 0.35,
-    "overcorr_per_100tok": 0.30,
-    "judge_correction": 0.15,
-    "judge_preservation": 0.15,
+    "f05_best": 0.30,
+    "precision_best": 0.10,
+    "tp_rate_consensus": 0.10,
+    "overcorr_per_100tok": 0.25,
+    "judge_correction": 0.10,
+    "judge_preservation": 0.10,
     "gen_tok_per_s": 0.05,
 }
-GATES = {"cos_doc": 0.90}  # below this = made-up or missing text -> disqualified, no score
+
+
+GATES = {"cos_doc": 0.95}  # below this = made-up or missing text -> disqualified, no score
 
 # Fixed colour + marker per model (colourblind-checked categorical palette, fixed order).
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]
@@ -182,6 +186,9 @@ def main() -> None:
     ap.add_argument("--style", required=True, choices=config.STYLES)
     ap.add_argument("--prompt", required=True, choices=config.PROMPTS)
     args = ap.parse_args()
+    # WEIGHTS and the cos_doc gate are grammar metrics (ERRANT and embeddings).
+    if args.prompt != "grammar":
+        raise UnsupportedPrompt(f"ranking_rag_norag ranks grammar runs only, not {args.prompt!r}.")
 
     variants = {"RAG": eval_paths(args.style, args.prompt, rag=True),
                 "No RAG": eval_paths(args.style, args.prompt, rag=False)}

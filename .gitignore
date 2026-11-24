@@ -11,6 +11,7 @@ test/chroma_eval/
 data/styles/outline/
 data/styles/userdocs/
 data/eval/*/languagetool/
+data/eval/chroma_qna/
 data/uploads/
 data/workspace/
 .idea/

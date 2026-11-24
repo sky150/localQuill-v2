@@ -1,0 +1,12 @@
+{
+  "formal": [
+    {"id": "summary", "question": "Summarise the text."},
+    {"id": "arguments", "question": "What arguments are used?"},
+    {"id": "arguments_main", "question": "What is the most important argument used?", "follow_up_of": "arguments"}
+  ],
+  "fiction": [
+    {"id": "characters", "question": "What characters are in the scene?"},
+    {"id": "characters_main", "question": "Which of them is the most important?", "follow_up_of": "characters"},
+    {"id": "summary", "question": "Summarise the text."}
+  ]
+}

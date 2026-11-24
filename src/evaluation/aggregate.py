@@ -8,7 +8,8 @@ Step 2: mean / median / std of those per-run values across the N runs.
 
 Writes summary_long.csv (every statistic) and summary.csv (means, one row per
 model x setting) into the results dir of the chosen style and prompt. Missing
-test files are skipped.
+test files are skipped, so feedback and Q&A summaries hold judge and timing columns only.
+Q&A also gets summary_by_question.csv (means per model x setting x question).
 """
 
 from __future__ import annotations
@@ -68,8 +69,26 @@ def per_run_tables(paths: EvalPaths) -> list[pd.DataFrame]:
         df = pd.DataFrame(runs)
         g = df.groupby(KEYS)
         out.append(pd.DataFrame({"wall_s": g["wall_s"].mean(), "wall_s_median": g["wall_s"].median(),
-                                 "gen_tok_per_s": g["gen_tok_per_s"].mean()}))
+                                 "gen_tok_per_s": g["gen_tok_per_s"].mean(),
+                                 "prompt_tokens": g["prompt_tokens"].mean(),
+                                 "gen_tokens": g["gen_tokens"].mean()}))
     return out
+
+
+def by_question(paths: EvalPaths) -> pd.DataFrame | None:
+    """Q&A only: judge and timing means per model x setting x question, so a follow-up reads
+    apart from the first questions. Means over every run and text. None without Q&A rows."""
+    runs = pd.DataFrame(read_jsonl(paths.runs_file))
+    if runs.empty or "question_id" not in runs.columns:
+        return None
+    keys = ["model", "setting_id", "question_id"]
+    tables = [runs.groupby(keys)[["wall_s", "gen_tokens"]].mean()]
+    judge = pd.DataFrame(read_jsonl(paths.result("judge.jsonl")))
+    if not judge.empty and "question_id" in judge.columns:
+        t = judge.pivot_table(index=keys, columns="criterion", values="score", aggfunc="mean")
+        t.columns = [f"judge_{c}" for c in t.columns]
+        tables.insert(0, t)
+    return pd.concat(tables, axis=1)
 
 
 def summarize(paths: EvalPaths) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -101,7 +120,12 @@ def main() -> None:
     view = wide.sort_values(sort_col, ascending=False)
     with pd.option_context("display.width", 200, "display.max_columns", 20, "display.float_format", "{:.3f}".format):
         print(view)
-    print(f"\n-> {paths.result('summary.csv')} and summary_long.csv")
+        per_question = by_question(paths)
+        if per_question is not None:
+            per_question.to_csv(paths.result("summary_by_question.csv"))
+            print(f"\n{per_question}")
+    print(f"\n-> {paths.result('summary.csv')} and summary_long.csv"
+          f"{' and summary_by_question.csv' if per_question is not None else ''}")
 
 
 if __name__ == "__main__":

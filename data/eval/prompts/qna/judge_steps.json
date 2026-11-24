@@ -1,0 +1,15 @@
+{
+  "correctness": [
+    "1. Verify that the answer includes all facts from the answer sheet without omission.",
+    "2. Ensure the answer does not contain any information that contradicts the facts in the answer sheet.",
+    "3. If a follow-up question is present, check that the answer addresses it in alignment with the prior conversation context.",
+    "4. Confirm the answer does not introduce new or external information not supported by the answer sheet."
+  ],
+  "groundedness": [
+    "1. Verify that all factual claims in the answer are explicitly supported by the user's document, other user documents, or the outline.",
+    "2. Ensure the answer does not reference any characters, events, or arguments not present in the provided sources.",
+    "3. Check if the answer acknowledges gaps in the documents by stating 'not mentioned' or similar when information is absent.",
+    "4. Confirm that quotes or specific details attributed to the documents match the original text exactly.",
+    "5. Validate that no external knowledge or assumptions beyond the provided materials are used in the answer."
+  ]
+}

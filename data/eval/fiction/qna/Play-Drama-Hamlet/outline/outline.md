@@ -1,0 +1,7 @@
+# Hamlet - Outline
+
+William Shakespeare's tragedy (around 1600) is set at the royal court of Denmark. Prince Hamlet mourns his father, the late king, whose brother Claudius has taken the throne and quickly married Hamlet's mother, Gertrude. The ghost of the old king appears and tells Hamlet that Claudius murdered him by pouring poison in his ear. Hamlet swears revenge and decides to act as if he were mad. The king's counsellor Polonius believes Hamlet's madness comes from his love for Polonius's daughter, Ophelia.
+
+To test the ghost's story, Hamlet has travelling actors perform a play that shows a similar murder, and Claudius's reaction convinces him of his uncle's guilt. Hamlet finds Claudius praying but does not kill him. Shortly afterwards, while confronting his mother, he stabs Polonius, who is hiding behind a curtain. Claudius sends Hamlet to England with Rosencrantz and Guildenstern and a secret order to have him executed. Hamlet changes the order and returns to Denmark, while Ophelia goes mad with grief and drowns.
+
+Polonius's son Laertes returns to avenge his father and sister. Claudius arranges a fencing match between Laertes and Hamlet with a poisoned blade and a poisoned cup of wine. In the duel Gertrude drinks the poisoned wine and dies, and both Hamlet and Laertes are wounded with the poisoned blade. The dying Laertes reveals the plot, Hamlet kills Claudius, and then he dies in the arms of his friend Horatio. The Norwegian prince Fortinbras arrives and takes the Danish throne.

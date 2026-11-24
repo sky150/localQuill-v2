@@ -4,11 +4,15 @@
     uv run python -m src.evaluation.run_all --style formal
     uv run python -m src.evaluation.run_all --style fiction --skip build_references
     uv run python -m src.evaluation.run_all --norag --skip build_references   # no-RAG baseline
+    uv run python -m src.evaluation.run_all --prompt feedback                 # formal only
+    uv run python -m src.evaluation.run_all --prompt qna
 
-Runs the steps of README.md "Run order" (1 to 4) in that order, one style after the other.
-Each step runs in its own process with the same --style and --prompt, so its argparse
-defaults apply. It stops at the first failing step. Every step resumes where it stopped, so a
-rerun after a crash repeats no finished work. Publish to MLflow afterwards with log_mlflow.
+Runs the steps of the prompt (config.STEPS_BY_PROMPT, README.md "Run order") in that order,
+one style after the other. --style defaults to every style of the prompt
+(config.STYLES_BY_PROMPT). Each step runs in its own process with the same --style and
+--prompt, so its argparse defaults apply. It stops at the first failing step. Every step
+resumes where it stopped, so a rerun after a crash repeats no finished work. Publish to MLflow
+afterwards with log_mlflow.
 """
 
 from __future__ import annotations
@@ -20,17 +24,22 @@ import time
 
 from . import config
 
-STEPS = ("build_references", "run_models", "eval_errant", "eval_embedding", "eval_judge", "aggregate")
+ALL_STEPS = tuple(dict.fromkeys(s for steps in config.STEPS_BY_PROMPT.values() for s in steps))
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--style", nargs="+", choices=config.STYLES, default=list(config.STYLES))
+    ap.add_argument("--style", nargs="+", choices=config.STYLES, default=None)
     ap.add_argument("--prompt", choices=config.PROMPTS, default="grammar")
-    ap.add_argument("--skip", nargs="+", choices=STEPS, default=[])
+    ap.add_argument("--skip", nargs="+", choices=ALL_STEPS, default=[])
     ap.add_argument("--norag", action="store_true", help="pass --norag to every step")
     args = ap.parse_args()
-    steps = [s for s in STEPS if s not in args.skip]
+    steps = [s for s in config.STEPS_BY_PROMPT[args.prompt] if s not in args.skip]
+    args.style = args.style or list(config.STYLES_BY_PROMPT[args.prompt])
+    unsupported = [s for s in args.style if s not in config.STYLES_BY_PROMPT[args.prompt]]
+    if unsupported:
+        raise SystemExit(f"{args.prompt} runs for styles {config.STYLES_BY_PROMPT[args.prompt]} only, "
+                         f"not {unsupported}.")
 
     start = time.perf_counter()
     for style in args.style:

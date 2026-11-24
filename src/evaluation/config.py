@@ -18,10 +18,21 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 EVAL_DATA_DIR = REPO_ROOT / "data" / "eval"
 STYLES = ("formal", "fiction")                # = data/eval/<style>/ and the Chroma collection name
 PROMPTS = ("grammar", "feedback", "qna")      # = data/eval/prompts/<prompt>/
-# feedback and qna have folders but no prompt builder or metrics yet: their outputs are
-# commentary and answers, which ERRANT and the embedding test cannot score.
-SUPPORTED_PROMPTS = ("grammar",)
+SUPPORTED_PROMPTS = PROMPTS
+# Feedback runs on the formal texts only: it compares against last year's DISPRO1 run, whose
+# fiction texts (LotR) were removed for licensing reasons.
+STYLES_BY_PROMPT = {"grammar": STYLES, "feedback": ("formal",), "qna": STYLES}
 REFERENCES = ("languagetool", "opus")         # = data/eval/<style>/<reference>/<id>.txt
+# Feedback reads the original texts DISPRO1 used (raw/), the others the texts with injected errors.
+INPUT_DIR_BY_PROMPT = {"grammar": "error_texts", "feedback": "raw", "qna": "error_texts"}
+
+# Steps of run_all per prompt. Feedback and Q&A outputs are commentary and answers, which
+# ERRANT and the embedding test cannot score, so only the judge scores them.
+STEPS_BY_PROMPT = {
+    "grammar": ("build_references", "run_models", "eval_errant", "eval_embedding", "eval_judge", "aggregate"),
+    "feedback": ("run_models", "eval_judge", "aggregate"),
+    "qna": ("build_qna_index", "run_models", "eval_judge", "aggregate"),
+}
 
 # --- Hosts -------------------------------------------------------------------
 # Set OLLAMA_URL in .env, not here: the tested models are built by the app's factory, which
@@ -39,43 +50,53 @@ PROVIDERS = ("ollama", "lmstudio")
 PROVIDER = "ollama"
 
 
-# Model names differ per provider (Ollama tag vs. LM Studio model id).
-MODELS_BY_PROVIDER = {
-    "ollama": [
-        #"qwen2.5:0.5b",
-        # Grammar
-        "granite4.2:8b",
-        "qwen3.5:9b",
-        "llama3.1:8b",
-        "mistral:7b-instruct",
-        "gemma4:e4b",
+# Models under test per prompt, then per provider (Ollama tag vs. LM Studio model id).
+# Pipeline tests: qwen2.5:0.5b (Ollama), passed with --models.
+MODELS_BY_PROMPT = {
+    "grammar": {
+        "ollama": ["granite4.2:8b", "qwen3.5:9b", "llama3.1:8b", "mistral:7b-instruct", "gemma4:e4b"],
+        "lmstudio": ["qwen2.5-coder-0.5b-instruct"],
+    },
+    # Up to 4B parameters: Q&A runs next to the larger grammar model in the app.
+    "qna": {
+        "ollama": ["gemma4:e2b", "gemma4:e4b", "phi4-mini:3.8b", "gemma3:4b", "qwen3.5:4b"],
+        #"ollama": ["gemma4:e2b"],
+        "lmstudio": ["qwen2.5-coder-0.5b-instruct"],
+    },
+    # Best feedback model of last semester, rerun with DISPRO1's settings.
+    "feedback": {
+        "ollama": ["ministral-3:8b"],
+        "lmstudio": ["qwen2.5-coder-0.5b-instruct"],
+    },
+}
 
-        # Q&A
-        #"gemma4:e2b",
-        #"gemma4:e4b",
-        #"phi4-mini:3.8b",
-        #"gemma3:4b",
-        #"qwen3.5:4b",
 
-        # Feedback
-        #"gemma3:4b", # Best Previous Semester. Same Settings as DISPRO1.
+def models_for(prompt: str, provider: str = PROVIDER) -> list[str]:
+    return MODELS_BY_PROMPT[prompt][provider]
+
+
+# Each setting is one metaparameter combination. top_p stays 1.0 (off), which leaves temperature
+# as the only variable. Every setting runs N_RUNS times, except temperature 0 (see runs_for).
+SETTINGS_BY_PROMPT = {
+    # Grammar correction wants near-deterministic output, so only temperatures 0 to 0.3.
+    "grammar": [
+        {"id": "t0.0", "temperature": 0.0, "top_p": 1.0},
+        {"id": "t0.1", "temperature": 0.1, "top_p": 1.0},
+        {"id": "t0.2", "temperature": 0.2, "top_p": 1.0},
+        {"id": "t0.3", "temperature": 0.3, "top_p": 1.0},
     ],
-    "lmstudio": [
-        "qwen2.5-coder-0.5b-instruct",
+    # Answers may be phrased freely, so Q&A tests a wider range.
+    "qna": [
+        {"id": "t0.0", "temperature": 0.0, "top_p": 1.0},
+        {"id": "t0.2", "temperature": 0.2, "top_p": 1.0},
+        {"id": "t0.7", "temperature": 0.7, "top_p": 1.0},
+        {"id": "t1.0", "temperature": 1.0, "top_p": 1.0},
+    ],
+    # DISPRO1 winnign model was at temperature 0.1.
+    "feedback": [
+        {"id": "t0.1", "temperature": 0.1, "top_p": 1.0},
     ],
 }
-MODELS = MODELS_BY_PROVIDER[PROVIDER]
-
-# Each setting is one metaparameter combination. Grammar correction wants near-deterministic
-# output, so only temperatures 0 to 0.3 are tested. top_p stays 1.0 (off): at these
-# temperatures the cut-off tail is negligible, and fixing it leaves temperature as the only
-# variable. Every setting runs N_RUNS times, except temperature 0 (see runs_for).
-SETTINGS = [
-    {"id": "t0.0", "temperature": 0.0, "top_p": 1.0},
-    {"id": "t0.1", "temperature": 0.1, "top_p": 1.0},
-    {"id": "t0.2", "temperature": 0.2, "top_p": 1.0},
-    {"id": "t0.3", "temperature": 0.3, "top_p": 1.0},
-]
 # One context size for every tested model and both providers. Ollama takes it per request;
 # LM Studio fixes it at load time, so run_models (re)loads the model with it (generation.py).
 NUM_CTX = int(os.getenv("LLM_CONTEXT", "16384"))
@@ -98,6 +119,17 @@ CHROMA_PATH = os.getenv("CHROMA_PATH", "chroma")
 RAG_EMBED_MODEL = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")     # must be the model the collections were built with
 RAG_QUERY_CHARS = 2000     # query = first N chars of the input text
 
+# --- Q&A documents -------------------------------------------------------------
+# Every text gets its own userdocs and outline collections in an eval-only Chroma, so the app's
+# own userdocs never mix with test documents (build_qna_index).
+QNA_CHROMA_PATH = os.getenv("QNA_CHROMA_PATH", str(EVAL_DATA_DIR / "chroma_qna"))
+QNA_MAX_USERDOCS = 3
+# QATask clips the attached document to 4000 chars (src/tasks/qa.py). The eval keeps that limit,
+# since the app is under test, so answer-sheet facts must come from the first 4000 chars.
+QNA_DOC_CHARS = 4000
+QNA_USERDOCS_CHARS = 3000  # = QATask.build_prompt's clip of USER DOCUMENTS
+QNA_OUTLINE_CHARS = 800    # = QATask.build_prompt's clip of USER OUTLINE
+
 # --- References --------------------------------------------------------------
 LT_LANGUAGE = "en-GB"      # the app's grammar prompt says "Write in en-GB"
 # The public API is rate-limited per IP and blocks bursts; the pause after each text keeps a
@@ -112,10 +144,17 @@ EMBED_PREFIX = ""          # e.g. "task: sentence similarity | query: " if the m
 # EVAL_JUDGE_MODEL, not JUDGE_MODEL: .env's JUDGE_MODEL is read by the old deepeval
 # scripts and is not a valid Ollama tag.
 JUDGE_MODEL = os.getenv("EVAL_JUDGE_MODEL", "hf.co/GGUF-A-Lot/NVIDIA-Nemotron-Nano-9B-v2-GGUF:Q4_K_M")   # never one of tested MODELS
+# Feedback keeps DISPRO1's judge, so its scores compare with last year's directly.
+JUDGE_MODEL_BY_PROMPT = {"grammar": JUDGE_MODEL, "qna": JUDGE_MODEL,
+                         "feedback": os.getenv("EVAL_FEEDBACK_JUDGE_MODEL", "llama3.1:8b")}
 JUDGE_SAMPLES = 3          # used only when the judge returns no logprobs
 JUDGE_TEMPERATURE = 0.7    # for sampling fallback
 JUDGE_NUM_CTX = 16384
 
 # --- MLflow (published after all eval steps) ---------------------------------
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5001")
-MLFLOW_EXPERIMENT = "Grammar Evaluation"
+MLFLOW_EXPERIMENT_BY_PROMPT = {"grammar": "Grammar Evaluation", "qna": "Q&A Evaluation",
+                               "feedback": "Feedback Evaluation"}
+
+# --- DISPRO1 comparison (feedback) ---------------------------------------------
+DISPRO1_RESULTS = REPO_ROOT / "evaluation" / "reports" / "DISPRO1" / "eval_generation_essay_results.jsonl"
