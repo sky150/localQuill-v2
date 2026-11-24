@@ -1,0 +1,12 @@
+st-f-04   vector    1  rerank    1  | first and second person in a formal essay  ->  ['first or second person in formal writing']
+st-f-05   vector    1  rerank    1  | no clear thesis: the introduction lists topics without a central claim  ->  ['no clear thesis or central claim']
+st-f-06   vector None  rerank None  | paragraph without a topic sentence  ->  ['no clear thesis or central claim']
+st-f-07   vector None  rerank None  | missing transitions between ideas  ->  ['no clear thesis or central claim']
+st-f-08   vector    2  rerank    1  | vague email subject line  ->  ['email with a vague subject line']
+st-f-09   vector    1  rerank    2  | literature review that only summarises sources one by one  ->  ['literature review that summarises sources one by one instead of synthesising them']
+st-f-10   vector    8  rerank None  | book review that only retells the plot  ->  ['book review that only retells the plot instead of evaluating the book']
+st-p-06   vector    6  rerank    1  | point of view switches from first person to third person  ->  ['point of view switches between first and third person']
+st-p-07   vector    6  rerank    1  | third person limited suddenly becomes omniscient  ->  ['point of view switches between first and third person']
+st-p-08   vector None  rerank    2  | telling emotions instead of showing them  ->  ['telling emotions instead of showing them']
+Hit@2 vector: 4/10
+Hit@2 rerank: 7/10

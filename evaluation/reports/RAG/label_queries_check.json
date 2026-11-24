@@ -1,0 +1,92 @@
+[
+ {
+  "id": "st-f-04",
+  "issue": "first and second person in a formal essay",
+  "picked": [
+   "first or second person in formal writing"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-05",
+  "issue": "no clear thesis: the introduction lists topics without a central claim",
+  "picked": [
+   "no clear thesis or central claim"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-06",
+  "issue": "paragraph without a topic sentence",
+  "picked": [
+   "no clear thesis or central claim"
+  ],
+  "rank_vector": null,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-f-07",
+  "issue": "missing transitions between ideas",
+  "picked": [
+   "no clear thesis or central claim"
+  ],
+  "rank_vector": null,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-f-08",
+  "issue": "vague email subject line",
+  "picked": [
+   "email with a vague subject line"
+  ],
+  "rank_vector": 2,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-f-09",
+  "issue": "literature review that only summarises sources one by one",
+  "picked": [
+   "literature review that summarises sources one by one instead of synthesising them"
+  ],
+  "rank_vector": 1,
+  "rank_rerank": 2
+ },
+ {
+  "id": "st-f-10",
+  "issue": "book review that only retells the plot",
+  "picked": [
+   "book review that only retells the plot instead of evaluating the book"
+  ],
+  "rank_vector": 8,
+  "rank_rerank": null
+ },
+ {
+  "id": "st-p-06",
+  "issue": "point of view switches from first person to third person",
+  "picked": [
+   "point of view switches between first and third person"
+  ],
+  "rank_vector": 6,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-07",
+  "issue": "third person limited suddenly becomes omniscient",
+  "picked": [
+   "point of view switches between first and third person"
+  ],
+  "rank_vector": 6,
+  "rank_rerank": 1
+ },
+ {
+  "id": "st-p-08",
+  "issue": "telling emotions instead of showing them",
+  "picked": [
+   "telling emotions instead of showing them"
+  ],
+  "rank_vector": null,
+  "rank_rerank": 2
+ }
+]

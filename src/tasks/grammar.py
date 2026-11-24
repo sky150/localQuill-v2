@@ -4,8 +4,16 @@ from .base import Task
 
 class GrammarTask(Task):
     name = "grammar"
-    max_words = int(os.getenv("GRAMMAR_MAX_WORDS", "300"))
+    max_words = int(os.getenv("GRAMMAR_MAX_WORDS", "1000"))
     retrieval_query = "grammar punctuation tense agreement comma splice sentence structure"
+    query_focus = "grammar and punctuation"
+    problem_labels = [  # guide topics the model picks from to search the style guides
+        "comma splice", "run-on (fused) sentences", "subject-verb agreement",
+        "agreement with either/or and neither/nor", "quotation marks and punctuation inside quotes",
+        "dangling or misplaced modifiers", "apostrophes and possessives", "tense shifts",
+        "pronoun reference and agreement", "sentence fragments", "commas after introductory clauses",
+        "capitalisation", "British and American spelling",
+    ]
     uses_context_as_text = True
     contain_untrusted = True
 

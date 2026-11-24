@@ -37,7 +37,7 @@ def make(cls, **model_kwargs):
 def no_retrieval(monkeypatch):
     monkeypatch.setattr("src.tasks.feedback.retrieve_from", lambda *a, **k: "")
     monkeypatch.setattr("src.tasks.qa.retrieve_from", lambda *a, **k: "")
-    monkeypatch.setattr("src.tasks.base.retrieve", lambda *a, **k: [])
+    monkeypatch.setattr("src.tasks.base.retrieve_reranked", lambda *a, **k: [])
 
 
 class TestHelpers:

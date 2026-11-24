@@ -1,0 +1,18 @@
+{
+  "summary": [
+    "Most automated writing feedback relies on cloud-hosted LLMs, which raises data privacy concerns for students and young authors; Local Quill is a local feedback system that keeps all user data on-device",
+    "The project focuses on academic essays and fictional prose, aimed at students and aspiring authors",
+    "It uses local models of about 8 billion parameters, supported by RAG over writing guides and style manuals, and splits feedback into grammar, clarity and style sub-tasks with separate prompts",
+    "The research question asks whether such a local solution with RAG can achieve results comparable to GPT-5-nano, measured by G-Eval metrics"
+  ],
+  "arguments": [
+    "Cloud-hosted models risk that submitted text is retained or used for training by third parties, so a local, on-device system is needed",
+    "Small local models have smaller context windows, weaker instruction following and lower output quality, but RAG grounds their answers with field-specific knowledge from writing guides",
+    "Splitting feedback into separate grammar, clarity and style prompts lets each call specialise and gives more targeted feedback than one combined prompt",
+    "Training an LLM from scratch is beyond student projects, but pretrained models are suited for zero-shot tasks; the most capable ones are only available in the cloud"
+  ],
+  "arguments_main": [
+    "Names data privacy (keeping user data on-device instead of sending it to cloud providers) as the most important argument",
+    "Gives a reason from the text, e.g. it is the motivation for the whole project and the gap Local Quill targets"
+  ]
+}

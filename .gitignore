@@ -10,8 +10,13 @@ test/chroma_eval/
 # Personal files
 data/styles/outline/
 data/styles/userdocs/
+data/eval/*/languagetool/
+data/eval/chroma_qna/
 data/uploads/
 data/workspace/
+.idea/
+.claude
+
 
 # Basic Gitignore template
 
@@ -239,3 +244,6 @@ __marimo__/
 # Chainlit
 .chainlit/translations/
 .webui_secret_key
+
+# RAG eval index cache (rebuilt by tests/eval/rag/run_rag_eval.py)
+evaluation/cache/

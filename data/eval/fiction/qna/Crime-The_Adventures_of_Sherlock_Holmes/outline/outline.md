@@ -1,0 +1,7 @@
+# The Adventures of Sherlock Holmes - Outline (A Scandal in Bohemia)
+
+The excerpt comes from "A Scandal in Bohemia", the first story in Arthur Conan Doyle's collection The Adventures of Sherlock Holmes (1892). Dr. John Watson narrates. The King of Bohemia visits Holmes in disguise and asks for his help. Before his marriage to a Scandinavian princess, he wants back a compromising photograph of himself with Irene Adler, an opera singer and adventuress he once had an affair with. Adler has threatened to send the photograph to his bride's family, and earlier attempts to steal or buy it have failed.
+
+Holmes disguises himself as an out-of-work groom to learn about Adler's life at Briony Lodge in St. John's Wood. He finds out that the lawyer Godfrey Norton visits her often. By chance he becomes a witness at Adler and Norton's hasty wedding at the Church of St. Monica. That evening, disguised as a clergyman, he stages a street fight outside Briony Lodge and is carried inside, apparently injured. Watson then throws a smoke rocket through the window, and the false alarm of fire makes Adler reveal the photograph's hiding place behind a sliding panel.
+
+When Holmes returns the next morning with the King, Adler has already left England with her new husband. She saw through Holmes's disguise and took the photograph with her. In its place she left a portrait of herself and a letter promising not to use the photograph against the King. Holmes asks only for her portrait as his reward. From then on he refers to her as "the woman", the one person who outwitted him.

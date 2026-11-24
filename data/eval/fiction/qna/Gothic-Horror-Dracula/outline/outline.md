@@ -1,0 +1,7 @@
+# Dracula - Outline
+
+Bram Stoker's epistolary novel (1897) is told through diaries, letters and newspaper clippings. The young solicitor Jonathan Harker travels to Transylvania to help Count Dracula buy an estate in England. He soon realises that he is a prisoner in the castle and that the Count is a vampire. Dracula sails to England on the ship Demeter and lands at Whitby, where he begins to prey on Lucy Westenra, the close friend of Jonathan's fiancée, Mina Murray.
+
+Dr. John Seward, one of Lucy's suitors, calls in his old teacher, Professor Abraham Van Helsing. Despite blood transfusions from Lucy's fiancé Arthur Holmwood (later Lord Godalming), Seward, Quincey Morris and Van Helsing, Lucy dies and becomes a vampire. The men destroy her in her tomb, and Arthur drives the stake through her heart. Jonathan, who has escaped and married Mina, joins them, and the group starts to destroy the boxes of earth that Dracula needs to rest in London.
+
+Dracula then attacks Mina and forces her to drink his blood, which creates a link between them and slowly changes her. Under hypnosis at sunrise and sunset, Mina can sense where the Count is, and this helps the hunters follow him when he flees back to Transylvania. In the final chase they catch his coffin just before sunset near his castle. Jonathan cuts his throat and Quincey stabs him in the heart, and Dracula crumbles to dust. Quincey dies of his wounds, and the mark on Mina's forehead disappears. Years later the Harkers name their son Quincey.

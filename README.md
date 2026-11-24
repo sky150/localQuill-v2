@@ -127,8 +127,6 @@ COLLECTION_NAME=fiction DATA_PATH=./data/styles/fiction uv run -m src.vector_db.
 ```sh
 $env:COLLECTION_NAME="formal"; $env:DATA_PATH="./data/styles/formal"; uv run -m src.vector_db.generate_chroma
 $env:COLLECTION_NAME="fiction"; $env:DATA_PATH="./data/styles/fiction"; uv run -m src.vector_db.generate_chroma
-$env:COLLECTION_NAME="outline"; $env:DATA_PATH="./data/styles/outline"; uv run -m src.vector_db.generate_chroma
-$env:COLLECTION_NAME="userdocs"; $env:DATA_PATH="./data/styles/userdocs"; uv run -m src.vector_db.generate_chroma
 ```
 
 ### 5. Launch the ChainLit Interface (Task Tests)
@@ -192,14 +190,9 @@ uv run -m src.vector_db.generate_chroma --reset
 ```sh
 # Test the RAG pipeline
  uv run python tests/unit/test_rag.py
-# Windows
-uv run python tests/unit/test_rag.py
 
 # Run content filter tests
 uv run python tests/unit/test_content_filter.py
-# Windows
-uv run python tests/unit/test_content_filter.py
-
 
 # Run all Unit Tests (Takes a while for Rag and Model Tests)
 uv run pytest -v
@@ -234,11 +227,13 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 |----------|---------|-------------|
 | `COLLECTION_NAME` | `essay` | `essay` or `fiction` |
 | `CHUNK_SIZE` | `1000` | Characters per document chunk for embeddings (1000 recommended) |
-| `CHUNK_OVERLAP` | `400` | Character overlap between chunks (400 recommended for high recall) |
+| `CHUNK_OVERLAP` | `400` | Character overlap between style-guide chunks |
+| `UPLOAD_CHUNK_OVERLAP` | `0` | Character overlap for user documents and outlines (0 retrieved best, see [docs/rag-evaluation.md](docs/rag-evaluation.md)) |
 | `EMBEDDING_PROVIDER` | `ollama` | `ollama` or `huggingface` |
 | `EMBEDDING_MODEL` | `nomic-embed-text` | Model for generating embeddings |
 | `LOCAL_MODEL` | `ministral-3:8b` | Default LLM for feedback generation |
 | `JUDGE_MODEL` | `llama3.1` | LLM for evaluation scoring (used by G-Eval) |
+| `LLM_CONTEXT` | `4096` | Context window in tokens. Ollama takes it per request; for LM Studio, set the same value when you load the model. The eval uses it for both providers (default 16384) |
 | `TEMPERATURE` | `0.1` | 0.0 (deterministic) to 1.0 (bit more creative) |
 | `TOP_K` | `3` | Number of document chunks to retrieve |
 | `USER_TEXT_SPLIT` | `10'000` | Character limit per LLM call (roughly 2'000 words) |
@@ -248,6 +243,8 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 | `CHROMA_PATH` | `./chroma` | Path to vector database |
 
 ## Evaluation & Benchmarking
+
+The grammar evaluation lives in `src/evaluation/`. [src/evaluation/README.md](src/evaluation/README.md) covers its run order, data layout, metrics and MLflow logging.
 
 Local Quill uses **G-Eval**, an LLM-as-judge framework, to measure feedback quality. Three metrics are evaluated:
 
