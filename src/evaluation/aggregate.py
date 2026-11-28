@@ -19,9 +19,17 @@ import pandas as pd
 
 import argparse
 
+from . import config
 from .common import EvalPaths, add_target_args, paths_from_args, read_jsonl
 
 KEYS = ["model", "setting_id", "run"]
+
+
+def drop_excluded(df: pd.DataFrame, prompt: str) -> pd.DataFrame:
+    """Rows of models the prompt leaves out of its comparison (config.EXCLUDED_MODELS).
+    The raw files keep those rows; only the tables built here drop them."""
+    excluded = config.excluded_models(prompt)
+    return df[~df["model"].isin(excluded)] if excluded else df
 
 
 def ratio(a: float, b: float) -> float:
@@ -67,11 +75,20 @@ def per_run_tables(paths: EvalPaths) -> list[pd.DataFrame]:
     runs = read_jsonl(paths.runs_file)
     if runs:
         df = pd.DataFrame(runs)
+        # OpenAI rows carry null gen_tok_per_s; a column of only nulls would load as object dtype.
+        df["gen_tok_per_s"] = pd.to_numeric(df["gen_tok_per_s"])
+        # Rows written before the OpenAI runs have no reasoning_tokens field.
+        df["reasoning_tokens"] = (pd.to_numeric(df["reasoning_tokens"]) if "reasoning_tokens" in df
+                                  else float("nan"))
+        # Share of generations cut off at the output cap (README "Output cap").
+        df["capped"] = (df["done_reason"] == "length").astype(float)
         g = df.groupby(KEYS)
         out.append(pd.DataFrame({"wall_s": g["wall_s"].mean(), "wall_s_median": g["wall_s"].median(),
                                  "gen_tok_per_s": g["gen_tok_per_s"].mean(),
                                  "prompt_tokens": g["prompt_tokens"].mean(),
-                                 "gen_tokens": g["gen_tokens"].mean()}))
+                                 "gen_tokens": g["gen_tokens"].mean(),
+                                 "reasoning_tokens": g["reasoning_tokens"].mean(),
+                                 "capped_rate": g["capped"].mean()}))
     return out
 
 
@@ -81,10 +98,12 @@ def by_question(paths: EvalPaths) -> pd.DataFrame | None:
     runs = pd.DataFrame(read_jsonl(paths.runs_file))
     if runs.empty or "question_id" not in runs.columns:
         return None
+    runs = drop_excluded(runs, paths.prompt)
     keys = ["model", "setting_id", "question_id"]
     tables = [runs.groupby(keys)[["wall_s", "gen_tokens"]].mean()]
     judge = pd.DataFrame(read_jsonl(paths.result("judge.jsonl")))
     if not judge.empty and "question_id" in judge.columns:
+        judge = drop_excluded(judge, paths.prompt)
         t = judge.pivot_table(index=keys, columns="criterion", values="score", aggfunc="mean")
         t.columns = [f"judge_{c}" for c in t.columns]
         tables.insert(0, t)
@@ -96,7 +115,7 @@ def summarize(paths: EvalPaths) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFram
     tables = per_run_tables(paths)
     if not tables:
         raise SystemExit("No results found. Run the eval scripts first.")
-    per_run = pd.concat(tables, axis=1).reset_index()
+    per_run = drop_excluded(pd.concat(tables, axis=1).reset_index(), paths.prompt)
 
     metrics = [c for c in per_run.columns if c not in KEYS]
     long = (per_run.melt(id_vars=KEYS, value_vars=metrics, var_name="metric")
@@ -112,6 +131,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     add_target_args(ap)
     paths = paths_from_args(ap.parse_args())
+    for model, reason in config.excluded_models(paths.prompt).items():
+        print(f"excluded {model}: {reason}")
     _, long, wide = summarize(paths)
     long.to_csv(paths.result("summary_long.csv"), index=False)
     wide.to_csv(paths.result("summary.csv"))

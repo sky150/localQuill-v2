@@ -244,7 +244,16 @@ All configuration is managed through the `.env` file. **Copy [.env.example](.env
 
 ## Evaluation & Benchmarking
 
-The grammar evaluation lives in `src/evaluation/`. [src/evaluation/README.md](src/evaluation/README.md) covers its run order, data layout, metrics and MLflow logging.
+### LLM model evaluation
+
+`src/evaluation/` tests the app's models on grammar correction, Q&A and feedback, and ranks them. Follow [src/evaluation/README.md](src/evaluation/README.md) for the steps: text preparation, run order, commands, metrics, composite ranking and MLflow logging.
+
+```sh
+uv run python -m src.evaluation.run_all --prompt grammar    # or qna, feedback
+uv run python -m src.evaluation.ranking_rag_norag --style formal --prompt grammar
+```
+
+### DISPRO1 evaluation suite
 
 Local Quill uses **G-Eval**, an LLM-as-judge framework, to measure feedback quality. Three metrics are evaluated:
 

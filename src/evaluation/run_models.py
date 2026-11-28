@@ -4,23 +4,27 @@ model factory (src.llm.factory.get_model), see generation.py.
     uv run python -m src.evaluation.run_models --style formal --prompt grammar
     uv run python -m src.evaluation.run_models --style fiction --prompt grammar --models gemma4:e2b --runs 3
     uv run python -m src.evaluation.run_models --style formal --prompt grammar --provider lmstudio
+    uv run python -m src.evaluation.run_models --style formal --prompt grammar --provider openai
     uv run python -m src.evaluation.run_models --style formal --prompt grammar --norag
     uv run python -m src.evaluation.run_models --style formal --prompt feedback --texts Essay_C2_Profishency_Response_1
 
 --norag runs the no-RAG baseline: the same task template with empty writing guidelines,
 written to the "<style>-norag" results folder (EvalPaths.variant).
 
-The provider is "ollama" or "lmstudio" (config.PROVIDER by default, --provider to override);
-config.MODELS_BY_PROMPT lists the default models of each prompt and provider, and
-config.SETTINGS_BY_PROMPT the settings. Appends one row per generation to the runs file of the
-chosen style and prompt (EvalPaths.runs_file) and resumes where it stopped. All evaluators read
+The provider is "ollama", "lmstudio" or "openai" (config.PROVIDER by default, --provider to
+override); config.MODELS_BY_PROMPT lists the default models of each prompt and provider, and
+config.settings_for the settings (SETTINGS_BY_PROMPT, or reasoning efforts for openai, which
+needs OPENAI_API_KEY and supports grammar and qna only). Appends one row per generation to the
+runs file of the chosen style and prompt (EvalPaths.runs_file) and resumes where it stopped. All evaluators read
 only that file, so a vLLM runner that writes the same fields (backend="vllm") plugs in without
 changes.
 
 Row fields: backend (the provider), model, setting_id, params, run, seed, text_id, prompt,
 style, rag, output, raw_output, wall_s, load_s, prompt_tokens, gen_tokens, gen_tok_per_s,
-done_reason. Q&A rows add question_id, question and history (the parent question and this
-model's answer to it, empty for a first question). For LM Studio, run_models first (re)loads
+reasoning_tokens (null unless the provider reports hidden reasoning), done_reason, num_predict
+(the output cap of the generation; older rows lack it, see config.row_num_predict). OpenAI rows
+have seed null: the seed is not sent. Q&A rows add question_id, question and history (the
+parent question and this model's answer to it, empty for a first question). For LM Studio, run_models first (re)loads
 each model with config.NUM_CTX (LLM_CONTEXT). Rows from LM Studio have load_s and gen_tok_per_s
 null: its API reports neither.
 
@@ -49,7 +53,7 @@ def main() -> None:
     args = ap.parse_args()
     paths = paths_from_args(args)
     models = args.models or config.models_for(paths.prompt, args.provider)
-    settings = config.SETTINGS_BY_PROMPT[paths.prompt]
+    settings = config.settings_for(paths.prompt, args.provider)
 
     items = load_testset(paths)
     if args.texts:
@@ -74,7 +78,8 @@ def main() -> None:
         for setting in settings:
             params = {k: v for k, v in setting.items() if k != "id"}
             for run in range(config.runs_for(setting, args.runs)):
-                seed = config.SEED_BASE + run
+                # OpenAI gets no seed (generation.py does not send one), so the row records none.
+                seed = None if args.provider == "openai" else config.SEED_BASE + run
                 for item in items:
                     for question in questions:
                         n += 1
@@ -104,7 +109,9 @@ def main() -> None:
                             "prompt_tokens": gen.prompt_tokens,
                             "gen_tokens": gen.gen_tokens,
                             "gen_tok_per_s": gen.gen_tok_per_s,
+                            "reasoning_tokens": gen.reasoning_tokens,
                             "done_reason": gen.done_reason,
+                            "num_predict": config.num_predict_for(args.provider),
                         })
                         label = f"{item['id']}{f' {qid}' if qid else ''}"
                         print(f"[model {m_idx}/{len(models)} {m_n}/{per_model} | total {n}/{total}] "

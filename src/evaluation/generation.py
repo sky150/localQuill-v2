@@ -5,6 +5,10 @@ the tested model is the one the app would build. generate does not call Task.run
 appends a random canary (the prompt would differ per call and per model), truncates at
 max_words, appends a "Response time" trailer, and its StrOutputParser drops the token counts.
 Instead generate calls task.model.invoke and keeps the AIMessage metadata.
+
+OpenAI (gpt-5 models) takes a reasoning effort instead of temperature/top_p, sends no seed, and
+counts hidden reasoning tokens inside the output cap, so its cap comes from
+config.num_predict_for.
 """
 
 from __future__ import annotations
@@ -37,6 +41,7 @@ class Generation:
     gen_tokens: int | None
     gen_tok_per_s: float | None
     done_reason: str | None
+    reasoning_tokens: int | None
 
 
 def build_task(paths: EvalPaths, provider: str, model: str) -> Task:
@@ -44,7 +49,8 @@ def build_task(paths: EvalPaths, provider: str, model: str) -> Task:
     # think comes from the app's task defaults: left at None, qwen3.5 thinks by default and
     # spends the NUM_PREDICT budget on reasoning the app never generates.
     cfg = TaskConfig(model=model, collection=paths.style, top_k=config.RAG_TOP_K,
-                     max_tokens=config.NUM_PREDICT, think=TASKS[task_cls.name].think)
+                     max_tokens=config.num_predict_for(provider),
+                     think=TASKS[task_cls.name].think)
     llm = get_model(task_cls.name, paths.style, cfg=cfg, provider=provider)
     return task_cls(model=llm, config=cfg, style=paths.style)
 
@@ -57,11 +63,16 @@ def _invoke_kwargs(provider: str, params: dict, seed: int | None, num_predict: i
                             **({"seed": seed} if seed is not None else {})}}
     if provider == "lmstudio":
         return {**params, "max_tokens": num_predict, **({"seed": seed} if seed is not None else {})}
+    if provider == "openai":
+        # gpt-5 rejects non-default temperature and top_p. No seed: OpenAI applies it on a
+        # best-effort basis only, so it would not make runs reproducible. max_tokens overrides
+        # the factory cap (LIMIT_TOKEN_NUMBER) and langchain sends it as max_completion_tokens.
+        return {"reasoning_effort": params["reasoning_effort"], "max_tokens": num_predict}
     raise UnknownProvider(f"Unknown provider {provider!r}; choose one of {config.PROVIDERS}.")
 
 
 def generate(task: Task, provider: str, prompt: str, params: dict, seed: int) -> Generation:
-    kwargs = _invoke_kwargs(provider, params, seed, config.NUM_PREDICT)
+    kwargs = _invoke_kwargs(provider, params, seed, config.num_predict_for(provider))
     t0 = time.perf_counter()
     msg = task.model.invoke(prompt, **kwargs)
     wall_s = time.perf_counter() - t0
@@ -77,11 +88,14 @@ def generate(task: Task, provider: str, prompt: str, params: dict, seed: int) ->
         # Only Ollama reports decode time; LM Studio's OpenAI API does not, and wall time
         # includes prompt processing, so no rate is reported there.
         gen_tok_per_s=gen_tokens / eval_s if gen_tokens and eval_s else None,
-        done_reason=meta.get("done_reason") or meta.get("finish_reason"))
+        done_reason=meta.get("done_reason") or meta.get("finish_reason"),
+        reasoning_tokens=(usage.get("output_token_details") or {}).get("reasoning"))
 
 
 def warm_up(task: Task, provider: str) -> None:
     """Load the model once so load time does not land in run 0's timing."""
+    if provider == "openai":
+        return  # no load time to hide, and the call would be billed
     task.model.invoke("Hi", **_invoke_kwargs(provider, {}, None, 1))
 
 

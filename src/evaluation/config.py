@@ -46,7 +46,7 @@ REQUEST_TIMEOUT_S = 1800
 # The tested models run through the app's model factory (src.llm.factory.get_model), so the
 # server URLs come from the app config (OLLAMA_URL, LMSTUDIO_URL in .env). The eval provider is
 # hardcoded here on purpose: .env's LLM_PROVIDER configures the app, not the experiment.
-PROVIDERS = ("ollama", "lmstudio")
+PROVIDERS = ("ollama", "lmstudio", "openai")
 PROVIDER = "ollama"
 
 
@@ -56,12 +56,15 @@ MODELS_BY_PROMPT = {
     "grammar": {
         "ollama": ["granite4.2:8b", "qwen3.5:9b", "llama3.1:8b", "mistral:7b-instruct", "gemma4:e4b"],
         "lmstudio": ["qwen2.5-coder-0.5b-instruct"],
+        "openai": ["gpt-5-nano"],
     },
     # Up to 4B parameters: Q&A runs next to the larger grammar model in the app.
     "qna": {
-        "ollama": ["gemma4:e2b", "gemma4:e4b", "phi4-mini:3.8b", "gemma3:4b", "qwen3.5:4b"],
+        "ollama": ["gemma4:e2b", "gemma4:e4b", "phi4-mini:3.8b", "gemma3:4b"],
+        # Dropped modle due to thinking for the entire num_predict "qwen3.5:4b"
         #"ollama": ["gemma4:e2b"],
         "lmstudio": ["qwen2.5-coder-0.5b-instruct"],
+        "openai": ["gpt-5-nano"],
     },
     # Best feedback model of last semester, rerun with DISPRO1's settings.
     "feedback": {
@@ -71,8 +74,16 @@ MODELS_BY_PROMPT = {
 }
 
 
+class UnsupportedProvider(SystemExit):
+    """A prompt has no model list for the requested provider."""
+
+
 def models_for(prompt: str, provider: str = PROVIDER) -> list[str]:
-    return MODELS_BY_PROMPT[prompt][provider]
+    try:
+        return MODELS_BY_PROMPT[prompt][provider]
+    except KeyError:
+        raise UnsupportedProvider(
+            f"{prompt} has no models for provider '{provider}' (config.MODELS_BY_PROMPT).") from None
 
 
 # Each setting is one metaparameter combination. top_p stays 1.0 (off), which leaves temperature
@@ -97,19 +108,57 @@ SETTINGS_BY_PROMPT = {
         {"id": "t0.1", "temperature": 0.1, "top_p": 1.0},
     ],
 }
+# gpt-5 models accept only the default temperature, so OpenAI varies the reasoning effort instead.
+SETTINGS_BY_PROVIDER = {
+    "openai": [
+        {"id": "effort_low", "reasoning_effort": "low"},
+        {"id": "effort_medium", "reasoning_effort": "medium"},
+    ],
+}
+
+
+def settings_for(prompt: str, provider: str = PROVIDER) -> list[dict]:
+    return SETTINGS_BY_PROVIDER.get(provider) or SETTINGS_BY_PROMPT[prompt]
+
+
 # One context size for every tested model and both providers. Ollama takes it per request;
 # LM Studio fixes it at load time, so run_models (re)loads the model with it (generation.py).
 NUM_CTX = int(os.getenv("LLM_CONTEXT", "16384"))
 # Small models can loop without stopping; uncapped, qwen2.5:0.5b on CPU ran past the
 # 1800 s request timeout on one ~400-token text. Rows with done_reason "length" hit the cap.
-NUM_PREDICT = 2048
+# 4096 because fiction corrections reach ~2500 tokens and the longest prompt (4035) plus 4096
+# stays inside NUM_CTX 8192. The first grammar run used 2048 (README "Output cap").
+NUM_PREDICT = 4096
+# Cap of rows written before rows recorded `num_predict`.
+LEGACY_NUM_PREDICT = 2048
+# Models left out of the aggregate tables and MLflow, per prompt: model -> reason.
+EXCLUDED_MODELS: dict[str, dict[str, str]] = {
+    "qna": {"qwen3.5:4b": "thinking filled the 2048-token cap: 700 of 960 answers empty "
+                          "(README \"Output cap\")"},
+}
+# OpenAI's max_completion_tokens also counts the hidden reasoning tokens, and OpenAI advises
+# reserving at least 25k for them; a fiction grammar output alone is about 3k tokens.
+NUM_PREDICT_BY_PROVIDER = {"openai": 32768}
 N_RUNS = 3                 # 3-5 retries per setting
+
+
+def num_predict_for(provider: str) -> int:
+    return NUM_PREDICT_BY_PROVIDER.get(provider, NUM_PREDICT)
+
+
+def excluded_models(prompt: str) -> dict[str, str]:
+    return EXCLUDED_MODELS.get(prompt, {})
+
+
+def row_num_predict(row: dict) -> int:
+    return row.get("num_predict") or LEGACY_NUM_PREDICT
 
 
 def runs_for(setting: dict, n_runs: int = N_RUNS) -> int:
     """Temperature 0 is greedy decoding: seed and top_p have no effect and every run gives
-    the same output, so one run is enough. Its std over runs is therefore empty (NaN)."""
-    return 1 if setting["temperature"] == 0 else n_runs
+    the same output, so one run is enough. Its std over runs is therefore empty (NaN).
+    Settings without a temperature (OpenAI efforts) run n_runs times."""
+    return 1 if setting.get("temperature") == 0 else n_runs
 
 SEED_BASE = 1000           # run k uses seed SEED_BASE + k, so runs differ but are reproducible
 

@@ -1,0 +1,2 @@
+rank,model,setting_id,temperature,best_for_model,passed_gate,score,gen_tok_per_s,gen_tokens,judge_clarity,judge_style,prompt_tokens,wall_s,wall_s_median
+1,ministral-3:8b,t0.1,0.1,True,True,1.0,20.395602635858804,461.7407407407407,0.8092190591907977,0.8131902941781473,1795.5555555555557,23.645240637038825,22.5209449333391

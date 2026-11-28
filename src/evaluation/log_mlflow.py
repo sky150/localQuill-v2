@@ -89,7 +89,9 @@ def table_row(paths: EvalPaths, run: dict, item: dict, expected: str | None, pro
            # difflib against a reference text only makes sense for corrections
            "similarity": similarity(out, expected) if paths.prompt == "grammar" else None,
            "text_id": run["text_id"], "run": run["run"], "seed": run["seed"],
-           "prompt_tokens": run.get("prompt_tokens"), "gen_tokens": run.get("gen_tokens")}
+           "prompt_tokens": run.get("prompt_tokens"), "gen_tokens": run.get("gen_tokens"),
+           "reasoning_tokens": run.get("reasoning_tokens"), "done_reason": run.get("done_reason"),
+           "num_predict": config.row_num_predict(run)}
     if paths.prompt == "qna":
         row.update(question_id=run["question_id"], question=run["question"])
     return {**row, **{k: clean(v) for k, v in extra.items()}}
@@ -120,9 +122,14 @@ def log_group(paths: EvalPaths, model: str, setting_id: str, runs: list[dict], i
         mlflow.set_tags({"testset_sha": sha, "backend": first["backend"],
                           "style": paths.style, "prompt": paths.prompt, "rag": str(paths.rag)})
         grammar = paths.prompt == "grammar"
+        # Rows that stopped under the old cap equal a rerun under the new one, so the max is the
+        # group's cap; the min shows a group whose rows came from both caps.
+        caps = [config.row_num_predict(r) for r in runs]
         mlflow.log_params({
             "provider": first["backend"], "model": model,
             "temperature": first["params"].get("temperature"), "top_p": first["params"].get("top_p"),
+            "reasoning_effort": first["params"].get("reasoning_effort"),
+            "num_predict": max(caps), "num_predict_min": min(caps),
             "prompt": paths.prompt, "style": paths.style,
             "collection": paths.style,
             "rag": paths.rag, "top_k": config.RAG_TOP_K if paths.rag else 0, "n_cases": len({r["text_id"] for r in runs}),
@@ -192,7 +199,12 @@ def main() -> None:
     groups: dict[tuple, list[dict]] = {}
     for r in sorted(load_runs(paths), key=lambda r: (r["run"], r["text_id"])):
         groups.setdefault((r["model"], r["setting_id"]), []).append(r)
+    excluded = config.excluded_models(paths.prompt)
+    for model, reason in excluded.items():
+        print(f"excluded {model}: {reason}")
     for (model, setting_id), runs in groups.items():
+        if model in excluded:
+            continue
         log_group(paths, model, setting_id, runs, items, per_run, long, extras, sha)
 
 
